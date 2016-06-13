@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="anchor" prefHeight="186.0" prefWidth="344.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.patrnk.checkmate.CheckSceneController">
+   <children>
+      <TextField layoutX="89.0" layoutY="39.0" />
+      <PasswordField layoutX="89.0" layoutY="77.0" />
+      <Label layoutX="122.0" layoutY="14.0" text="Авторизуйтесь:" />
+      <Button defaultButton="true" layoutX="144.0" layoutY="112.0" mnemonicParsing="false" text="Войти" />
+      <Button layoutX="73.0" layoutY="145.0" mnemonicParsing="false" onAction="#openResultInputWindow" text="Ввести результаты вручную" />
+   </children>
+</AnchorPane>
