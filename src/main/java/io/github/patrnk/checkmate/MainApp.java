@@ -75,7 +75,7 @@ public class MainApp extends Application {
     private void createTables() {
         try {
             createGlobalTable();
-            createTestsTable();
+            Test.createTestsTable();
         } catch (Exception e) {
             CmUtils.printException(e);
         } 
@@ -100,26 +100,6 @@ public class MainApp extends Application {
             createTable.close();
         }
     }
-    
-    /**
-     * Creates "tests" table if needed.
-     * Helper method for createTables().
-     */
-    private void createTestsTable() throws Exception {
-        ResultSet tables = database.getMetaData().getTables(null, null, "tests", null);
-        if (!tables.next()) {   
-            String createQuery = "CREATE TABLE tests (" +
-                    "test_id int PRIMARY KEY, " +
-                    "name nvarchar(255), " +
-                    "answers_file nvarchar(255), " +
-                    "type_id int" +
-                    ")";
-            Statement createTable = database.createStatement();
-            createTable.executeUpdate(createQuery);
-            createTable.close();
-        }
-    }
-    
     
     // --------------------- 
     // SAMPLES (delete when not needed)

@@ -1,5 +1,8 @@
 package io.github.patrnk.checkmate;
 
+import static io.github.patrnk.checkmate.MainApp.database;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +15,11 @@ import java.util.List;
 public abstract class Test {
     
     /**
+     * 
+     */
+    String name;
+    
+    /**
      * List of answers to the test.
      * <br>
      * Remember that i-th element corresponds to (i+1)-th question on the test.
@@ -21,7 +29,7 @@ public abstract class Test {
      * but not both, then answerKeys.get(0).get(0) == "1" and 
      * answerKeys.get(0).get(1) == "2".
      */
-    private List<ArrayList<String>> answerKey;
+    private List<ArrayList<String>> answerKey = null;
     
     /**
      * Sets a list of values that student's answers are checked against.
@@ -40,4 +48,21 @@ public abstract class Test {
     }
     
     public abstract void check();
+    
+    /**
+     * Creates "tests" table if needed.
+     */
+    public static void createTestsTable() throws Exception {
+        ResultSet tables = database.getMetaData().getTables(null, null, "tests", null);
+        if (!tables.next()) {   
+            String createQuery = "CREATE TABLE tests (" +
+                    "test_id int PRIMARY KEY, " +
+                    "name nvarchar(255) " +
+                    ")";
+            Statement createTable = database.createStatement();
+            createTable.executeUpdate(createQuery);
+            createTable.close();
+        }
+    }
+    
 }
