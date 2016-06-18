@@ -1,15 +1,10 @@
 package io.github.patrnk.checkmate;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
@@ -18,15 +13,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javax.mail.Folder;
 import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Store;
 
 
 public class MainApp extends Application {
-        // TODO: create a global table;
-        // TODO: show data of the global table in a tableview (for convenience)
         // TODO: code the email reader part
 
     @Override

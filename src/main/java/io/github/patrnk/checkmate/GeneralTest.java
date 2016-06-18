@@ -23,8 +23,6 @@ public abstract class GeneralTest {
     
     /**
      * Sets a list of values that student's answers are checked against.
-     * Note: i-th element corresponds to (i+1)-th question on the test, so
-     * the answer to the first question can be obtained by answerKeys.get(0).
      * @param answerKey a list of answers to the questions. For further detail,
      *      refer to answerKey JavaDoc.
      */
