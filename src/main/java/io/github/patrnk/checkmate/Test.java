@@ -14,10 +14,21 @@ import java.util.List;
  */
 public abstract class Test {
     
+    public final int MAX_NAME_LENGTH = 255;
+    
     /**
-     * 
+     * Test name that's set by and displayed to the user.
+     * Cannot be exported. Cannot be empty or longer than MAX_NAME_LENGTH. 
      */
-    String name;
+    private String name;
+    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
     
     /**
      * List of answers to the test.
@@ -50,7 +61,7 @@ public abstract class Test {
     public abstract void check();
     
     /**
-     * Creates "tests" table if needed.
+     * Creates "tests" table in global database if needed.
      */
     public static void createTestsTable() throws Exception {
         ResultSet tables = database.getMetaData().getTables(null, null, "tests", null);
