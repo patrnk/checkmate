@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TextArea;
 
 /**
  * FXML Controller class
@@ -18,10 +19,12 @@ import javafx.fxml.Initializable;
  */
 public class CreateTestSceneController implements Initializable {
 
+    @FXML
+    private TextArea contentArea;
     
     @FXML
     private void saveButtonClicked(ActionEvent event) {
-        
+        // TODO: create the Test class
     }
     
     /**
