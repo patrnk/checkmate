@@ -3,7 +3,9 @@ package io.github.patrnk.checkmate;
 import static io.github.patrnk.checkmate.MainApp.database;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -19,16 +21,15 @@ public abstract class Test {
     /**
      * Test name that's set by and displayed to the user.
      * Cannot be exported. Cannot be empty or longer than MAX_NAME_LENGTH. 
+     * Gets set on calling createTest().
      */
     private String name;
     
     public String getName() {
         return name;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    
+    private int id;
     
     /**
      * List of answers to the test.
@@ -37,25 +38,89 @@ public abstract class Test {
      * Each element is a list of mutually exclusive answers to the question.
      * <br>
      * For example, if a student can answer the first question with 1 or 2, 
-     * but not both, then answerKeys.get(0).get(0) == "1" and 
-     * answerKeys.get(0).get(1) == "2".
+     * but not both, then <code>answerKeys.get(0).get(0) == "1"</code> and 
+     * <code>answerKeys.get(0).get(1) == "2"</code>.
      */
-    private List<ArrayList<String>> answerKey = null;
-    
+        private List<ArrayList<String>> answerKey = null;
+ 
     /**
      * Sets a list of values that student's answers are checked against.
      * @param answerKey a list of answers to the questions. For further detail,
      *      refer to answerKey JavaDoc.
      */
-    public void setAnswerKey(List<List<String>> answerKey) {
+    private void setAnswerKey(List<List<String>> answerKey) {
         this.answerKey = null;
         for (List l : answerKey) {
             this.answerKey.add(new ArrayList(l));
         }
     }
+
+//    TODO: Enforce usage of .createTest
+//    public Test() {
+//        throw new UnsopportedOperationException();
+//    }
     
-    public Test createTest(CheckType type) {
+    /**
+     * 
+     * @param name
+     * @param type
+     * @param content
+     * @return
+     * @throws ParseException 
+     */
+    public static Test createTest(String name, CheckType type, String content) 
+            throws ParseException {
         return null;
+    }
+    
+    /**
+     * A symbol that separates a number and an answer.
+     */
+    private static final String ANSWER_SEPARATOR_REGEX = "\\)";
+    
+    /**
+     * TODO: describe parsing algo.
+     * @param testDescription
+     * @throws ParseException 
+     */
+    private void parseKeys(String testDescription) 
+            throws ParseException, IllegalArgumentException{
+        testDescription = testDescription.trim();
+        String[] lines = testDescription.split("\n");
+        if (lines.length > 1024) {
+            throw new IllegalArgumentException("Too many lines in "
+                    + "the test description");
+        }
+        
+        for (int i = 0; i < lines.length; i++) {
+            lines[i] = lines[i].trim();
+            if (!lines[i].matches(".+" + ANSWER_SEPARATOR_REGEX + ".+")) {
+                throw new ParseException("The line formatted incorrectly. ", i);
+            }
+            
+            Integer problemNumber = -1;
+            try {
+                problemNumber = Integer.valueOf(
+                        lines[i].split(ANSWER_SEPARATOR_REGEX)[0].trim());
+                if (problemNumber < 0 || problemNumber > 256) {
+                    throw new IndexOutOfBoundsException();
+                }
+            } catch (NumberFormatException | IndexOutOfBoundsException e) {
+                throw new ParseException("The question number is incorrect.", i);
+            }
+            assert(problemNumber > 0);
+            
+            String answer = lines[i].split(ANSWER_SEPARATOR_REGEX)[1].trim();
+            
+            if (problemNumber >= answerKey.size()) {
+                for (int j = answerKey.size(); j <= problemNumber; j++) {
+                    answerKey.add(new ArrayList());
+                }
+            }
+            assert (problemNumber < answerKey.size());
+            
+            this.answerKey.get(problemNumber).add(answer);
+        }
     }
     
     public abstract void check();
@@ -76,4 +141,7 @@ public abstract class Test {
         }
     }
     
+//    private static int setId() {
+//        
+//    }
 }
