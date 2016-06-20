@@ -1,7 +1,7 @@
 package io.github.patrnk.checkmate;
 
 public enum CheckType {
-    SIMPLE("Simple"), STANDART("Standart"), ADVANCED("Advanced");
+    SIMPLE("SimpleTest"), STANDART("Standart"), ADVANCED("Advanced");
     
     String subclassName;
     
@@ -10,7 +10,7 @@ public enum CheckType {
     }
     
     /**
-     * Return the name of corresponding GeneralTest subclass.
+     * Return the name of corresponding Test subclass.
      * @return the exact name of the subclass
      */
     @Override
