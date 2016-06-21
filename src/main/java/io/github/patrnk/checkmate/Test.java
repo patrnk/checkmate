@@ -41,7 +41,7 @@ public abstract class Test {
      * but not both, then <code>answerKeys.get(0).get(0) == "1"</code> and 
      * <code>answerKeys.get(0).get(1) == "2"</code>.
      */
-        private List<ArrayList<String>> answerKey = null;
+        private List<List<String>> answerKey = new ArrayList();
  
     /**
      * Sets a list of values that student's answers are checked against.
@@ -79,12 +79,12 @@ public abstract class Test {
     private static final String ANSWER_SEPARATOR_REGEX = "\\)";
     
     /**
-     * Extracts the data for answerKey.
+     * Parses the data for answerKey.
      * @throws ParseException if a line is formatted incorrectly.
      * @throws IllegalArgumentException if there is more than 1024 lines in the
      *      description or if one of the question numbers is greater than 256.
      */
-    private void parseKeys(String testDescription) 
+    private void initializeAnswerKey(String testDescription) 
             throws ParseException, IllegalArgumentException{
         testDescription = testDescription.trim();
         String[] lines = testDescription.split("\n");
