@@ -74,14 +74,15 @@ public abstract class Test {
     }
     
     /**
-     * A symbol that separates a number and an answer.
+     * A symbol that separates a question number and an answer.
      */
     private static final String ANSWER_SEPARATOR_REGEX = "\\)";
     
     /**
-     * TODO: describe parsing algo.
-     * @param testDescription
-     * @throws ParseException 
+     * Extracts the data for answerKey.
+     * @throws ParseException if a line is formatted incorrectly.
+     * @throws IllegalArgumentException if there is more than 1024 lines in the
+     *      description or if one of the question numbers is greater than 256.
      */
     private void parseKeys(String testDescription) 
             throws ParseException, IllegalArgumentException{
