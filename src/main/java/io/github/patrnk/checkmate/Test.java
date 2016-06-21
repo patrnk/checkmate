@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -41,8 +40,9 @@ public abstract class Test {
      * but not both, then <code>answerKeys.get(0).get(0) == "1"</code> and 
      * <code>answerKeys.get(0).get(1) == "2"</code>.
      */
-        private List<List<String>> answerKey = new ArrayList();
- 
+    private List<List<String>> answerKey = new ArrayList();
+    // TODO make answerKey store regexes
+    
     /**
      * Sets a list of values that student's answers are checked against.
      * @param answerKey a list of answers to the questions. For further detail,
@@ -80,17 +80,20 @@ public abstract class Test {
     
     /**
      * Parses the data for answerKey.
+     * In case of exception, leaves answerKey in incorrect state.
      * @throws ParseException if a line is formatted incorrectly.
      * @throws IllegalArgumentException if there is more than 1024 lines in the
      *      description or if one of the question numbers is greater than 256.
      */
     private void initializeAnswerKey(String testDescription) 
-            throws ParseException, IllegalArgumentException{
+            throws ParseException, IllegalArgumentException {
+        int MAX_LINES = 1024;
+        int MAX_RANGE = 256;
         testDescription = testDescription.trim();
         String[] lines = testDescription.split("\n");
-        if (lines.length > 1024) {
+        if (lines.length > MAX_LINES) {
             throw new IllegalArgumentException("Too many lines in "
-                    + "the test description");
+                    + "the test description: " + lines.length + " > " + MAX_LINES);
         }
         
         for (int i = 0; i < lines.length; i++) {
@@ -103,7 +106,7 @@ public abstract class Test {
             try {
                 problemNumber = Integer.valueOf(
                         lines[i].split(ANSWER_SEPARATOR_REGEX)[0].trim());
-                if (problemNumber < 0 || problemNumber > 256) {
+                if (problemNumber < 0 || problemNumber > MAX_RANGE) {
                     throw new IndexOutOfBoundsException();
                 }
             } catch (NumberFormatException | IndexOutOfBoundsException e) {
