@@ -6,6 +6,7 @@ import java.sql.Statement;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Defines what a test looks like.
@@ -42,6 +43,17 @@ public abstract class Test {
      */
     private List<List<String>> answerKey = new ArrayList();
     // TODO make answerKey store regexes
+    /**
+     * List of regex which are used to check the answers.
+     * An answer can be expected to be in one of three forms:
+     * <br> 1) <code>^[abc]$</code> — used when there are several mutually
+     *      exclusive answers. Here, "a", "b" or "c" are all accepted answers.
+     * <br> 2) <code>^word$</code> — used when an answer is an ordered 
+     *      sequence of symbols. Here, "word" is only accepted answer.
+     * <br> 3) <code>^(?=.*a)(?=.*b)[ab]{2}$</code> — used when an answer
+     *      is a unordered sequence of symbols. Here, both "ab" and "ba" are accepted.
+     */
+    private final List<Pattern> answerKey_test = new ArrayList();
     
     /**
      * Sets a list of values that student's answers are checked against.
@@ -77,54 +89,51 @@ public abstract class Test {
      * A symbol that separates a question number and an answer.
      */
     private static final String ANSWER_SEPARATOR_REGEX = "\\)";
-    
-    /**
-     * Parses the data for answerKey.
-     * In case of exception, leaves answerKey in incorrect state.
-     * @throws ParseException if a line is formatted incorrectly.
-     * @throws IllegalArgumentException if there is more than 1024 lines in the
-     *      description or if one of the question numbers is greater than 256.
-     */
-    private void initializeAnswerKey(String testDescription) 
-            throws ParseException, IllegalArgumentException {
-        int MAX_LINES = 1024;
-        int MAX_RANGE = 256;
+
+    private void initializeAnswerKey_test(String testDescription) throws ParseException {
+        int MAX_LINES = 1000;
+        int MAX_RANGE = 1000;
+        
         testDescription = testDescription.trim();
         String[] lines = testDescription.split("\n");
         if (lines.length > MAX_LINES) {
-            throw new IllegalArgumentException("Too many lines in "
-                    + "the test description: " + lines.length + " > " + MAX_LINES);
+            //TODO custom exceptions
         }
-        
         for (int i = 0; i < lines.length; i++) {
             lines[i] = lines[i].trim();
             if (!lines[i].matches(".+" + ANSWER_SEPARATOR_REGEX + ".+")) {
-                throw new ParseException("The line formatted incorrectly. ", i);
+                throw new ParseException("The line number "
+                        + i + " formatted incorrectly. ", i);
             }
-            
+
             Integer problemNumber = -1;
             try {
                 problemNumber = Integer.valueOf(
                         lines[i].split(ANSWER_SEPARATOR_REGEX)[0].trim());
                 if (problemNumber < 0 || problemNumber > MAX_RANGE) {
                     throw new IndexOutOfBoundsException();
+                    // TODO custom exceptions
                 }
             } catch (NumberFormatException | IndexOutOfBoundsException e) {
                 throw new ParseException("The question number is incorrect.", i);
+                // TODO custom exceptions
             }
             assert(problemNumber > 0);
-            
-            String answer = lines[i].split(ANSWER_SEPARATOR_REGEX)[1].trim();
-            
-            if (problemNumber >= answerKey.size()) {
-                for (int j = answerKey.size(); j <= problemNumber; j++) {
-                    answerKey.add(new ArrayList());
+            if (problemNumber >= answerKey_test.size()) {
+                for (int j = answerKey_test.size(); j <= problemNumber; j++) {
+                    answerKey_test.add(null);
                 }
             }
-            assert (problemNumber < answerKey.size());
+            assert(problemNumber < answerKey_test.size());
             
-            this.answerKey.get(problemNumber).add(answer);
+            String answer = lines[i].split(ANSWER_SEPARATOR_REGEX)[1].trim();
+            String regex = formRegex(problemNumber, answer);
         }
+    }
+    
+    private String formRegex(int problemNumber, String regex) {
+        
+        return null;
     }
     
     public abstract void check();
@@ -149,3 +158,52 @@ public abstract class Test {
 //        
 //    }
 }
+
+//    /**
+//     * Parses the data for answerKey.
+//     * In case of exception, leaves answerKey in incorrect state.
+//     * @throws ParseException if a line is formatted incorrectly.
+//     * @throws IllegalArgumentException if there is more than 1024 lines in the
+//     *      description or if one of the question numbers is greater than 256.
+//     */
+//    private void initializeAnswerKey(String testDescription) 
+//            throws ParseException, IllegalArgumentException {
+//        int MAX_LINES = 1024;
+//        int MAX_RANGE = 256;
+//        testDescription = testDescription.trim();
+//        String[] lines = testDescription.split("\n");
+//        if (lines.length > MAX_LINES) {
+//            throw new IllegalArgumentException("Too many lines in "
+//                    + "the test description: " + lines.length + " > " + MAX_LINES);
+//        }
+//        
+//        for (int i = 0; i < lines.length; i++) {
+//            lines[i] = lines[i].trim();
+//            if (!lines[i].matches(".+" + ANSWER_SEPARATOR_REGEX + ".+")) {
+//                throw new ParseException("The line formatted incorrectly. ", i);
+//            }
+//            
+//            Integer problemNumber = -1;
+//            try {
+//                problemNumber = Integer.valueOf(
+//                        lines[i].split(ANSWER_SEPARATOR_REGEX)[0].trim());
+//                if (problemNumber < 0 || problemNumber > MAX_RANGE) {
+//                    throw new IndexOutOfBoundsException();
+//                }
+//            } catch (NumberFormatException | IndexOutOfBoundsException e) {
+//                throw new ParseException("The question number is incorrect.", i);
+//            }
+//            assert(problemNumber > 0);
+//            
+//            String answer = lines[i].split(ANSWER_SEPARATOR_REGEX)[1].trim();
+//            
+//            if (problemNumber >= answerKey.size()) {
+//                for (int j = answerKey.size(); j <= problemNumber; j++) {
+//                    answerKey.add(new ArrayList());
+//                }
+//            }
+//            assert (problemNumber < answerKey.size());
+//            
+//            this.answerKey.get(problemNumber).add(answer);
+//        }
+//    }
