@@ -89,7 +89,7 @@ public abstract class Test {
      * A symbol that separates a question number and an answer.
      */
     private static final String ANSWER_SEPARATOR_REGEX = "\\)";
-
+    // TODO: move the whole thing to TestDescriptionParser class (and create one)
     private void initializeAnswerKey_test(String testDescription) throws ParseException {
         int MAX_LINES = 1000;
         int MAX_RANGE = 1000;
@@ -128,12 +128,48 @@ public abstract class Test {
             
             String answer = lines[i].split(ANSWER_SEPARATOR_REGEX)[1].trim();
             String regex = formRegex(problemNumber, answer);
+            answerKey_test.add(Pattern.compile(regex));
         }
     }
     
-    private String formRegex(int problemNumber, String regex) {
+    private String formRegex(int problemNumber, String answer) {
+        String PREFIX = "^(";
+        String SUFFIX = ")$";
+        String regex= PREFIX;
+        // copy previous answer without prefix and suffix.
+        if (answerKey_test.get(problemNumber) != null) {
+            String previousAnswer = answerKey_test.get(problemNumber).toString();
+            assert(previousAnswer.startsWith(PREFIX));
+            assert(previousAnswer.endsWith(SUFFIX));
+            regex += previousAnswer.substring(PREFIX.length(),
+                previousAnswer.length() - SUFFIX.length());
+            regex += "|";
+        }
         
-        return null;
+        if (answer.charAt(0) == '*') {
+            regex += answer.substring(1);
+        } else {
+            regex += formUnorderedAnwser(answer);
+        }
+        
+        regex += SUFFIX;
+        return regex;
+    }
+    
+    // Example output: (?=.*a)(?=.*b)[ab]{2}
+    private String formUnorderedAnwser(String answer) {
+        String unorderedAnswer = "";
+        for (char c : answer.toCharArray()) {
+            unorderedAnswer += "(?=.*";
+            unorderedAnswer += c;
+            unorderedAnswer += ")";
+        }
+        unorderedAnswer += "[";
+        for (char c : answer.toCharArray()) {
+            unorderedAnswer += c;
+        }
+        unorderedAnswer += "{" + answer.length() + "}";
+        return unorderedAnswer;
     }
     
     public abstract void check();
