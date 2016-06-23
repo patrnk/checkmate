@@ -18,15 +18,18 @@ final class TestDescriptionFormatter {
     private static final String ANSWER_SEPARATOR_REGEX = "\\)";
     
     public List<Pattern> formRegexList(String testDescription) 
-        throws ParseException, PatternSyntaxException {
+        throws ParseException, PatternSyntaxException, AnswerNotProvidedException,
+        TooManyAnswersProvidedException, IncorrectQuestionNumberException  {
         List<Pattern> answerKey = new ArrayList();
-        int MAX_LINES = 1000;
-        int MAX_RANGE = 1000;
+        int MAX_NUMBER_OF_ANSWERS = 1000;
+        int NUMBER_OF_QUESTIONS = 1000;
         
         testDescription = testDescription.trim();
         String[] questions = testDescription.split(QUESTION_SEPARATOR_REGEX);
-        if (questions.length > MAX_LINES) {
-            //TODO custom exceptions
+        if (questions.length > MAX_NUMBER_OF_ANSWERS) {
+            throw new TooManyAnswersProvidedException("Too many answers provided "
+                + "(max: " + MAX_NUMBER_OF_ANSWERS + " input: " 
+                + questions.length + ")");
         }
         for (int i = 0; i < questions.length; i++) {
             questions[i] = questions[i].trim();
@@ -39,13 +42,14 @@ final class TestDescriptionFormatter {
             try {
                 questionNumber = Integer.valueOf(
                         questions[i].split(ANSWER_SEPARATOR_REGEX)[0].trim());
-                if (questionNumber < 0 || questionNumber > MAX_RANGE) {
-                    throw new IndexOutOfBoundsException();
-                    // TODO custom exceptions
-                }
-            } catch (NumberFormatException | IndexOutOfBoundsException e) {
-                throw new ParseException("The question number is incorrect.", i);
-                // TODO custom exceptions
+            } catch (NumberFormatException e) {
+                throw new ParseException("The question number is not a number "
+                    + "on line " + i, i);
+            }
+            if (questionNumber <= 0 || questionNumber > NUMBER_OF_QUESTIONS) {
+                throw new IncorrectQuestionNumberException("Question number "
+                    + "must be positive integer no greater than "
+                    + NUMBER_OF_QUESTIONS + " (input: " + questionNumber + ")", i);
             }
             assert(questionNumber > 0);
             if (questionNumber >= answerKey.size()) {
@@ -58,6 +62,12 @@ final class TestDescriptionFormatter {
             String answer = questions[i].split(ANSWER_SEPARATOR_REGEX)[1].trim();
             String regex = formRegex(answerKey.get(questionNumber), answer);
             answerKey.set(questionNumber, Pattern.compile(regex));
+        }
+        for (int i = 0; i < answerKey.size(); i++) {
+            if (answerKey.get(i) == null) {
+                throw new AnswerNotProvidedException("Question number " 
+                    + (i + 1) + " does not have an answer.");
+            }
         }
         return answerKey;
     }
