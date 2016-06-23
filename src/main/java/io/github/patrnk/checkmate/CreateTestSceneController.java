@@ -24,7 +24,8 @@ public class CreateTestSceneController implements Initializable {
     
     @FXML
     private void saveButtonClicked(ActionEvent event) {
-        // TODO: create the Test class
+        // TODO: Implement the creation of a Test
+        
     }
     
     /**
