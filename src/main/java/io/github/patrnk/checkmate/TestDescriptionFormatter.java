@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-
+// TODO test
+// TODO make all members static?
 final class TestDescriptionFormatter {
     /**
      * A symbol that separates two consecutive answers.
@@ -108,6 +109,7 @@ final class TestDescriptionFormatter {
         for (char c : answer.toCharArray()) {
             unorderedAnswer += c;
         }
+        unorderedAnswer += "]";
         unorderedAnswer += "{" + answer.length() + "}";
         return unorderedAnswer;
     }
