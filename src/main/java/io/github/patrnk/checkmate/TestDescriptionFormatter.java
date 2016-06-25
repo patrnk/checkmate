@@ -18,6 +18,9 @@ final class TestDescriptionFormatter {
      */
     private static final String ANSWER_SEPARATOR_REGEX = "\\)";
     
+    // List<Pattern>.get(0) is always null in order to make indices correspond
+    // to question numbers.
+    // TODO write javadoc for formRegexList
     public List<Pattern> formRegexList(String testDescription) 
         throws ParseException, PatternSyntaxException, AnswerNotProvidedException,
         TooManyAnswersProvidedException, IncorrectQuestionNumberException  {
@@ -64,7 +67,7 @@ final class TestDescriptionFormatter {
             String regex = formRegex(answerKey.get(questionNumber), answer);
             answerKey.set(questionNumber, Pattern.compile(regex));
         }
-        for (int i = 0; i < answerKey.size(); i++) {
+        for (int i = 1; i < answerKey.size(); i++) { // i = 1 since (answerKey.get(0) == null) always true
             if (answerKey.get(i) == null) {
                 throw new AnswerNotProvidedException("Question number " 
                     + (i + 1) + " does not have an answer.");
