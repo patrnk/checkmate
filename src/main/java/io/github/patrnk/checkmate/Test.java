@@ -1,6 +1,9 @@
 package io.github.patrnk.checkmate;
 
 import static io.github.patrnk.checkmate.MainApp.database;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.ParseException;
@@ -8,13 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+// TODO: rethink the design of the class.
 /**
  * Defines what a test looks like.
  * Different tests differ only in the way they grade student's answers.
  * Remember to create a new CheckType before subclassing (see CheckType.java).
  * @author vergeev
  */
-public abstract class Test {
+public abstract class Test implements Serializable {
     
     private final TestDescriptionFormatter 
         formatter = new TestDescriptionFormatter();
@@ -32,7 +36,14 @@ public abstract class Test {
         return name;
     }
     
-    private int id;
+    /**
+     * Used for convenience of the students.
+     */
+    private Long id;
+    
+    public Long getId() {
+        return id;
+    }
     
     // TODO update answerKey description
     /**
@@ -47,24 +58,20 @@ public abstract class Test {
      */
     private final List<Pattern> answerKey = new ArrayList();
 
-//    TODO: Enforce usage of .createTest
-//    public Test() {
-//        throw new UnsopportedOperationException();
-//    }
+    private String testDescription;
     
-    /**
-     * TODO write createTest javadoc.
-     * @param name
-     * @param type
-     * @param content
-     * @return
-     * @throws ParseException 
-     */
-    public static Test createTest(String name, CheckType type, String content) 
-            throws ParseException {
-        return null;
+    public String getTestDescription() {
+        return testDescription;
     }
     
+    /**
+     * TODO write createTest javadoc, read item 17
+     */
+    public static Test createTest(String name, Long id, 
+        CheckType type, String testDescription) {
+        return null;
+    }
+
     public abstract void check();
     
     /**
@@ -83,7 +90,32 @@ public abstract class Test {
         }
     }
     
-//    private static int setId() {
-//        
-//    }
+    private static class SerializationProxy implements Serializable {
+        String name;
+        Long id;
+        CheckType type;
+        String testDescription;
+        
+        SerializationProxy(Test t) {
+            this.name = t.getName();
+            this.id = t.getId();
+            this.type.fromString(t.getClass().getName());
+            this.testDescription = t.getTestDescription();
+        }
+        
+        private Object readResolve() { 
+            return Test.createTest(name, id, type, testDescription);
+        }
+        
+        private static final long serialVersionUID = 402982438234852385L;
+    }
+    
+    private Object writeReplace() {
+        return new SerializationProxy(this);
+    }
+    
+    private void readObject(ObjectInputStream stream) 
+        throws InvalidObjectException {
+        throw new InvalidObjectException("Proxy required");
+    }
 }
