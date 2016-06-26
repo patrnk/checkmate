@@ -29,6 +29,7 @@ final class TestDescriptionFormatter {
         int NUMBER_OF_QUESTIONS = 1000;
         
         testDescription = testDescription.trim();
+        testDescription = testDescription.toLowerCase();
         String[] questions = testDescription.split(QUESTION_SEPARATOR_REGEX);
         if (questions.length > MAX_NUMBER_OF_ANSWERS) {
             throw new TooManyAnswersProvidedException("Too many answers provided "
@@ -67,7 +68,7 @@ final class TestDescriptionFormatter {
             String regex = formRegex(answerKey.get(questionNumber), answer);
             answerKey.set(questionNumber, Pattern.compile(regex));
         }
-        for (int i = 1; i < answerKey.size(); i++) { // i = 1 since (answerKey.get(0) == null) always true
+        for (int i = 1; i < answerKey.size(); i++) {
             if (answerKey.get(i) == null) {
                 throw new AnswerNotProvidedException("Question number " 
                     + (i + 1) + " does not have an answer.");
