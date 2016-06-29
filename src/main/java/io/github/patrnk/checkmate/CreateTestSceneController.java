@@ -6,6 +6,8 @@
 package io.github.patrnk.checkmate;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,10 +24,10 @@ public class CreateTestSceneController implements Initializable {
     @FXML
     private TextArea contentArea;
     
+    List<TestChecker> checkers = new ArrayList();
+    
     @FXML
     private void saveButtonClicked(ActionEvent event) {
-        // TODO: Implement the creation of a Test
-        
     }
     
     /**
@@ -33,7 +35,13 @@ public class CreateTestSceneController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        addCheckers();
     }    
     
+    /**
+     * Initializes checkers list. 
+     */
+    private void addCheckers() {
+        
+    }
 }
