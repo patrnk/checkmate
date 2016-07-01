@@ -1,6 +1,6 @@
 package io.github.patrnk.checkmate;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * It's a singleton.
@@ -20,7 +20,7 @@ public final class CheckerWithATwist implements TestChecker {
     }
     
     @Override
-    public TestResult check(Map<Integer, String> studentAnswers) {
+    public List<TestAnswer> check(List<TestAnswer> studentAnswers) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
