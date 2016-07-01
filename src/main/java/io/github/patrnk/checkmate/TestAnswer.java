@@ -1,16 +1,23 @@
 package io.github.patrnk.checkmate;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 /**
  * The way of storing student's answers.
  * Each instance contains student's answer itself and the grade for the answer.
+ * It's guaranteed that the answer is not null.
  * @author vergeev
  */
 public class TestAnswer implements Serializable {
     
     private final String answer;
     
+    /**
+     * Gets student's answer.
+     * Never null.
+     */
     public String getAnswer() {
         return answer;
     }
@@ -45,5 +52,13 @@ public class TestAnswer implements Serializable {
     public TestAnswer(String answer, Integer grade) {
         this.answer = answer;
         this.grade = grade;
+    }
+    
+    private void readObject(ObjectInputStream s)
+        throws IOException, ClassNotFoundException {
+        s.defaultReadObject();
+        if (answer == null) {
+            throw new AssertionError("Answer cannot be null.");
+        }
     }
 }
