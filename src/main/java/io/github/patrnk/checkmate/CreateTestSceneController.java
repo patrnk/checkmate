@@ -6,9 +6,14 @@
 package io.github.patrnk.checkmate;
 
 import java.net.URL;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,8 +29,6 @@ public class CreateTestSceneController implements Initializable {
     @FXML
     private TextArea contentArea;
     
-    List<TestChecker> checkers = new ArrayList();
-    
     @FXML
     private void saveButtonClicked(ActionEvent event) {
     }
@@ -38,10 +41,12 @@ public class CreateTestSceneController implements Initializable {
         addCheckers();
     }    
     
+    List<TestChecker> checkers = new ArrayList();
+    
     /**
      * Initializes checkers list. 
      */
     private void addCheckers() {
-        
+        checkers.add(CheckerWithATwist.getInstance());
     }
 }
