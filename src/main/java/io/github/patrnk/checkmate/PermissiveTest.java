@@ -5,13 +5,13 @@ import java.util.List;
 
 public class PermissiveTest implements TestChecker {
 
-    private final Test test;
+    private final TestInfo test;
     
-    public Test getTest() {
+    public TestInfo getTest() {
         return test;
     }
     
-    public PermissiveTest(Test test) {
+    public PermissiveTest(TestInfo test) {
         if (test == null) {
             throw new IllegalArgumentException("Test cannot be null");
         }
