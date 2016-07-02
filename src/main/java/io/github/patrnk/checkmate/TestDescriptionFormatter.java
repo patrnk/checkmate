@@ -116,3 +116,15 @@ final class TestDescriptionFormatter {
         return unorderedAnswer;
     }
 }
+
+//    /**
+//     * List of regex which are used to check the answers.
+//     * An answer can be expected to be in one of three forms:
+//     * <br> 1) <code>^[abc]$</code> — used when there are several mutually
+//     *      exclusive answers. Here, "a", "b" or "c" are all accepted answers.
+//     * <br> 2) <code>^word$</code> — used when an answer is an ordered 
+//     *      sequence of symbols. Here, "word" is only accepted answer.
+//     * <br> 3) <code>^(?=.*a)(?=.*b)[ab]{2}$</code> — used when an answer
+//     *      is a unordered sequence of symbols. Here, both "ab" and "ba" are accepted.
+//     */
+//    private final List<Pattern> answerKey = new ArrayList();
