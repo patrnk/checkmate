@@ -1,7 +1,6 @@
 package io.github.patrnk.checkmate;
 
 import static io.github.patrnk.checkmate.MainApp.database;
-import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
@@ -80,7 +79,6 @@ public final class Test implements Serializable {
         }
     }
     
-    // TODO serialize TestChecker too
     private static class SerializationProxy implements Serializable {
         String name;
         Long id;
