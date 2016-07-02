@@ -1,6 +1,7 @@
 package io.github.patrnk.checkmate;
 
 import static io.github.patrnk.checkmate.MainApp.database;
+import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
@@ -13,49 +14,54 @@ import java.sql.Statement;
  */
 public final class Test implements Serializable {
     
-    public final int MAX_NAME_LENGTH = 255;
+    public static final int MAX_NAME_LENGTH = 255;
     
     /**
      * Test name that's set by and displayed to the user.
-     * Cannot be exported. Cannot be empty or longer than MAX_NAME_LENGTH. 
-     * Gets set on calling createTest().
+     * Cannot be null, empty or longer than MAX_NAME_LENGTH.
      */
-    private String name;
+    private final String name;
     
     public String getName() {
         return name;
     }
     
+    
+    private void checkName(String name) {
+        if (name == null) {
+            throw new IllegalArgumentException("The name cannot be  null");
+        }
+        if (name.length() > MAX_NAME_LENGTH) {
+            throw new IllegalArgumentException("The name is too long: " + 
+                name.length() + " > " + MAX_NAME_LENGTH);
+        }
+        if (name.length() == 0) {
+            throw new IllegalArgumentException("The name cannot be "
+                + "an empty string");
+        }
+    }
+    
     /**
      * This is how students will identify a particular test.
+     * This is a client's responsibility to ensure the id is unique.
      */
-    private Long id;
+    private final Long id;
     
     public Long getId() {
         return id;
     }
     
-    private String description;
+    private final String description;
     
     public String getDescription() {
         return description;
     }
     
-    private TestChecker checker;
-    
-    public TestChecker getChecker() {
-        return checker;
-    }
-    
-    private Test() {}
-    
-    public static Test createTest(String name, Long id, 
-        String testDescription, TestChecker checker) {
-        Test t = new Test();
-        t.name = name;
-        t.id = id;
-        t.description = testDescription;
-        return t;
+    public Test(String name, Long id, String testDescription) {
+        checkName(name);
+        this.name = name;
+        this.id = id;
+        this.description = testDescription;
     }
     
     /**
@@ -78,18 +84,16 @@ public final class Test implements Serializable {
     private static class SerializationProxy implements Serializable {
         String name;
         Long id;
-        CheckType type;
         String testDescription;
         
         SerializationProxy(Test t) {
             this.name = t.getName();
             this.id = t.getId();
-            this.type.fromString(t.getClass().getName());
             this.testDescription = t.getDescription();
         }
         
         private Object readResolve() { 
-            return Test.createTest(name, id, testDescription, null);
+            return new Test(name, id, testDescription);
         }
         
         private static final long serialVersionUID = 402982438234852385L;
@@ -104,16 +108,3 @@ public final class Test implements Serializable {
         throw new InvalidObjectException("Proxy required");
     }
 }
-
-//    // TODO update answerKey description
-//    /**
-//     * List of regex which are used to check the answers.
-//     * An answer can be expected to be in one of three forms:
-//     * <br> 1) <code>^[abc]$</code> — used when there are several mutually
-//     *      exclusive answers. Here, "a", "b" or "c" are all accepted answers.
-//     * <br> 2) <code>^word$</code> — used when an answer is an ordered 
-//     *      sequence of symbols. Here, "word" is only accepted answer.
-//     * <br> 3) <code>^(?=.*a)(?=.*b)[ab]{2}$</code> — used when an answer
-//     *      is a unordered sequence of symbols. Here, both "ab" and "ba" are accepted.
-//     */
-//    private final List<Pattern> answerKey = new ArrayList();
