@@ -2,7 +2,6 @@ package io.github.patrnk.checkmate;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
