@@ -3,25 +3,25 @@ package io.github.patrnk.checkmate;
 import java.util.List;
 
 
-public class PermissiveTest implements TestChecker {
+public class PermissiveTest implements Test {
 
-    private final TestInfo test;
+    private final TestInfo info;
     
-    public TestInfo getTest() {
-        return test;
+    public TestInfo getInfo() {
+        return info;
     }
     
-    public PermissiveTest(TestInfo test) {
-        if (test == null) {
-            throw new IllegalArgumentException("Test cannot be null");
+    public PermissiveTest(TestInfo info) {
+        if (info == null) {
+            throw new IllegalArgumentException("Test info cannot be null");
         }
-        this.test = test;
+        this.info = info;
     }
     
     @Override
     public List<TestAnswer> check(List<TestAnswer> t) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
     
+    private static final long serialVersionUID = 602982433234862386L;
 }
