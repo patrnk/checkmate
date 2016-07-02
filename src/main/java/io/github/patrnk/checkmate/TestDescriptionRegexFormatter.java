@@ -15,11 +15,8 @@ final class TestDescriptionRegexFormatter {
      */
     private static final String ANSWER_SEPARATOR_REGEX = "\\)";
     
-    // List<Pattern>.get(0) is always null in order to make indices correspond
-    // to question numbers.
     // TODO write javadoc for formRegexList
-    public List<Pattern> formRegexList(String testDescription) 
-        throws ParseException  {
+    public List<Pattern> formRegexList(String testDescription) throws ParseException  {
         List<Pattern> answerKey = new ArrayList();
         
         testDescription = testDescription.trim();
@@ -40,7 +37,8 @@ final class TestDescriptionRegexFormatter {
                 throw new ParseException("The question number is not a number "
                     + "on line " + i, i);
             }
-            assert(questionNumber > 0);
+            questionNumber -= 1;
+            assert(questionNumber >= 0);
             if (questionNumber >= answerKey.size()) {
                 for (int j = answerKey.size(); j <= questionNumber; j++) {
                     answerKey.add(null);
