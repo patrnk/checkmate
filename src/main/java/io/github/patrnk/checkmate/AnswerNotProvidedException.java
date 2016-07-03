@@ -9,7 +9,7 @@ public class AnswerNotProvidedException extends Exception {
         return questionNumber;
     }
     
-    public AnswerNotProvidedException(Integer questionNumber) {
+    public AnswerNotProvidedException(int questionNumber) {
         super();
         if (questionNumber <= 0) {
             throw new IllegalArgumentException("Number of the question must be "
@@ -18,7 +18,7 @@ public class AnswerNotProvidedException extends Exception {
         this.questionNumber = questionNumber;
     }
     
-    public AnswerNotProvidedException(String message, Integer questionNumber) {
+    public AnswerNotProvidedException(String message, int questionNumber) {
         super(message);
         if (questionNumber <= 0) {
             throw new IllegalArgumentException("Number of the question must be "
