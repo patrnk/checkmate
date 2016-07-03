@@ -20,7 +20,6 @@ final class TestDescriptionRegexFormatter {
         List<Pattern> answerKey = new ArrayList();
         
         testDescription = testDescription.trim();
-        testDescription = testDescription.toLowerCase();
         String[] questions = testDescription.split(QUESTION_SEPARATOR_REGEX);
         for (int i = 0; i < questions.length; i++) {
             questions[i] = questions[i].trim();
