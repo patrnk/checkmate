@@ -1,10 +1,7 @@
 package io.github.patrnk.checkmate;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 
@@ -16,7 +13,6 @@ public class PermissiveTest implements Test {
         return info;
     }
     
-    
     private final TestDescriptionRegexFormatter 
         formatter = new TestDescriptionRegexFormatter();
     
@@ -27,9 +23,8 @@ public class PermissiveTest implements Test {
         if (info == null) {
             throw new IllegalArgumentException("Test info cannot be null");
         }
-        this.info = info;
         try {
-            answerKey = formatter.formRegexList(this.info.getDescription());
+            answerKey = formatter.formRegexList(info.getDescription());
         } catch (ParseException ex) {
             throw new MalformedTestDescriptionException("The line " 
                 + ex.getErrorOffset() + " formatted incorrectly. Expecting "
@@ -41,6 +36,7 @@ public class PermissiveTest implements Test {
                 throw new AnswerNotProvidedException(i + 1);
             }
         }
+        this.info = info;
     }
     
     @Override
@@ -49,4 +45,5 @@ public class PermissiveTest implements Test {
     }
     
     private static final long serialVersionUID = 602982433234862386L;
+    //TODO: implement safe readObject()
 }
