@@ -2,6 +2,7 @@ package io.github.patrnk.checkmate;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
@@ -36,12 +37,25 @@ public class PermissiveTest implements Test {
                 throw new AnswerNotProvidedException(i + 1);
             }
         }
-        this.info = info;
+        
+        this.info = new TestInfo(info.getName(), info.getId(), 
+            info.getDescription().toLowerCase());
     }
     
     @Override
-    public List<TestAnswer> check(List<TestAnswer> t) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public List<TestAnswer> check(List<TestAnswer> studentAnswers) {
+        throw new UnsupportedOperationException();
+//        for (int i = 0; i < studentAnswers.size(); i++) {
+//            Matcher m = answerKey.get(i).matcher(studentAnswers.get(i).getAnswer());
+//            if (m.matches() == true) {
+//                studentAnswers.get(i).setGrade(MAX_GRADE);
+//            } else {
+//                studentAnswers.get(i).setGrade(mid_or_low());
+//            }
+//        }
+//    private final Integer MAX_GRADE = 2;
+//    private final Integer MID_GRADE = 1;
+//    private final Integer LOW_GRADE = 0;
     }
     
     private static final long serialVersionUID = 602982433234862386L;
