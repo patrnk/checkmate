@@ -1,6 +1,11 @@
 package io.github.patrnk.checkmate;
 
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 
 public class PermissiveTest implements Test {
@@ -11,11 +16,31 @@ public class PermissiveTest implements Test {
         return info;
     }
     
-    public PermissiveTest(TestInfo info) {
+    
+    private final TestDescriptionRegexFormatter 
+        formatter = new TestDescriptionRegexFormatter();
+    
+    private final List<Pattern> answerKey;
+    
+    public PermissiveTest(TestInfo info) 
+        throws MalformedTestDescriptionException, AnswerNotProvidedException {
         if (info == null) {
             throw new IllegalArgumentException("Test info cannot be null");
         }
         this.info = info;
+        try {
+            answerKey = formatter.formRegexList(this.info.getDescription());
+        } catch (ParseException ex) {
+            throw new MalformedTestDescriptionException("The line " 
+                + ex.getErrorOffset() + " formatted incorrectly. Expecting "
+                + "\"number)answer\" format.", 
+                ex.getErrorOffset());
+        }
+        for (int i = 0; i < answerKey.size(); i++) {
+            if (answerKey.get(i) == null) {
+                throw new AnswerNotProvidedException(i + 1);
+            }
+        }
     }
     
     @Override

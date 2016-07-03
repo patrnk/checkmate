@@ -16,7 +16,8 @@ public class PermissiveTestFactory implements TestFactory {
     }
     
     @Override
-    public Test getTest(TestInfo t) {
+    public Test getTest(TestInfo t) 
+        throws MalformedTestDescriptionException, AnswerNotProvidedException {
         return new PermissiveTest(t);
     }
 }

@@ -75,7 +75,7 @@ public class MainApp extends Application {
     private void createTables() {
         try {
             createGlobalTable();
-            Test.createTestsTable();
+            TestInfo.createTestsTable();
         } catch (Exception e) {
             CmUtils.printException(e);
         } 
