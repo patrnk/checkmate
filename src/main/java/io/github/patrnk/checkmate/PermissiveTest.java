@@ -1,7 +1,12 @@
 package io.github.patrnk.checkmate;
 
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -83,6 +88,30 @@ public class PermissiveTest implements Test {
         return true;
     }
     
-    private static final long serialVersionUID = 602982433234862386L;
-    //TODO: implement safe readObject()
+    private static class SerializationProxy implements Serializable {
+        TestInfo info;
+        
+        SerializationProxy(PermissiveTest t) {
+            info = t.getInfo();
+        }
+        
+        private Object readResolve() { 
+            try {
+                return new PermissiveTest(this.info);
+            } catch (MalformedTestDescriptionException | AnswerNotProvidedException ex) {
+                return null;
+            }
+        }
+        
+        private static final long serialVersionUID = 602982433234862386L;
+    }
+    
+    private Object writeReplace() {
+        return new SerializationProxy(this);
+    }
+    
+    private void readObject(ObjectInputStream stream) 
+        throws InvalidObjectException {
+        throw new InvalidObjectException("Proxy required");
+    }
 }
