@@ -52,7 +52,7 @@ final class AnswerNormalizer {
         return normalAnswers;
     }
     
-    private String normalize(String answer) {
+    public String normalize(String answer) {
         if (answer.startsWith("*")) {
             return null;
         }
