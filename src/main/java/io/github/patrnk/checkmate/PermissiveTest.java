@@ -16,9 +16,11 @@ public class PermissiveTest implements Test {
     
     private final TestDescriptionRegexFormatter 
         formatter = new TestDescriptionRegexFormatter();
+    private final AnswerNormalizer normalizer = new AnswerNormalizer();
     
     private final List<Pattern> answerKey;
-    
+    private final List<List<String>> normalAnswerKey;
+        
     public PermissiveTest(TestInfo info) 
         throws MalformedTestDescriptionException, AnswerNotProvidedException {
         if (info == null) {
@@ -26,6 +28,7 @@ public class PermissiveTest implements Test {
         }
         try {
             answerKey = formatter.formRegexList(info.getDescription());
+            normalAnswerKey = normalizer.getNormalAnswers(info.getDescription());
         } catch (ParseException ex) {
             throw new MalformedTestDescriptionException("The line " 
                 + ex.getErrorOffset() + " formatted incorrectly. Expecting "
@@ -42,20 +45,42 @@ public class PermissiveTest implements Test {
             info.getDescription().toLowerCase());
     }
     
+    private final Integer MAX_GRADE = 2;
+    private final Integer MID_GRADE = 1;
+    private final Integer LOW_GRADE = 0;
+    
     @Override
     public List<TestAnswer> check(List<TestAnswer> studentAnswers) {
-        throw new UnsupportedOperationException();
-//        for (int i = 0; i < studentAnswers.size(); i++) {
-//            Matcher m = answerKey.get(i).matcher(studentAnswers.get(i).getAnswer());
-//            if (m.matches() == true) {
-//                studentAnswers.get(i).setGrade(MAX_GRADE);
-//            } else {
-//                studentAnswers.get(i).setGrade(mid_or_low());
-//            }
-//        }
-//    private final Integer MAX_GRADE = 2;
-//    private final Integer MID_GRADE = 1;
-//    private final Integer LOW_GRADE = 0;
+        for (int i = 0; i < studentAnswers.size(); i++) {
+            String answer = studentAnswers.get(i).getAnswer();
+            Matcher m = answerKey.get(i).matcher(answer);
+            if (m.matches()) {
+                studentAnswers.get(i).setGrade(MAX_GRADE);
+            } else {
+                studentAnswers.get(i).setGrade(midOrLow(i, answer));
+            }
+        }
+        return studentAnswers;
+    }
+    
+    private Integer midOrLow(int questionNumber, String studentAnswer) {
+        String normalStudentAnswer = normalizer.normalize(studentAnswer);
+        List<String> normalAnswers = normalAnswerKey.get(questionNumber);
+        for (String normalAnswer : normalAnswers) {
+            if (allKeysFound(normalAnswer, normalStudentAnswer)) {
+                return MID_GRADE;
+            }
+        }
+        return LOW_GRADE;
+    }
+    
+    private Boolean allKeysFound(String answer, String studentAnswer) {
+        for (String key : studentAnswer.split("")) {
+            if (!answer.contains(key)) {
+                return false;
+            }
+        }
+        return true;
     }
     
     private static final long serialVersionUID = 602982433234862386L;
