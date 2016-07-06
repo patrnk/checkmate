@@ -31,15 +31,12 @@ public class CreateTestSceneController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        initializeCheckerFactories();
-        factoryBox.setItems(getFactoryTitles(checkerFactories));
+        testFactories = FXCollections.observableArrayList();
+        testFactories.add(new PermissiveTestFactory());
+        factoryTitlesBox.setItems(getFactoryTitles(testFactories));
     }
     
-    ObservableList<TestFactory> checkerFactories = FXCollections.observableArrayList();
-    
-    private void initializeCheckerFactories() {
-        checkerFactories.add(new PermissiveTestFactory());
-    }
+    ObservableList<TestFactory> testFactories = FXCollections.observableArrayList();
     
     private ObservableList<String> getFactoryTitles(ObservableList<TestFactory> factories) {
         ObservableList<String> titles = FXCollections.observableArrayList();
@@ -59,7 +56,12 @@ public class CreateTestSceneController implements Initializable {
     private TextArea contentArea;
     
     @FXML
-    private ComboBox<String> factoryBox;
+    private ComboBox<String> factoryTitlesBox;
+    
+    @FXML
+    private void test(ActionEvent event) {
+        System.out.println("boom");
+    }
     
     @FXML
     private Label testSummaryLabel;
