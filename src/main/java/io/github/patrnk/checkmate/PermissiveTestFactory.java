@@ -1,7 +1,7 @@
 package io.github.patrnk.checkmate;
 
 
-public class PermissiveTestFactory implements TestFactory {
+public final class PermissiveTestFactory implements TestFactory {
     private static final String TITLE = "Нестандартный";
     private static final String SUMMARY = "...";
     
