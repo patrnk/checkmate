@@ -97,7 +97,7 @@ public class PermissiveTest implements Test {
         private Object readResolve() { 
             try {
                 return new PermissiveTest(this.info);
-            } catch (MalformedTestDescriptionException | AnswerNotProvidedException ex) {
+            } catch (BadTestInfoException ex) {
                 return null;
             }
         }
