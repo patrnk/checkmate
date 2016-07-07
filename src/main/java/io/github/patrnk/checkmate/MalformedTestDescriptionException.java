@@ -1,7 +1,7 @@
 package io.github.patrnk.checkmate;
 
 
-public class MalformedTestDescriptionException extends CheckMateException {
+public class MalformedTestDescriptionException extends BadTestInfoException {
     
     private final Integer badLine;
     

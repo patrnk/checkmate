@@ -1,7 +1,7 @@
 package io.github.patrnk.checkmate;
 
 
-public class AnswerNotProvidedException extends CheckMateException {
+public class AnswerNotProvidedException extends BadTestInfoException {
     
     private final Integer questionNumber;
     
