@@ -53,10 +53,10 @@ public class CreateTestSceneController implements Initializable {
     private Label errorLabel;
 
     @FXML
-    private void testFactoryChanged(ActionEvent event) {
+    private void factoryBoxValueChanged(ActionEvent event) {
         saveButton.disableProperty().set(false);
-        
-        // change test summary
+        TestFactory selected = factoryBox.getSelectionModel().getSelectedItem();
+        testSummaryLabel.setText(selected.getSummary());
     }
     
     @FXML
