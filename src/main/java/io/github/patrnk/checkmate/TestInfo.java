@@ -6,6 +6,8 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 
@@ -26,16 +28,16 @@ public final class TestInfo implements Serializable {
     }
     
     
-    private void checkName(String name) {
+    private void checkName(String name) throws BadTestNameException {
         if (name == null) {
-            throw new IllegalArgumentException("The name cannot be  null");
+            throw new BadTestNameException("The name cannot be  null");
         }
         if (name.length() > MAX_NAME_LENGTH) {
-            throw new IllegalArgumentException("The name is too long: " + 
+            throw new BadTestNameException("The name is too long: " + 
                 name.length() + " > " + MAX_NAME_LENGTH);
         }
         if (name.length() == 0) {
-            throw new IllegalArgumentException("The name cannot be "
+            throw new BadTestNameException("The name cannot be "
                 + "an empty string");
         }
     }
@@ -56,7 +58,8 @@ public final class TestInfo implements Serializable {
         return description;
     }
     
-    public TestInfo(String name, Long id, String testDescription) {
+    public TestInfo(String name, Long id, String testDescription)
+        throws BadTestNameException {
         checkName(name);
         this.name = name;
         this.id = id;
@@ -91,7 +94,11 @@ public final class TestInfo implements Serializable {
         }
         
         private Object readResolve() { 
-            return new TestInfo(name, id, testDescription);
+            try {
+                return new TestInfo(name, id, testDescription);
+            } catch (BadTestNameException ex) {
+                return null;
+            }
         }
         
         private static final long serialVersionUID = 402982438234852385L;
