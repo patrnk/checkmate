@@ -73,7 +73,7 @@ public final class TestInfo implements Serializable {
         try {
             this.id = Long.valueOf(id);
         } catch (NumberFormatException ex) {
-            throw new BadTestIdException();
+            throw new BadTestIdException(ex);
         }
         this.description = testDescription;
     }    

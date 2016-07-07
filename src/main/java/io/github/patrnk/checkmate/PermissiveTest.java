@@ -34,7 +34,7 @@ public class PermissiveTest implements Test {
         } catch (ParseException ex) {
             throw new MalformedTestDescriptionException("The line " 
                 + ex.getErrorOffset() + " formatted incorrectly. Expecting "
-                + "\"number)answer\" format.", 
+                + "\"number)answer\" format.", ex,
                 ex.getErrorOffset());
         }
         for (int i = 0; i < answerKey.size(); i++) {
