@@ -7,6 +7,5 @@ package io.github.patrnk.checkmate;
 public interface TestFactory {
     public String getTitle();
     public String getSummary();
-    public Test getTest(TestInfo test) throws 
-        MalformedTestDescriptionException, AnswerNotProvidedException;
+    public Test getTest(TestInfo test) throws BadTestInfoException;
 }
