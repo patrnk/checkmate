@@ -7,8 +7,6 @@ package io.github.patrnk.checkmate;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -68,7 +66,7 @@ public class CreateTestSceneController implements Initializable {
         } catch (BadTestInfoException ex) {
             showAppropriateError(ex);
         }
-}
+    }
     
     private void showAppropriateError(BadTestInfoException ex) {
         if (ex.getClass().equals(BadTestNameException.class)) {
