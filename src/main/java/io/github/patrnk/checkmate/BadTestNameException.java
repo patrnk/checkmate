@@ -1,7 +1,7 @@
 package io.github.patrnk.checkmate;
 
 
-public class BadTestNameException extends Exception {
+public class BadTestNameException extends CheckMateException {
     public BadTestNameException() {
         super();
     }
