@@ -65,7 +65,18 @@ public final class TestInfo implements Serializable {
         this.id = id;
         this.description = testDescription;
     }
-    
+
+    public TestInfo(String name, String id, String testDescription)
+        throws BadTestNameException, BadTestIdException {
+        checkName(name);
+        this.name = name;
+        try {
+            this.id = Long.valueOf(id);
+        } catch (NumberFormatException ex) {
+            throw new BadTestIdException();
+        }
+        this.description = testDescription;
+    }    
     /**
      * Creates "tests" table in global database if needed.
      */
