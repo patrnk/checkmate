@@ -6,20 +6,22 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="452.0" prefWidth="516.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.patrnk.checkmate.CreateTestSceneController">
+<AnchorPane id="AnchorPane" prefHeight="568.0" prefWidth="585.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.patrnk.checkmate.CreateTestSceneController">
    <children>
-      <Label layoutX="7.0" layoutY="18.0" text="Название листка:" />
-      <Label layoutX="79.0" layoutY="52.0" text="ID листка: " />
-      <Label alignment="TOP_LEFT" disable="true" layoutX="285.0" layoutY="46.0" prefHeight="36.0" prefWidth="230.0" text="ID листка указывается при сдаче на проверку (см. инструкцию)." textOverrun="CLIP" wrapText="true" />
-      <TextField fx:id="nameField" layoutX="127.0" layoutY="13.0" prefHeight="27.0" prefWidth="153.0" />
-      <TextField fx:id="idField" layoutX="150.0" layoutY="47.0" prefHeight="27.0" prefWidth="130.0" />
-      <TextArea fx:id="contentArea" layoutX="9.0" layoutY="115.0" prefHeight="296.0" prefWidth="273.0" text="1) 3&#10;2) абвг&#10;2) abcde&#10;3) 1&#10;4) *Протон&#10;5) *Нейтрон" />
-      <ComboBox fx:id="typeField" layoutX="131.0" layoutY="82.0" prefWidth="150.0" />
-      <Label layoutX="7.0" layoutY="87.0" text="Способ проверки:" />
-      <Label alignment="TOP_LEFT" disable="true" layoutX="287.0" layoutY="116.0" prefHeight="53.0" prefWidth="168.0" text="не имеет значения, заглавная буква или строчная" textOverrun="CLIP" wrapText="true" />
-      <Label alignment="TOP_LEFT" disable="true" layoutX="287.0" layoutY="186.0" prefHeight="36.0" prefWidth="168.0" text="номер)ответ — формат записи ответов" textOverrun="CLIP" wrapText="true" />
-      <Label alignment="TOP_LEFT" disable="true" layoutX="287.0" layoutY="352.0" prefHeight="53.0" prefWidth="192.0" text="*слово — звездочка в начале указывает программе, что порядок символов важен" textOverrun="CLIP" wrapText="true" />
-      <Label alignment="TOP_LEFT" disable="true" layoutX="287.0" layoutY="248.0" prefHeight="68.0" prefWidth="168.0" text="дополнительные варианты ответа записываются в том же формате" textOverrun="CLIP" wrapText="true" />
-      <Button defaultButton="true" layoutX="215.0" layoutY="417.0" mnemonicParsing="false" onAction="#saveButtonClicked" text="Сохранить" />
+      <Label layoutX="47.0" layoutY="32.0" text="Название листка:" />
+      <Label layoutX="119.0" layoutY="66.0" text="ID листка: " />
+      <Label alignment="TOP_LEFT" disable="true" layoutX="325.0" layoutY="60.0" prefHeight="36.0" prefWidth="230.0" text="ID листка указывается при сдаче на проверку (см. инструкцию)." textOverrun="CLIP" wrapText="true" />
+      <TextField fx:id="nameField" layoutX="167.0" layoutY="27.0" prefHeight="27.0" prefWidth="153.0" />
+      <TextField fx:id="idField" layoutX="190.0" layoutY="61.0" prefHeight="27.0" prefWidth="130.0" />
+      <TextArea fx:id="contentArea" layoutX="37.0" layoutY="185.0" prefHeight="296.0" prefWidth="273.0" text="1) 3&#10;2) абвг&#10;2) abcde&#10;3) 1&#10;4) *Протон&#10;5) *Нейтрон" />
+      <ComboBox fx:id="factoryBox" layoutX="169.0" layoutY="96.0" onAction="#testFactoryChanged" prefWidth="150.0" />
+      <Label layoutX="40.0" layoutY="101.0" text="Способ проверки:" />
+      <Label alignment="TOP_LEFT" disable="true" layoutX="315.0" layoutY="186.0" prefHeight="53.0" prefWidth="168.0" text="не имеет значения, заглавная буква или строчная" textOverrun="CLIP" wrapText="true" />
+      <Label alignment="TOP_LEFT" disable="true" layoutX="315.0" layoutY="256.0" prefHeight="36.0" prefWidth="168.0" text="номер)ответ — формат записи ответов" textOverrun="CLIP" wrapText="true" />
+      <Label alignment="TOP_LEFT" disable="true" layoutX="315.0" layoutY="422.0" prefHeight="53.0" prefWidth="192.0" text="*слово — звездочка в начале указывает программе, что порядок символов важен" textOverrun="CLIP" wrapText="true" />
+      <Label alignment="TOP_LEFT" disable="true" layoutX="315.0" layoutY="318.0" prefHeight="68.0" prefWidth="168.0" text="дополнительные варианты ответа записываются в том же формате" textOverrun="CLIP" wrapText="true" />
+      <Button fx:id="saveButton" defaultButton="true" disable="true" layoutX="243.0" layoutY="515.0" mnemonicParsing="false" onAction="#saveButtonClicked" text="Сохранить" />
+      <Label fx:id="testSummaryLabel" alignment="TOP_LEFT" layoutX="37.0" layoutY="129.0" prefHeight="46.0" prefWidth="506.0" textOverrun="CLIP" wrapText="true" />
+      <Label fx:id="errorLabel" layoutX="37.0" layoutY="489.0" prefHeight="17.0" prefWidth="480.0" textFill="RED" />
    </children>
 </AnchorPane>
