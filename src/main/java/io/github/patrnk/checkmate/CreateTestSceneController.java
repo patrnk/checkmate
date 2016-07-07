@@ -14,10 +14,15 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.util.Callback;
+import javafx.util.StringConverter;
 
 /**
  * FXML Controller class
@@ -25,26 +30,6 @@ import javafx.scene.control.TextField;
  * @author vergeev
  */
 public class CreateTestSceneController implements Initializable {
-    
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        testFactories = FXCollections.observableArrayList();
-        testFactories.add(new PermissiveTestFactory());
-        factoryTitlesBox.setItems(getFactoryTitles(testFactories));
-    }
-    
-    ObservableList<TestFactory> testFactories = FXCollections.observableArrayList();
-    
-    private ObservableList<String> getFactoryTitles(ObservableList<TestFactory> factories) {
-        ObservableList<String> titles = FXCollections.observableArrayList();
-        for (TestFactory factory : factories) {
-            titles.add(factory.getTitle());
-        }
-        return titles;
-    }
     
     @FXML
     private TextField nameField;
@@ -54,20 +39,25 @@ public class CreateTestSceneController implements Initializable {
     
     @FXML
     private TextArea contentArea;
+
+    @FXML
+    private Button saveButton;
     
     @FXML
-    private ComboBox<String> factoryTitlesBox;
-    
-    @FXML
-    private void test(ActionEvent event) {
-        System.out.println("boom");
-    }
-    
+    private ComboBox<TestFactory> factoryBox;
+
     @FXML
     private Label testSummaryLabel;
     
     @FXML
     private Label errorLabel;
+
+    @FXML
+    private void testFactoryChanged(ActionEvent event) {
+        saveButton.disableProperty().set(false);
+        
+        // change test summary
+    }
     
     @FXML
     private void saveButtonClicked(ActionEvent event) {
@@ -80,5 +70,69 @@ public class CreateTestSceneController implements Initializable {
         } catch (AnswerNotProvidedException ex) {
             Logger.getLogger(CreateTestSceneController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    /**
+     * Initializes the controller class.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        populateFactoryBox();
+    }
+
+    private void populateFactoryBox() {
+        factoryBox.setCellFactory(new Callback<ListView<TestFactory>, ListCell<TestFactory>>() {
+            @Override
+            public ListCell<TestFactory> call(ListView<TestFactory> param) {
+                return getTestFactoryCell();
+            }
+        });
+        factoryBox.setConverter(getTestFactoryStringConverter());
+        factoryBox.setItems(getFactories());
+    }
+
+    private ListCell<TestFactory> getTestFactoryCell() {
+        return new ListCell<TestFactory>() {
+            @Override 
+            public void updateItem(TestFactory item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null || empty) {
+                    setText(null);
+                } else {
+                    setText(item.getTitle());
+                }
+            }
+        };
+    }
+    
+    private StringConverter<TestFactory> getTestFactoryStringConverter() {
+        return new StringConverter<TestFactory>() {
+            @Override
+            public String toString(TestFactory object) {
+                if (object == null) {
+                    return null;
+                } else {
+                    return object.getTitle();
+                }
+            }
+
+            @Override
+            public TestFactory fromString(String string) {
+                for (TestFactory factory : factoryBox.getItems()) {
+                    if (factory.getTitle().equals(string)) {
+                        return factory;
+                    }
+                }
+                return null;
+            }
+            
+        };
+    }
+    
+    private ObservableList<TestFactory> getFactories() {
+        ObservableList<TestFactory> factories = FXCollections.observableArrayList();
+        factories.add(new PermissiveTestFactory());
+        // add new factories here
+        return factories;
     }
 }
