@@ -8,6 +8,9 @@ import java.util.List;
  * @author vergeev
  */
 public interface Test extends Serializable {
+    
+    public TestInfo getInfo();
+    
     /**
      * Grades each student answer individually.
      * @param studentAnswers list of answers where i-th element is (i+1)-th answer.
