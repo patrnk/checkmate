@@ -1,14 +1,23 @@
 package io.github.patrnk.checkmate;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public final class PersistenceManager {
     
+    private final static String SUFFIX_SEPARATOR = ".";
+    
     private final static String TESTS_FOLDER = "tests";
     
+    private final static String TESTS_SUFFIX = "tst";
+        
     /**
      * Persists test over time serializing it into a file.
      * @param t test to serialize
@@ -47,6 +56,37 @@ public final class PersistenceManager {
             CmUtils.printException(e);
         }
     }
+    
+    public static List<Test> getExistingTests() {
+        List<Test> tests = new ArrayList();
+        List<Object> potentialTests = getExistingObjects(TESTS_FOLDER);
+        for (Object potentialTest : potentialTests) {
+            try { 
+                Test t = (Test) potentialTest;
+                tests.add(t);
+            } catch (ClassCastException ex) {
+                // TODO: log the thing but don't disturb the user, it's no big deal
+            }
+        }
+        return tests;
+    }
+    
+    private static List<Object> getExistingObjects(String folderPath) {
+        List<Object> objects = new ArrayList();
+        File folder = new File(folderPath);
+        File[] files = folder.listFiles();
+        for (File file : files) {
+            try {
+                FileInputStream in = new FileInputStream(file.getPath());
+                ObjectInputStream ois = new ObjectInputStream(in);
+                Object o = ois.readObject();
+                objects.add(o);
+            } catch (IOException | ClassNotFoundException ex) {
+                CmUtils.printException(ex);
+            }
+        }
+        return objects;
+    } 
     
     private PersistenceManager() {
         throw new AssertionError("You cannot instantiate PersistenceManager");
