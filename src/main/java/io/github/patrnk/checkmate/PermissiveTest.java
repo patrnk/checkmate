@@ -13,6 +13,7 @@ public class PermissiveTest implements Test {
 
     private final TestInfo info;
     
+    @Override
     public TestInfo getInfo() {
         return info;
     }
