@@ -9,6 +9,11 @@ public final class PersistenceManager {
     
     private final String TESTS_FOLDER = "tests";
     
+    /**
+     * Persists test over time serializing it into a file.
+     * @param t test to serialize
+     * @throws BadTestIdException if the test with that id already exists. 
+     */
     public void writeDownTest(Test t) throws BadTestIdException {
         String filename = t.getInfo().getId().toString();
         if (alreadyExists(TESTS_FOLDER, filename)) {
