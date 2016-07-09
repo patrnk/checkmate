@@ -15,7 +15,6 @@ public final class PersistenceManager {
     private final static String SUFFIX_SEPARATOR = ".";
     
     private final static String TESTS_FOLDER = "tests";
-    
     private final static String TESTS_SUFFIX = "tst";
         
     /**
@@ -25,6 +24,7 @@ public final class PersistenceManager {
      */
     public static void writeDownTest(Test t) throws BadTestIdException {
         String filename = t.getInfo().getId().toString();
+        filename += SUFFIX_SEPARATOR + TESTS_SUFFIX;
         if (alreadyExists(TESTS_FOLDER, filename)) {
             throw new BadTestIdException("A test with id " + filename + 
                 " already exists.");
@@ -33,6 +33,7 @@ public final class PersistenceManager {
     }
     
     private static Boolean alreadyExists(String folderPath, String name) {
+        //TODO: rewrite in a more efficient way
         File folder = new File(folderPath);
         File[] files = folder.listFiles();
         for (File file : files) {
@@ -59,7 +60,8 @@ public final class PersistenceManager {
     
     public static List<Test> getExistingTests() {
         List<Test> tests = new ArrayList();
-        List<Object> potentialTests = getExistingObjects(TESTS_FOLDER);
+        List<Object> potentialTests = getExistingObjects(
+            TESTS_FOLDER, TESTS_SUFFIX);
         for (Object potentialTest : potentialTests) {
             try { 
                 Test t = (Test) potentialTest;
@@ -71,22 +73,53 @@ public final class PersistenceManager {
         return tests;
     }
     
-    private static List<Object> getExistingObjects(String folderPath) {
+    /**
+     * Gets you serialized objects in the directory.
+     * Assumes that objects serialized into files with specified suffix
+     * and are saved into the specified folder.
+     * @param folderPath a folder where to look for files that contain 
+     *      serialized objects
+     * @param suffix suffix of the files that contain serialized objects. 
+     *      Others are ignored
+     * @return list of deserialized objects
+     */
+    private static List<Object> getExistingObjects(
+            String folderPath, String suffix) {
         List<Object> objects = new ArrayList();
         File folder = new File(folderPath);
         File[] files = folder.listFiles();
         for (File file : files) {
-            try {
-                FileInputStream in = new FileInputStream(file.getPath());
-                ObjectInputStream ois = new ObjectInputStream(in);
-                Object o = ois.readObject();
-                objects.add(o);
-            } catch (IOException | ClassNotFoundException ex) {
-                CmUtils.printException(ex);
+            if (getSuffix(file.getName()).equals(suffix)) {
+                try {
+                    FileInputStream in = new FileInputStream(file.getPath());
+                    ObjectInputStream ois = new ObjectInputStream(in);
+                    Object o = ois.readObject();
+                    objects.add(o);
+                } catch (IOException | ClassNotFoundException ex) {
+                    //TODO: find a better way to handle the exception (in case of an attack)
+                    // print a warning or something, but don't shut down.
+                    CmUtils.printException(ex);
+                }
             }
         }
         return objects;
-    } 
+    }
+    
+    /**
+     * Return suffix of the filename.
+     * Suffix is the part of the filename that comes after SUFFIX_SEPARATOR.
+     * Never returns null.
+     * @param filename a string that is treated as a name of a file.
+     * @return suffix or empty string if the filename doesn't have one.
+     */
+    private static String getSuffix(String filename) {
+        String suffix = "";
+        Integer suffixIndex = filename.lastIndexOf(SUFFIX_SEPARATOR);
+        if (suffixIndex != -1) {
+            suffix = filename.substring(suffixIndex + 1);
+        }
+        return suffix;
+    }
     
     private PersistenceManager() {
         throw new AssertionError("You cannot instantiate PersistenceManager");
