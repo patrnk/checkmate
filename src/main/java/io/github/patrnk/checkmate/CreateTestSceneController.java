@@ -63,6 +63,8 @@ public class CreateTestSceneController implements Initializable {
             TestInfo info = new TestInfo(nameField.getText(), 
                 idField.getText(), contentArea.getText());
             Test test = new PermissiveTest(info);
+            PersistenceManager.writeDownTest(test);
+            this.contentArea.getScene().getWindow().hide();
         } catch (BadTestInfoException ex) {
             showAppropriateError(ex);
         }
