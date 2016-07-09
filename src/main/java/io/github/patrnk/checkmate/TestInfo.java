@@ -6,8 +6,6 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * 
@@ -46,9 +44,9 @@ public final class TestInfo implements Serializable {
      * This is how students will identify a particular test.
      * This is a client's responsibility to ensure the id is unique.
      */
-    private final Long id;
+    private final Integer id;
     
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
     
@@ -58,7 +56,7 @@ public final class TestInfo implements Serializable {
         return description;
     }
     
-    public TestInfo(String name, Long id, String testDescription)
+    public TestInfo(String name, Integer id, String testDescription)
         throws BadTestNameException {
         checkName(name);
         this.name = name;
@@ -71,7 +69,7 @@ public final class TestInfo implements Serializable {
         checkName(name);
         this.name = name;
         try {
-            this.id = Long.valueOf(id);
+            this.id = Integer.valueOf(id);
         } catch (NumberFormatException ex) {
             throw new BadTestIdException(ex);
         }
@@ -95,7 +93,7 @@ public final class TestInfo implements Serializable {
     
     private static class SerializationProxy implements Serializable {
         String name;
-        Long id;
+        Integer id;
         String testDescription;
         
         SerializationProxy(TestInfo t) {
