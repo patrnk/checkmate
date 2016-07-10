@@ -30,13 +30,12 @@ public final class PersistenceManager {
             throw new BadTestIdException("A test with id " + filename + 
                 " already exists.");
         }
-        writeDown(TESTS_FOLDER, filename, t);
+        writeDown(filePath, t);
     }
     
-    private static void writeDown(String folderPath, String filename, Object o) {
+    private static void writeDown(String filePath, Object o) {
         try {
-            String filepath = folderPath + File.separator + filename;
-            FileOutputStream out = new FileOutputStream(filepath);
+            FileOutputStream out = new FileOutputStream(filePath);
             ObjectOutputStream oos = new ObjectOutputStream(out);
             oos.writeObject(o);
             oos.flush();
