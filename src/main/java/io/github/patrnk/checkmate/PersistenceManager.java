@@ -25,25 +25,12 @@ public final class PersistenceManager {
     public static void writeDownTest(Test t) throws BadTestIdException {
         String filename = t.getInfo().getId().toString();
         filename += SUFFIX_SEPARATOR + TESTS_SUFFIX;
-        if (alreadyExists(TESTS_FOLDER, filename)) {
+        String filePath = TESTS_FOLDER + File.separator + filename;
+        if ((new File(filePath)).exists()) {
             throw new BadTestIdException("A test with id " + filename + 
                 " already exists.");
         }
         writeDown(TESTS_FOLDER, filename, t);
-    }
-    
-    private static Boolean alreadyExists(String folderPath, String name) {
-        //TODO: rewrite in a more efficient way
-        File folder = new File(folderPath);
-        File[] files = folder.listFiles();
-        for (File file : files) {
-            if (file.getName() != null) {
-                if (file.getName().equals(name)) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
     
     private static void writeDown(String folderPath, String filename, Object o) {
@@ -58,6 +45,7 @@ public final class PersistenceManager {
         }
     }
     
+    // TODO: document the thing
     public static List<Test> getExistingTests() {
         List<Test> tests = new ArrayList();
         List<Object> potentialTests = getExistingObjects(
@@ -96,7 +84,7 @@ public final class PersistenceManager {
                     Object o = ois.readObject();
                     objects.add(o);
                 } catch (IOException | ClassNotFoundException ex) {
-                    //TODO: find a better way to handle the exception (in case of an attack)
+                    // TODO: find a better way to handle the exception (in case of an attack)
                     // print a warning or something, but don't shut down.
                     CmUtils.printException(ex);
                 }
