@@ -44,7 +44,10 @@ public final class PersistenceManager {
         }
     }
     
-    // TODO: document the thing
+    /**
+     * Returns the tests stored in some long-term storage.
+     * @return list of deserialized tests
+     */
     public static List<Test> getExistingTests() {
         List<Test> tests = new ArrayList();
         List<Object> potentialTests = getExistingObjects(
