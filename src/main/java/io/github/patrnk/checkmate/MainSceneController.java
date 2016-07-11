@@ -33,7 +33,13 @@ public class MainSceneController implements Initializable {
     private TableView globalTable;
     
     @FXML
-    private TableView testsTable;
+    private TableView<Test> testsTable;
+    
+    @FXML
+    private TableColumn<Test, String> nameColumn;
+    
+    @FXML
+    private TableColumn<Test, String> idColumn;   
     
     @FXML
     private void openCheckScene(ActionEvent event) {
@@ -58,6 +64,32 @@ public class MainSceneController implements Initializable {
         } catch (IOException e) {
             CmUtils.printException(e);
         }
+    }
+    
+    @FXML
+    private void globalTableClicked() {
+        System.out.println(String.valueOf(globalTable.getSelectionModel().getSelectedIndex()));
+    }
+    
+    @FXML 
+    private void openCreateTestScene(ActionEvent event) {
+        FXMLLoader loader;
+        Parent root;
+        try {
+            loader = new FXMLLoader(getClass().getResource("/fxml/CreateTestScene.fxml"));
+            root = (Parent)loader.load();
+            final Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();            
+        } catch (IOException e) {
+            CmUtils.printException(e);
+        }
+    }
+    
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        buildData();
+        populateTestsTable();
     }
     
     // Source is taken from here: 
@@ -95,28 +127,33 @@ public class MainSceneController implements Initializable {
         }
     }
     
-    @FXML
-    private void globalTableClicked() {
-        System.out.println(String.valueOf(globalTable.getSelectionModel().getSelectedIndex()));
+    private void populateTestsTable() {
+        nameColumn.setCellValueFactory(getNameColumnCellValueFactory());
+        idColumn.setCellValueFactory(getIdColumnCellValueFactory());
+        
+        ObservableList<Test> tests = FXCollections.observableArrayList(PersistenceManager.getExistingTests());
+        testsTable.setItems(tests);
     }
     
-    @FXML 
-    private void openCreateTestScene(ActionEvent event) {
-        FXMLLoader loader;
-        Parent root;
-        try {
-            loader = new FXMLLoader(getClass().getResource("/fxml/CreateTestScene.fxml"));
-            root = (Parent)loader.load();
-            final Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();            
-        } catch (IOException e) {
-            CmUtils.printException(e);
-        }
+    private Callback<CellDataFeatures<Test, String>, ObservableValue<String>> 
+    getNameColumnCellValueFactory() {
+        return new Callback<CellDataFeatures<Test, String>, ObservableValue<String>>() { 
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<Test, String> param) {
+                String name = param.getValue().getInfo().getName();
+                return new SimpleStringProperty(name);
+            }
+        };
     }
     
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        buildData();
-    }    
+    private Callback<CellDataFeatures<Test, String>, ObservableValue<String>> 
+    getIdColumnCellValueFactory() {
+        return new Callback<CellDataFeatures<Test, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<Test, String> param) {
+                String id = param.getValue().getInfo().getId().toString();
+                return new SimpleStringProperty(id);
+            }
+        };
+    }
 }
