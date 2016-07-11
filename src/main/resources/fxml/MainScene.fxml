@@ -11,6 +11,11 @@
       <TableView fx:id="globalTable" layoutX="14.0" layoutY="10.0" onMouseClicked="#globalTableClicked" prefHeight="380.0" prefWidth="419.0" />
       <Button layoutX="563.0" layoutY="94.0" mnemonicParsing="false" onAction="#openCheckScene" text="Проверить..." />
       <Button layoutX="541.0" layoutY="45.0" mnemonicParsing="false" onAction="#openCreateTestScene" prefHeight="27.0" prefWidth="143.0" text="Создать листок..." />
-      <TableView fx:id="testsTable" layoutX="446.0" layoutY="138.0" prefHeight="200.0" prefWidth="240.0" />
+      <TableView fx:id="testsTable" layoutX="446.0" layoutY="138.0" prefHeight="200.0" prefWidth="240.0">
+         <columns>
+            <TableColumn fx:id="nameColumn" editable="false" prefWidth="128.0" sortable="false" text="Название" />
+            <TableColumn fx:id="idColumn" editable="false" prefWidth="110.0" sortable="false" text="ID" />
+         </columns>
+      </TableView>
     </children>
 </AnchorPane>
