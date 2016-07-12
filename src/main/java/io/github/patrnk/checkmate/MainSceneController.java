@@ -50,6 +50,10 @@ public class MainSceneController implements Initializable {
         Parent root;
         try {
             loader = new FXMLLoader(getClass().getResource("/fxml/CheckScene.fxml"));
+            CheckSceneController controller = 
+                ((CheckSceneController)loader.getController());
+            Test selectedTest = testsTable.getSelectionModel().getSelectedItem();
+            controller.setTest(selectedTest);
             root = (Parent)loader.load();
             final Stage stage = new Stage();
             stage.setScene(new Scene(root));
