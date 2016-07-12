@@ -2,7 +2,6 @@ package io.github.patrnk.checkmate;
 
 import java.net.URL;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -10,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -30,6 +30,9 @@ public class CheckSceneController implements Initializable {
     @FXML
     private void checkButtonClicked(ActionEvent event) {
         try {
+            if (test == null) {
+                throw new IllegalArgumentException();
+            }
             checkInput();
             String rawAnswers = answerArea.getText();
             List<TestAnswer> answers = AnswerParser.getTestAnswers(rawAnswers);
@@ -61,9 +64,6 @@ public class CheckSceneController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        if (test == null) {
-            throw new AssertionError("You must set test before showing the scene.");
-        }
     }
     
     private Test test = null;
