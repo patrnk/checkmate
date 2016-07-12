@@ -79,7 +79,7 @@ public class PermissiveTest implements Test {
     
     private Boolean allKeysFound(String answer, String studentAnswer) {
         for (String key : studentAnswer.split("")) {
-            if (!answer.contains(key)) {
+            if (answer == null || !answer.contains(key)) {
                 return false;
             }
         }
