@@ -15,7 +15,7 @@ final class AnswerParser {
      */
     private static final String ANSWER_SEPARATOR_REGEX = "\\)";
     
-    public List<TestAnswer> getTestAnswers(String rawAnswers) throws ParseException {
+    public static List<TestAnswer> getTestAnswers(String rawAnswers) throws ParseException {
         List<TestAnswer> answers = new ArrayList();
         rawAnswers = rawAnswers.trim();
         rawAnswers = rawAnswers.toLowerCase();
@@ -48,5 +48,9 @@ final class AnswerParser {
             answers.set(i, new TestAnswer(answer));
         }
         return answers;
+    }
+    
+    private AnswerParser() {
+        throw new AssertionError("AnswerParser cannot be instantiated.");
     }
 }
