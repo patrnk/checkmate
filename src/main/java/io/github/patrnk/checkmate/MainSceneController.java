@@ -3,7 +3,6 @@ package io.github.patrnk.checkmate;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -16,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
@@ -40,6 +40,9 @@ public class MainSceneController implements Initializable {
     
     @FXML
     private TableColumn<Test, String> idColumn;   
+    
+    @FXML
+    private Button checkButton;
     
     @FXML
     private void openCheckScene(ActionEvent event) {
@@ -69,6 +72,14 @@ public class MainSceneController implements Initializable {
     @FXML
     private void globalTableClicked() {
         System.out.println(String.valueOf(globalTable.getSelectionModel().getSelectedIndex()));
+    }
+    
+    @FXML
+    private void testsTableClicked() {
+        Test selected = testsTable.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            checkButton.setDisable(false);
+        }
     }
     
     @FXML 
