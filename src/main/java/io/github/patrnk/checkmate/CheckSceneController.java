@@ -1,11 +1,5 @@
 package io.github.patrnk.checkmate;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
@@ -17,13 +11,19 @@ import javafx.fxml.Initializable;
  */
 public class CheckSceneController implements Initializable {
     
+    private Test test = null;
     
+    public void setTest(Test test) {
+        this.test = test;
+    }
     
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        if (test == null) {
+            throw new AssertionError("You must set test before showing the scene.");
+        }
     }
 }
