@@ -30,7 +30,7 @@ public class TestAnswer implements Serializable {
      * @param grade can only be set once.
      */
     public void setGrade(Integer grade) {
-        if (grade == null) {
+        if (this.grade == null) {
             this.grade = grade;
         } else {
             throw new IllegalStateException("Cannot reset the grade.");
