@@ -1,11 +1,13 @@
 package io.github.patrnk.checkmate;
 
 import java.net.URL;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
@@ -29,7 +31,14 @@ public class CheckSceneController implements Initializable {
     private void checkButtonClicked(ActionEvent event) {
         try {
             checkInput();
-        } catch (IllegalArgumentException ex) {
+            String rawAnswers = answerArea.getText();
+            List<TestAnswer> answers = AnswerParser.getTestAnswers(rawAnswers);
+            List<TestAnswer> checkedAnswers = test.check(answers);
+            for (TestAnswer checkedAnswer : checkedAnswers) {
+                System.out.println(checkedAnswer.getAnswer() + " : " + 
+                    checkedAnswer.getGrade().toString());
+            }
+        } catch (IllegalArgumentException | ParseException ex) {
             //TODO: let user know about what's going on
         }
     }
