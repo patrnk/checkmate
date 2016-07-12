@@ -10,7 +10,7 @@
    <children>
       <TextArea fx:id="answerArea" layoutX="44.0" layoutY="107.0" prefHeight="213.0" prefWidth="200.0" promptText="Ответы ученика" />
       <TextField fx:id="nameField" layoutX="44.0" layoutY="33.0" prefHeight="27.0" prefWidth="200.0" promptText="Имя ученика" />
-      <TextField fx:id="idfield" layoutX="44.0" layoutY="66.0" prefHeight="27.0" prefWidth="200.0" promptText="Идентификатор ученика" />
+      <TextField fx:id="idField" layoutX="44.0" layoutY="66.0" prefHeight="27.0" prefWidth="200.0" promptText="Идентификатор ученика" />
       <Button defaultButton="true" layoutX="100.0" layoutY="330.0" mnemonicParsing="false" onAction="#checkButtonClicked" text="Проверить" />
    </children>
 </AnchorPane>
