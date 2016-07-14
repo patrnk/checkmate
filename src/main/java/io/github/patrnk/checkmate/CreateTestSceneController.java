@@ -5,6 +5,7 @@
  */
 package io.github.patrnk.checkmate;
 
+import io.github.patrnk.checkmate.persistence.PersistenceManager;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;

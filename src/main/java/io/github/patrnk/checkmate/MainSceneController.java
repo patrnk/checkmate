@@ -1,5 +1,6 @@
 package io.github.patrnk.checkmate;
 
+import io.github.patrnk.checkmate.persistence.PersistenceManager;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
@@ -70,7 +71,7 @@ public class MainSceneController implements Initializable {
             stage.show();
             //anchor.setDisable(true);
         } catch (IOException e) {
-            CmUtils.printException(e);
+            CmUtils.printExceptionAndExit(e);
         }
     }
     
@@ -98,7 +99,7 @@ public class MainSceneController implements Initializable {
             stage.setScene(new Scene(root));
             stage.show();            
         } catch (IOException e) {
-            CmUtils.printException(e);
+            CmUtils.printExceptionAndExit(e);
         }
     }
     
@@ -139,7 +140,7 @@ public class MainSceneController implements Initializable {
             // Add data to TableView
             globalTable.setItems(data);
         } catch (Exception e) {
-            CmUtils.printException(e);
+            CmUtils.printExceptionAndExit(e);
         }
     }
     

@@ -4,6 +4,8 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -33,21 +35,24 @@ public class CheckSceneController implements Initializable {
             if (test == null) {
                 throw new IllegalArgumentException();
             }
-            checkInput();
+            checkIfFieldsAreEmpty();
+            
             String rawAnswers = answerArea.getText();
             List<TestAnswer> answers = AnswerParser.getTestAnswers(rawAnswers);
             List<TestAnswer> checkedAnswers = test.check(answers);
-            for (TestAnswer checkedAnswer : checkedAnswers) {
-                System.out.println(checkedAnswer.getAnswer() + " : " + 
-                    checkedAnswer.getGrade().toString());
-            }
-        } catch (IllegalArgumentException | ParseException ex) {
+//            for (TestAnswer checkedAnswer : checkedAnswers) {
+//                System.out.println(checkedAnswer.getAnswer() + " : " + 
+//                    checkedAnswer.getGrade().toString());
+//            }
+            
+        } catch (IllegalArgumentException | ParseException | 
+            TooManyQuestionsException | TooManyAnswersException ex) {
             //TODO: let user know about what's going on
         }
     }
     
     // TODO: replace IllegalArgumentException with multiple custom exceptions
-    private void checkInput() throws IllegalArgumentException {
+    private void checkIfFieldsAreEmpty() throws IllegalArgumentException {
         if ("".equals(nameField.getText())) {
             throw new IllegalArgumentException();
         }
