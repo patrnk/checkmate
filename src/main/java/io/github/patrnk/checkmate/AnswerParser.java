@@ -1,4 +1,4 @@
-package io.github.patrnk.checkmate;
+ package io.github.patrnk.checkmate;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -57,7 +57,8 @@ final class AnswerParser {
             assert(questionNumber < answers.size());
             
             String answer = questions[i].split(ANSWER_SEPARATOR_REGEX)[1].trim();
-            answers.set(i, new TestAnswer(answer));
+            // TODO: pay attention to what index others are choosing
+            answers.set(questionNumber, new TestAnswer(answer));
         }
         return answers;
     }
