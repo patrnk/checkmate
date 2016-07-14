@@ -54,7 +54,7 @@ public class PermissiveTest implements Test {
     
     @Override
     public List<TestAnswer> check(List<TestAnswer> studentAnswers) {
-        for (int i = 0; i < studentAnswers.size(); i++) {
+        for (int i = 0; i < studentAnswers.size() && i < answerKey.size(); i++) {
             String answer = studentAnswers.get(i).getAnswer();
             Matcher m = answerKey.get(i).matcher(answer);
             if (m.matches()) {
