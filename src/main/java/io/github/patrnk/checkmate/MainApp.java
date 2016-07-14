@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Properties;
 import javafx.application.Application;
-import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,14 +14,13 @@ import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.Store;
+import static javafx.application.Application.launch;
 
 
 public class MainApp extends Application {
-        // TODO: code the email reader part
 
     @Override
     public void start(Stage stage) throws Exception {
-        openConnection();
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainScene.fxml"));
         
         Scene scene = new Scene(root);
@@ -31,74 +29,6 @@ public class MainApp extends Application {
         //stage.setTitle("JavaFX and Maven");
         stage.setScene(scene);
         stage.show();
-    }
-    
-    // It's easier to remember the name. Shoudn't be changing a lot anyway.
-    //private final static String GLOBAL_TABLE_NAME = "global";
-    
-    /**
-     * Connection to the application's global database.
-     */
-    public static Connection database = null;
-    
-    /**
-     * Creates or opens a SQLite database.
-     * Connection can be accessed through MainApp.database.
-    */
-    private void openConnection() {
-        try {
-            Class.forName("org.sqlite.JDBC");
-            database = DriverManager.getConnection("jdbc:sqlite:mockup.db");
-            
-            ResultSet tables = database.getMetaData().getTables(null, null, "global", null);
-            if (!tables.next()) {   
-                String createQuery = "CREATE TABLE global (" +
-                        "report_id NVARCHAR(255), " +
-                        "test_id INT, " +
-                        "student_id NVARCHAR(255), " + // it's supposed to be an email
-                        "details_id INT, " +
-                        "grade INT" +
-                        ")";
-                Statement createGlobalTable = database.createStatement();
-                createGlobalTable.executeUpdate(createQuery);
-                createGlobalTable.close();
-            }
-        } catch (Exception e) {
-            CmUtils.printException(e);
-        } 
-    }
-    
-    /**
-     * Creates essential tables if needed.
-     * Created tables include "global" and "tests". 
-     */
-    private void createTables() {
-        try {
-            createGlobalTable();
-            TestInfo.createTestsTable();
-        } catch (Exception e) {
-            CmUtils.printException(e);
-        } 
-    }
-    
-    /**
-     * Creates "global" table if needed.
-     * Helper method for createTables().
-     */
-    private void createGlobalTable() throws Exception {
-        ResultSet tables = database.getMetaData().getTables(null, null, "global", null);
-        if (!tables.next()) {   
-            String createQuery = "CREATE TABLE global (" +
-                    "report_id nvarchar(255), " +
-                    "test_id int, " +
-                    "student_id nvarchar(255), " + // it's supposed to be an email
-                    "details_id int, " +
-                    "grade int" +
-                    ")";
-            Statement createTable = database.createStatement();
-            createTable.executeUpdate(createQuery);
-            createTable.close();
-        }
     }
     
     // --------------------- 
@@ -133,7 +63,7 @@ public class MainApp extends Application {
             stmt.close();
             conn.close();
         } catch (Exception e) {
-            CmUtils.printException(e);
+            CmUtils.printExceptionAndExit(e);
         }
         System.out.println("Success!");
     }
@@ -168,9 +98,45 @@ public class MainApp extends Application {
             emailFolder.close(false);
             store.close();
         } catch (Exception e) {
-            CmUtils.printException(e);
+            CmUtils.printExceptionAndExit(e);
         }
     }
+    
+    // Source is taken from here: 
+    // http://blog.ngopal.com.np/2011/10/19/dyanmic-tableview-data-from-database/comment-page-1/
+//    private void buildData() {
+//        ObservableList<ObservableList> data = FXCollections.observableArrayList();
+//        try {
+//            String sql = "SELECT * from global";
+//            ResultSet rs = MainApp.database.createStatement().executeQuery(sql);
+//            // Add table columns
+//            for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
+//                final int j = i;
+//                TableColumn col = new TableColumn(rs.getMetaData().getColumnName(j + 1));
+//                col.setCellValueFactory(
+//                new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+//                    @Override
+//                    public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+//                        return new SimpleStringProperty(param.getValue().get(j).toString());
+//                    }       
+//                });
+//                globalTable.getColumns().addAll(col);
+//            }
+//            // Add data to observable list "data"
+//            while (rs.next()) {
+//                ObservableList<String> row = FXCollections.observableArrayList();
+//                for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+//                    row.add(rs.getString(i));
+//                }
+//                data.add(row);
+//            }
+//            // Add data to TableView
+//            globalTable.setItems(data);
+//        } catch (Exception e) {
+//            CmUtils.printExceptionAndExit(e);
+//        }
+//    }
+    
     /**
      * The main() method is ignored in correctly deployed JavaFX application.
      * main() serves only as fallback in case the application can not be
