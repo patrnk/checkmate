@@ -72,7 +72,7 @@ public class PermissiveTest implements Test {
         if (studentAnswers.size() > answerKey.size()) {
             List<TestAnswer> clearedStudentAnswers = new ArrayList();
             for (int i = 0; i < answerKey.size(); i++) {
-                clearedStudentAnswers.set(i, studentAnswers.get(i));
+                clearedStudentAnswers.add(studentAnswers.get(i));
             }
             return clearedStudentAnswers;
         }
