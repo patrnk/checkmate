@@ -18,14 +18,14 @@ final class AnswerParser {
     private static final Integer QUESTIONS_MAX = 1000;
     
     public static List<TestAnswer> getTestAnswers(String rawAnswers) 
-        throws ParseException, TooManyQuestionsException {
+        throws ParseException, TooManyQuestionsException, TooManyAnswersException {
         
         List<TestAnswer> answers = new ArrayList();
         rawAnswers = rawAnswers.trim();
         rawAnswers = rawAnswers.toLowerCase();
         String[] questions = rawAnswers.split(QUESTION_SEPARATOR_REGEX);
         if (questions.length > QUESTIONS_MAX) {
-            throw new TooManyQuestionsException("Provided: " + 
+            throw new TooManyAnswersException("Provided: " + 
                     questions.length + " while the upper limit is " + QUESTIONS_MAX);
         }
         for (int i = 0; i < questions.length; i++) {
