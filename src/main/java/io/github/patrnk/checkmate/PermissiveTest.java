@@ -4,6 +4,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -54,14 +55,26 @@ public class PermissiveTest implements Test {
     
     @Override
     public List<TestAnswer> check(List<TestAnswer> studentAnswers) {
-        for (int i = 0; i < studentAnswers.size() && i < answerKey.size(); i++) {
-            String answer = studentAnswers.get(i).getAnswer();
+        List<TestAnswer> answers = removeExtraneousAnswers(studentAnswers);
+        for (int i = 0; i < answers.size(); i++) {
+            String answer = answers.get(i).getAnswer();
             Matcher m = answerKey.get(i).matcher(answer);
             if (m.matches()) {
-                studentAnswers.get(i).setGrade(MAX_GRADE);
+                answers.get(i).setGrade(MAX_GRADE);
             } else {
-                studentAnswers.get(i).setGrade(midOrLow(i, answer));
+                answers.get(i).setGrade(midOrLow(i, answer));
             }
+        }
+        return answers;
+    }
+    
+    private List<TestAnswer> removeExtraneousAnswers(List<TestAnswer> studentAnswers) {
+        if (studentAnswers.size() > answerKey.size()) {
+            List<TestAnswer> clearedStudentAnswers = new ArrayList();
+            for (int i = 0; i < answerKey.size(); i++) {
+                clearedStudentAnswers.set(i, studentAnswers.get(i));
+            }
+            return clearedStudentAnswers;
         }
         return studentAnswers;
     }
