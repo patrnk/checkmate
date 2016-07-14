@@ -2,6 +2,7 @@ package io.github.patrnk.checkmate;
 
 
 public class TooManyQuestionsException extends Exception {
+    
     public TooManyQuestionsException() {
         super();
     }
