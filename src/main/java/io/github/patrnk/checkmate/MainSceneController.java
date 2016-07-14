@@ -105,43 +105,7 @@ public class MainSceneController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        buildData();
         populateTestsTable();
-    }
-    
-    // Source is taken from here: 
-    // http://blog.ngopal.com.np/2011/10/19/dyanmic-tableview-data-from-database/comment-page-1/
-    private void buildData() {
-        ObservableList<ObservableList> data = FXCollections.observableArrayList();
-        try {
-            String sql = "SELECT * from global";
-            ResultSet rs = MainApp.database.createStatement().executeQuery(sql);
-            // Add table columns
-            for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
-                final int j = i;
-                TableColumn col = new TableColumn(rs.getMetaData().getColumnName(j + 1));
-                col.setCellValueFactory(
-                new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-                    @Override
-                    public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-                        return new SimpleStringProperty(param.getValue().get(j).toString());
-                    }       
-                });
-                globalTable.getColumns().addAll(col);
-            }
-            // Add data to observable list "data"
-            while (rs.next()) {
-                ObservableList<String> row = FXCollections.observableArrayList();
-                for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-                    row.add(rs.getString(i));
-                }
-                data.add(row);
-            }
-            // Add data to TableView
-            globalTable.setItems(data);
-        } catch (Exception e) {
-            CmUtils.printExceptionAndExit(e);
-        }
     }
     
     private void populateTestsTable() {
