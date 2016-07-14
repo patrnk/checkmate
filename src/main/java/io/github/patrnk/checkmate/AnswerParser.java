@@ -15,11 +15,19 @@ final class AnswerParser {
      */
     private static final String ANSWER_SEPARATOR_REGEX = "\\)";
     
-    public static List<TestAnswer> getTestAnswers(String rawAnswers) throws ParseException {
+    private static final Integer QUESTIONS_MAX = 1000;
+    
+    public static List<TestAnswer> getTestAnswers(String rawAnswers) 
+        throws ParseException, TooManyQuestionsException {
+        
         List<TestAnswer> answers = new ArrayList();
         rawAnswers = rawAnswers.trim();
         rawAnswers = rawAnswers.toLowerCase();
         String[] questions = rawAnswers.split(QUESTION_SEPARATOR_REGEX);
+        if (questions.length > QUESTIONS_MAX) {
+            throw new TooManyQuestionsException("Provided: " + 
+                    questions.length + " while the upper limit is " + QUESTIONS_MAX);
+        }
         for (int i = 0; i < questions.length; i++) {
             questions[i] = questions[i].trim();
             if (!questions[i].matches(".+" + ANSWER_SEPARATOR_REGEX + ".+")) {
@@ -37,6 +45,10 @@ final class AnswerParser {
             }
             questionNumber -= 1;
             assert(questionNumber >= 0);
+            if (questionNumber > QUESTIONS_MAX) {
+                throw new TooManyQuestionsException("Provided: " + 
+                    questionNumber + " while the upper limit is " + QUESTIONS_MAX);
+            }
             if (questionNumber >= answers.size()) {
                 for (int j = answers.size(); j <= questionNumber; j++) {
                     answers.add(null);
