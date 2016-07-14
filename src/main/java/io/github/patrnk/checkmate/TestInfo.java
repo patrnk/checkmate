@@ -1,11 +1,8 @@
 package io.github.patrnk.checkmate;
 
-import static io.github.patrnk.checkmate.MainApp.database;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
 /**
  * 
@@ -75,21 +72,6 @@ public final class TestInfo implements Serializable {
         }
         this.description = testDescription;
     }    
-    /**
-     * Creates "tests" table in global database if needed.
-     */
-    public static void createTestsTable() throws Exception {
-        ResultSet tables = database.getMetaData().getTables(null, null, "tests", null);
-        if (!tables.next()) {   
-            String createQuery = "CREATE TABLE tests (" +
-                    "test_id int PRIMARY KEY, " +
-                    "name nvarchar(255) " +
-                    ")";
-            Statement createTable = database.createStatement();
-            createTable.executeUpdate(createQuery);
-            createTable.close();
-        }
-    }
     
     private static class SerializationProxy implements Serializable {
         String name;
