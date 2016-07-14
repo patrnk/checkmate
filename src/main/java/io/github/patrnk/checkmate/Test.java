@@ -13,8 +13,10 @@ public interface Test extends Serializable {
     
     /**
      * Grades each student answer individually.
+     * Ignores an answers if there's no key for it.
      * @param studentAnswers list of answers where i-th element is (i+1)-th answer.
-     * @return same <code>studentAnswers</code> but with grades
+     * @return list of TestAnswer with the same answers and grades. All answers
+     *      with number greater than that provided in answer key are dropped.
      */
     public List<TestAnswer> check(List<TestAnswer> studentAnswers);
 }
