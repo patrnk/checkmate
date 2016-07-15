@@ -62,10 +62,7 @@ public final class PersistenceManager {
             Record newRecord = new Record(testId, studentName, studentId, filename);
             Database.addRecord(newRecord);
         } catch (SQLException ex) {
-            if (!(new File(filepath)).delete()) {
-                throw new IOException("Something went wrong with the DB "
-                    + "and created file cannot be deleted.");
-            }
+            deleteFile(filepath);
             throw new IOException("Something went wrong with the DB.");
         }
     }
@@ -101,9 +98,10 @@ public final class PersistenceManager {
         oos.flush();
     }
     
-    private static void deleteFile(String filePath) throws IOException {
-        File fileToDelete = new File(filePath);
-        Files.deleteIfExists(fileToDelete.toPath());
+    private static void deleteFile(String filepath) throws IOException {
+        if (!(new File(filepath)).delete()) {
+            throw new IOException("File cannot be deleted: " + filepath);
+        }
     }
     
     /**
