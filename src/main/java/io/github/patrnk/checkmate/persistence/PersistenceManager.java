@@ -4,14 +4,15 @@ import io.github.patrnk.checkmate.BadTestIdException;
 import io.github.patrnk.checkmate.CmUtils;
 import io.github.patrnk.checkmate.Test;
 import io.github.patrnk.checkmate.TestAnswer;
-import io.github.patrnk.checkmate.student.Student;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.sql.Connection;
+import java.nio.file.Files;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,13 +23,13 @@ public final class PersistenceManager {
     
     private final static String TESTS_FOLDER = "tests";
     private final static String TESTS_SUFFIX = "tst";
-        
+       
     /**
      * Persists test over time serializing it into a file.
      * @param t test to serialize
      * @throws BadTestIdException if the test with that id already exists. 
      */
-    public static void writeDownTest(Test t) throws BadTestIdException {
+    public static void writeDownTest(Test t) throws BadTestIdException, IOException {
         String filename = t.getInfo().getId().toString();
         filename += SUFFIX_SEPARATOR + TESTS_SUFFIX;
         String filePath = TESTS_FOLDER + File.separator + filename;
@@ -39,20 +40,12 @@ public final class PersistenceManager {
         writeDown(filePath, t);
     }
     
-    public static void writeDownTestResults(Student student, 
-        List<TestAnswer> answers, Integer testId) {
-        // TODO: do the db thing.
-    }
-    
-    private static void writeDown(String filePath, Object o) {
-        try {
-            FileOutputStream out = new FileOutputStream(filePath);
-            ObjectOutputStream oos = new ObjectOutputStream(out);
-            oos.writeObject(o);
-            oos.flush();
-        } catch (Exception e) {
-            CmUtils.printExceptionAndExit(e);
-        }
+    private static void writeDown(String filePath, Object o) 
+        throws FileNotFoundException, IOException {
+        FileOutputStream out = new FileOutputStream(filePath);
+        ObjectOutputStream oos = new ObjectOutputStream(out);
+        oos.writeObject(o);
+        oos.flush();
     }
     
     /**
