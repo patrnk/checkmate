@@ -43,11 +43,16 @@ public class CheckSceneController implements Initializable {
             String rawAnswers = answerArea.getText();
             List<TestAnswer> answers = AnswerParser.getTestAnswers(rawAnswers);
             List<TestAnswer> checkedAnswers = test.check(answers);
-        } catch (BadStudentNameException | BadStudentIdException ex) {
-            //TODO: let user know about what's going on
-            System.out.println(ex);
-        } catch (BadTestInfoException ex) {
             
+        } catch (BadTestInfoException ex) {
+            String error = BadTestInfoException.getAppropriateErrorMessage(ex);
+            errorLabel.setText(error);
+        } catch (BadStudentNameException ex) {
+            String error = "Имя не может быть очень длинным или пустым.";
+            errorLabel.setText(error);
+        } catch (BadStudentIdException ex) {
+            String error = "Идентификатор не может быть очень длинным или пустым.";
+            errorLabel.setText(error);
         }
     }
     
