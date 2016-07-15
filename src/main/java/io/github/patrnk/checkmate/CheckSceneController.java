@@ -3,12 +3,12 @@ package io.github.patrnk.checkmate;
 import io.github.patrnk.checkmate.persistence.BadStudentIdException;
 import io.github.patrnk.checkmate.persistence.BadStudentNameException;
 import java.net.URL;
-import java.text.ParseException;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
@@ -29,6 +29,9 @@ public class CheckSceneController implements Initializable {
     private TextArea answerArea;
     
     @FXML
+    private Label errorLabel;
+    
+    @FXML
     private void checkButtonClicked(ActionEvent event) {
         try {
             if (test == null) {
@@ -40,10 +43,11 @@ public class CheckSceneController implements Initializable {
             String rawAnswers = answerArea.getText();
             List<TestAnswer> answers = AnswerParser.getTestAnswers(rawAnswers);
             List<TestAnswer> checkedAnswers = test.check(answers);
-        } catch (IllegalArgumentException | ParseException | 
-            TooManyQuestionsException | TooManyAnswersException | BadStudentNameException | BadStudentIdException ex) {
+        } catch (BadStudentNameException | BadStudentIdException ex) {
             //TODO: let user know about what's going on
             System.out.println(ex);
+        } catch (BadTestInfoException ex) {
+            
         }
     }
     
@@ -55,10 +59,6 @@ public class CheckSceneController implements Initializable {
         if ("".equals(idField.getText())) {
             throw new BadStudentIdException();
         }
-    }
-    
-    private void showAppropriateError(Exception ex) {
-        
     }
     
     /**
