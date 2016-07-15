@@ -9,13 +9,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 
-class Database {
+final class Database {
     
     private static Connection connection = null;
     
     private static final Integer MAX_STRING_LENGTH = 255;
     
-    public static Connection getConnection() {
+    private static Connection getConnection() {
         try {
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:mockup.db");
@@ -62,7 +62,7 @@ class Database {
                 "(test_id, student_name, student_id, answer_file) VALUES " +
                 "(      ?,            ?,          ?,           ?)";
         try {
-            insert = connection.prepareStatement(insertSql);
+            insert = Database.getConnection().prepareStatement(insertSql);
             insert.setInt(1, testId);
             insert.setString(2, studentName);
             insert.setString(3, studentId);
