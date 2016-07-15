@@ -52,6 +52,7 @@ final class Database {
      * @param studentId id of the student
      * @param answerFileName name of a file where student answers and grades
      *      are stored
+     * @throws SQLException in case the method is broken and needs to be rewritten
      */
     public static void setNewRecord(Integer testId, String studentName,
         String studentId, String answerFileName) throws SQLException {
