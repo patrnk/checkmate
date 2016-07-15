@@ -54,10 +54,10 @@ final class Database {
      *      are stored
      * @throws SQLException in case the method is broken and needs to be rewritten
      */
-    public static void setNewRecord(Integer testId, String studentName,
-        String studentId, String answerFileName) throws SQLException {
+    public static void addRecord(Record record) throws SQLException {
         
-        checkStringLength(studentName, studentId, answerFileName);
+        checkStringLength(record.getStudentName(), record.getStudentId(), 
+            record.getAnswerFileName());
         
         String insertSql = "INSERT INTO global " +
                 "(test_id, student_name, student_id, answer_file) VALUES " +
@@ -65,10 +65,10 @@ final class Database {
         PreparedStatement insert = 
             Database.getConnection().prepareStatement(insertSql);
         
-        insert.setInt(1, testId);
-        insert.setString(2, studentName);
-        insert.setString(3, studentId);
-        insert.setString(4, answerFileName);
+        insert.setInt(1, record.getTestId());
+        insert.setString(2, record.getStudentName());
+        insert.setString(3, record.getStudentId());
+        insert.setString(4, record.getAnswerFileName());
         insert.executeUpdate();
     }
     
