@@ -6,6 +6,7 @@
 package io.github.patrnk.checkmate;
 
 import io.github.patrnk.checkmate.persistence.PersistenceManager;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -68,6 +69,9 @@ public class CreateTestSceneController implements Initializable {
             this.contentArea.getScene().getWindow().hide();
         } catch (BadTestInfoException ex) {
             showAppropriateError(ex);
+        } catch (IOException ex) {
+            errorLabel.setText("Мы не можем записать новый тест на диск. "
+                + "Свяжитесь с разработчиком.");
         }
     }
     
