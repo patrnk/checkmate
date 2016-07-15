@@ -54,23 +54,21 @@ final class Database {
      *      are stored
      */
     public static void setNewRecord(Integer testId, String studentName,
-        String studentId, String answerFileName) {
+        String studentId, String answerFileName) throws SQLException {
         
         checkStringLength(studentName, studentId, answerFileName);
-        PreparedStatement insert = null;
+        
         String insertSql = "INSERT INTO global " +
                 "(test_id, student_name, student_id, answer_file) VALUES " +
                 "(      ?,            ?,          ?,           ?)";
-        try {
-            insert = Database.getConnection().prepareStatement(insertSql);
-            insert.setInt(1, testId);
-            insert.setString(2, studentName);
-            insert.setString(3, studentId);
-            insert.setString(4, answerFileName);
-            insert.executeUpdate();
-        } catch(SQLException ex) {
-            CmUtils.printExceptionAndExit(ex);
-        }
+        PreparedStatement insert = 
+            Database.getConnection().prepareStatement(insertSql);
+        
+        insert.setInt(1, testId);
+        insert.setString(2, studentName);
+        insert.setString(3, studentId);
+        insert.setString(4, answerFileName);
+        insert.executeUpdate();
     }
     
     private static void checkStringLength(String... strings) {
