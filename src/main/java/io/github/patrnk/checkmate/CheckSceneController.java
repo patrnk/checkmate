@@ -2,9 +2,13 @@ package io.github.patrnk.checkmate;
 
 import io.github.patrnk.checkmate.persistence.BadStudentIdException;
 import io.github.patrnk.checkmate.persistence.BadStudentNameException;
+import io.github.patrnk.checkmate.persistence.PersistenceManager;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -43,7 +47,11 @@ public class CheckSceneController implements Initializable {
             String rawAnswers = answerArea.getText();
             List<TestAnswer> answers = AnswerParser.getTestAnswers(rawAnswers);
             List<TestAnswer> checkedAnswers = test.check(answers);
+            String studentName = nameField.getText();
+            String studentId = idField.getText();
             
+            PersistenceManager.writeDownTestResults(
+                studentName, studentId, checkedAnswers, test.getInfo().getId());
         } catch (BadTestInfoException ex) {
             String error = BadTestInfoException.getAppropriateErrorMessage(ex);
             errorLabel.setText(error);
@@ -52,6 +60,10 @@ public class CheckSceneController implements Initializable {
             errorLabel.setText(error);
         } catch (BadStudentIdException ex) {
             String error = "Идентификатор не может быть очень длинным или пустым.";
+            errorLabel.setText(error);
+        } catch (IOException ex) {
+            String error = "Не можем записать результаты. "
+                + "Напишите разработчику: patrnk@gmail.com";
             errorLabel.setText(error);
         }
     }
