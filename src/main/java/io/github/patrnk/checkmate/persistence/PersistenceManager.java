@@ -40,12 +40,70 @@ public final class PersistenceManager {
         writeDown(filePath, t);
     }
     
+    private final static String ANSWER_FOLDER = "answers";
+    private final static String ANSWER_SUFFIX = "ans";
+    
+    /**
+     * Persists test results.
+     * @param studentName name of a student that owns the results
+     * @param studentId id of a student that owns the results
+     * @param answers student answers
+     * @param testId the id of the test the answers belong to
+     * @throws IOException if the method couldn't store the results
+     */
+    public static void writeDownTestResults(String studentName, String studentId, 
+        List<TestAnswer> answers, Integer testId) 
+        throws BadStudentNameException, BadStudentIdException, IOException {
+        
+        String filename = getUniqueRandomFilename(ANSWER_FOLDER, ANSWER_SUFFIX);
+        String filepath = ANSWER_FOLDER + File.separator + filename;
+        writeDown(filepath, answers);
+        try {
+            Record newRecord = new Record(testId, studentName, studentId, filename);
+            Database.addRecord(newRecord);
+        } catch (SQLException ex) {
+            if (!(new File(filepath)).delete()) {
+                throw new IOException("Something went wrong with the DB "
+                    + "and created file cannot be deleted.");
+            }
+            throw new IOException("Something went wrong with the DB.");
+        }
+    }
+
+    /**
+     * @return filename that's unique in the directory folderPath. 
+     *      The filename contains suffix
+     */
+    private static String getUniqueRandomFilename(String folderPath, String suffix) {
+        String filename = getRandomFileName() + SUFFIX_SEPARATOR + suffix;
+        String filepath = folderPath + File.separator + filename;
+        while (new File(filepath).exists()) {
+            filename = getRandomFileName() + SUFFIX_SEPARATOR + suffix;
+            filepath = folderPath + File.separator + filename;
+        }
+        return filename;
+    }
+   
+    /**
+     * @return a random number in a form of a string.
+     */
+    private static String getRandomFileName() {
+        Double d = (Math.random() * 1000000);
+        Integer i = d.intValue();
+        return i.toString();
+    }
+    
     private static void writeDown(String filePath, Object o) 
         throws FileNotFoundException, IOException {
         FileOutputStream out = new FileOutputStream(filePath);
         ObjectOutputStream oos = new ObjectOutputStream(out);
         oos.writeObject(o);
         oos.flush();
+    }
+    
+    private static void deleteFile(String filePath) throws IOException {
+        File fileToDelete = new File(filePath);
+        Files.deleteIfExists(fileToDelete.toPath());
     }
     
     /**
