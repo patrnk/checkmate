@@ -18,7 +18,8 @@ final class AnswerParser {
     private static final Integer QUESTIONS_MAX = 1000;
     
     public static List<TestAnswer> getTestAnswers(String rawAnswers) 
-        throws ParseException, TooManyQuestionsException, TooManyAnswersException {
+        throws MalformedTestDescriptionException, 
+        TooManyQuestionsException, TooManyAnswersException {
         
         List<TestAnswer> answers = new ArrayList();
         rawAnswers = rawAnswers.trim();
@@ -31,7 +32,7 @@ final class AnswerParser {
         for (int i = 0; i < questions.length; i++) {
             questions[i] = questions[i].trim();
             if (!questions[i].matches(".+" + ANSWER_SEPARATOR_REGEX + ".+")) {
-                throw new ParseException("The line number "
+                throw new MalformedTestDescriptionException("The line number "
                         + i + " formatted incorrectly. ", i);
             }
 
@@ -40,8 +41,8 @@ final class AnswerParser {
                 questionNumber = Integer.valueOf(
                         questions[i].split(ANSWER_SEPARATOR_REGEX)[0].trim());
             } catch (NumberFormatException e) {
-                throw new ParseException("The question number is not a number "
-                    + "on line " + i, i);
+                throw new MalformedTestDescriptionException("The question number "
+                    + "is not a number on line " + i, i);
             }
             questionNumber -= 1;
             assert(questionNumber >= 0);
