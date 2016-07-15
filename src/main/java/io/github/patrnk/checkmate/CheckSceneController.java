@@ -1,17 +1,16 @@
 package io.github.patrnk.checkmate;
 
+import io.github.patrnk.checkmate.persistence.BadStudentIdException;
+import io.github.patrnk.checkmate.persistence.BadStudentNameException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -33,35 +32,33 @@ public class CheckSceneController implements Initializable {
     private void checkButtonClicked(ActionEvent event) {
         try {
             if (test == null) {
-                throw new IllegalArgumentException();
+                throw new NullPointerException("Test property "
+                    + "of CheckSceneController must be set to non-null value.");
             }
             checkIfFieldsAreEmpty();
             
             String rawAnswers = answerArea.getText();
             List<TestAnswer> answers = AnswerParser.getTestAnswers(rawAnswers);
             List<TestAnswer> checkedAnswers = test.check(answers);
-//            for (TestAnswer checkedAnswer : checkedAnswers) {
-//                System.out.println(checkedAnswer.getAnswer() + " : " + 
-//                    checkedAnswer.getGrade().toString());
-//            }
-            
         } catch (IllegalArgumentException | ParseException | 
-            TooManyQuestionsException | TooManyAnswersException ex) {
+            TooManyQuestionsException | TooManyAnswersException | BadStudentNameException | BadStudentIdException ex) {
             //TODO: let user know about what's going on
+            System.out.println(ex);
         }
     }
     
-    // TODO: replace IllegalArgumentException with multiple custom exceptions
-    private void checkIfFieldsAreEmpty() throws IllegalArgumentException {
+    private void checkIfFieldsAreEmpty() 
+        throws BadStudentNameException, BadStudentIdException {
         if ("".equals(nameField.getText())) {
-            throw new IllegalArgumentException();
+            throw new BadStudentNameException();
         }
         if ("".equals(idField.getText())) {
-            throw new IllegalArgumentException();
+            throw new BadStudentIdException();
         }
-        if ("".equals(answerArea.getText())) {
-            throw new IllegalArgumentException();
-        }
+    }
+    
+    private void showAppropriateError(Exception ex) {
+        
     }
     
     /**
