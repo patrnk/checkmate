@@ -1,7 +1,7 @@
 package io.github.patrnk.checkmate;
 
 
-public class TooManyAnswersException extends Exception {
+public class TooManyAnswersException extends BadTestInfoException {
     
     public TooManyAnswersException() {
         super();
