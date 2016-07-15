@@ -68,36 +68,11 @@ public class CreateTestSceneController implements Initializable {
             PersistenceManager.writeDownTest(test);
             this.contentArea.getScene().getWindow().hide();
         } catch (BadTestInfoException ex) {
-            showAppropriateError(ex);
+            String error = BadTestInfoException.getAppropriateErrorMessage(ex);
+            errorLabel.setText(error);
         } catch (IOException ex) {
             errorLabel.setText("Мы не можем записать новый тест на диск. "
-                + "Свяжитесь с разработчиком.");
-        }
-    }
-    
-    private void showAppropriateError(BadTestInfoException ex) {
-        if (ex.getClass().equals(BadTestNameException.class)) {
-            errorLabel.setText("Плохо задано имя теста. "
-                + "Оно не может быть пустым или очень длинным.");
-        } else
-        if (ex.getClass().equals(BadTestIdException.class)) {
-            errorLabel.setText("Идентификатор должен быть целым числом. "
-                + "Убедитесь, что он уникален.");
-        } else
-        if (ex.getClass().equals(MalformedTestDescriptionException.class)) {
-            MalformedTestDescriptionException specificEx = 
-                (MalformedTestDescriptionException) ex;
-            errorLabel.setText("Нарушен формат записи ответа (см. строку" 
-                + specificEx.getBadLine() + "). "
-                + "Вот пример правильной записи: \"12)abc\".");
-        } else
-        if (ex.getClass().equals(AnswerNotProvidedException.class)) {
-            AnswerNotProvidedException specificEx = 
-                (AnswerNotProvidedException) ex;
-            errorLabel.setText("Не задан правильный ответ для номера " 
-                + specificEx.getQuestionNumber() + ".");
-        } else {
-            errorLabel.setText("Что-то пошло не так: " + ex.getClass().toString());
+                + "Напишите разработчику: patrnk@gmail.com.");
         }
     }
     
