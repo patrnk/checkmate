@@ -30,6 +30,7 @@ public final class PersistenceManager {
      * @throws BadTestIdException if the test with that id already exists. 
      */
     public static void writeDownTest(Test t) throws BadTestIdException, IOException {
+        new File(TESTS_FOLDER).mkdir();
         String filename = t.getInfo().getId().toString();
         filename += SUFFIX_SEPARATOR + TESTS_SUFFIX;
         String filePath = TESTS_FOLDER + File.separator + filename;
@@ -55,6 +56,7 @@ public final class PersistenceManager {
         List<TestAnswer> answers, Integer testId) 
         throws BadStudentNameException, BadStudentIdException, IOException {
         
+        new File(ANSWER_FOLDER).mkdir();
         String filename = getUniqueRandomFilename(ANSWER_FOLDER, ANSWER_SUFFIX);
         String filepath = ANSWER_FOLDER + File.separator + filename;
         writeDown(filepath, answers);
@@ -90,9 +92,13 @@ public final class PersistenceManager {
         return i.toString();
     }
     
-    private static void writeDown(String filePath, Object o) 
+    /**
+     * Assumes that all the directories provided exist.
+     * If it's not the case, throws IOException.
+     */
+    private static void writeDown(String filepath, Object o) 
         throws FileNotFoundException, IOException {
-        FileOutputStream out = new FileOutputStream(filePath);
+        FileOutputStream out = new FileOutputStream(filepath);
         ObjectOutputStream oos = new ObjectOutputStream(out);
         oos.writeObject(o);
         oos.flush();
