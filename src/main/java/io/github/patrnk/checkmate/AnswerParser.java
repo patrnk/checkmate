@@ -33,7 +33,7 @@ final class AnswerParser {
             questions[i] = questions[i].trim();
             if (!questions[i].matches(".+" + ANSWER_SEPARATOR_REGEX + ".+")) {
                 throw new MalformedTestDescriptionException("The line number "
-                        + i + " formatted incorrectly. ", i);
+                        + (i+1) + " formatted incorrectly. ", (i+1));
             }
 
             Integer questionNumber = -1;
@@ -42,7 +42,7 @@ final class AnswerParser {
                         questions[i].split(ANSWER_SEPARATOR_REGEX)[0].trim());
             } catch (NumberFormatException e) {
                 throw new MalformedTestDescriptionException("The question number "
-                    + "is not a number on line " + i, i);
+                    + "is not a number on line " + (i+1), (i+1));
             }
             questionNumber -= 1;
             assert(questionNumber >= 0);
