@@ -36,7 +36,7 @@ public class BadTestInfoException extends Exception {
         if (ex.getClass().equals(MalformedTestDescriptionException.class)) {
             MalformedTestDescriptionException specificEx = 
                 (MalformedTestDescriptionException) ex;
-            return "Нарушен формат записи ответа (см. строку" 
+            return "Нарушен формат записи ответа (см. строку " 
                 + specificEx.getBadLine() + "). "
                 + "Вот пример правильной записи: \"12)abc\".";
         } else
