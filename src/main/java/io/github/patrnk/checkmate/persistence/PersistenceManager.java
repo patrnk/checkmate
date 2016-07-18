@@ -14,6 +14,8 @@ import java.io.ObjectOutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public final class PersistenceManager {
@@ -161,6 +163,21 @@ public final class PersistenceManager {
         return objects;
     }
     
+    /**
+     * Gets you all stored test results.
+     * @return list of Records object with data.
+     *      In case of failure, returns an empty list.
+     */
+    public List<Record> getExistingTestResults() {
+        List<Record> records = new ArrayList();
+        try {
+            records = Database.fetchRecords();
+        } catch (SQLException ex) {
+            Logger.getLogger(PersistenceManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return records;
+    }
+  
     /**
      * Return suffix of the filename.
      * Suffix is the part of the filename that comes after SUFFIX_SEPARATOR.
