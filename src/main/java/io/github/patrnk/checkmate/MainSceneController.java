@@ -1,9 +1,9 @@
 package io.github.patrnk.checkmate;
 
 import io.github.patrnk.checkmate.persistence.PersistenceManager;
+import io.github.patrnk.checkmate.persistence.Record;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -31,7 +31,7 @@ public class MainSceneController implements Initializable {
     private AnchorPane anchor;
     
     @FXML
-    private TableView globalTable;
+    private TableView<Record> testResultTable;
     
     @FXML
     private TableView<Test> testsTable;
@@ -76,8 +76,8 @@ public class MainSceneController implements Initializable {
     }
     
     @FXML
-    private void globalTableClicked() {
-        System.out.println(String.valueOf(globalTable.getSelectionModel().getSelectedIndex()));
+    private void testResultTableClicked() {
+        System.out.println(String.valueOf(testResultTable.getSelectionModel().getSelectedIndex()));
     }
     
     @FXML
