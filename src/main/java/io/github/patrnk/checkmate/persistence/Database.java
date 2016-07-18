@@ -7,6 +7,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 final class Database {
@@ -72,6 +76,27 @@ final class Database {
         insert.executeUpdate();
     }
     
+    public static List<Record> fetchRecords() throws SQLException {
+        List<Record> records = new ArrayList();
+        String selectSql = "SELECT * FROM global";
+        Statement select = Database.getConnection().createStatement();
+        ResultSet rawRecords = select.executeQuery(selectSql);
+        while (rawRecords.next()) {
+            Integer testId = rawRecords.getInt("test_id");
+            String studentName = rawRecords.getNString("student_name");
+            String studentId = rawRecords.getNString("student_id");
+            String answerFilename = rawRecords.getNString("answer_file");
+            try {
+                Record record = new Record(testId, studentName, studentId, answerFilename);
+                records.add(record);
+            } catch (BadStudentNameException | BadStudentIdException ex) {
+                // Is this how you log the thing? 
+                Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return records;
+    }
+     
     private static void checkStringLength(String... strings) {
         for (String s : strings) {
             if (s.length() > MAX_STRING_LENGTH) { // TODO: get rid of 255
