@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="287.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.patrnk.checkmate.CheckSceneController">
+   <children>
+      <TextField fx:id="nameField" layoutX="44.0" layoutY="64.0" prefHeight="27.0" prefWidth="200.0" promptText="Имя ученика" />
+      <TextField fx:id="idField" layoutX="44.0" layoutY="97.0" prefHeight="27.0" prefWidth="200.0" promptText="Идентификатор ученика" />
+      <TextArea fx:id="answerArea" layoutX="44.0" layoutY="138.0" prefHeight="213.0" prefWidth="200.0" promptText="Ответы ученика" />
+      <Button defaultButton="true" layoutX="100.0" layoutY="361.0" mnemonicParsing="false" onAction="#checkButtonClicked" text="Проверить" />
+      <Label fx:id="errorLabel" layoutX="29.0" layoutY="14.0" prefHeight="41.0" prefWidth="230.0" textFill="RED" wrapText="true">
+         <font>
+            <Font size="10.0" />
+         </font></Label>
+   </children>
+</AnchorPane>

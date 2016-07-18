@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="anchor" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.patrnk.checkmate.MainSceneController">
+    <children>
+      <TableView fx:id="globalTable" layoutX="14.0" layoutY="10.0" onMouseClicked="#globalTableClicked" prefHeight="380.0" prefWidth="419.0" />
+      <Button fx:id="checkButton" disable="true" layoutX="585.0" layoutY="294.0" mnemonicParsing="false" onAction="#openCheckScene" text="Проверить..." />
+      <Button layoutX="541.0" layoutY="45.0" mnemonicParsing="false" onAction="#openCreateTestScene" prefHeight="27.0" prefWidth="143.0" text="Создать листок..." />
+      <TableView fx:id="testsTable" layoutX="446.0" layoutY="87.0" onMouseClicked="#testsTableClicked" prefHeight="200.0" prefWidth="240.0">
+         <columns>
+            <TableColumn fx:id="nameColumn" editable="false" prefWidth="128.0" sortable="false" text="Название" />
+            <TableColumn fx:id="idColumn" editable="false" prefWidth="110.0" sortable="false" text="ID" />
+         </columns>
+      </TableView>
+    </children>
+</AnchorPane>
