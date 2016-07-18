@@ -11,7 +11,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -112,7 +111,8 @@ public final class PersistenceManager {
     
     /**
      * Returns the tests stored in some long-term storage.
-     * @return list of deserialized tests
+     * @return list of deserialized tests. 
+     *      In case of a failure returns empty list.
      */
     public static List<Test> getExistingTests() {
         List<Test> tests = new ArrayList();
