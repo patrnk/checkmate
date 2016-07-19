@@ -110,6 +110,7 @@ public class MainSceneController implements Initializable {
         }
     }
     
+    private ObservableList<Test> tests;
     private ObservableList<Record> testResult;
     
     @Override
@@ -122,8 +123,7 @@ public class MainSceneController implements Initializable {
         testNameColumn.setCellValueFactory(getTestNameColumnCellValueFactory());
         testIdColumn.setCellValueFactory(getTestIdColumnCellValueFactory());
         
-        ObservableList<Test> tests = 
-            FXCollections.observableArrayList(PersistenceManager.getExistingTests());
+        tests = FXCollections.observableArrayList(PersistenceManager.getExistingTests());
         testsTable.setItems(tests);
     }
     
