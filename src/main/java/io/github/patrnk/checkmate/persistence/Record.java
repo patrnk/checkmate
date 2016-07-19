@@ -40,14 +40,14 @@ public final class Record {
     }
 
     private void checkName(String name) throws BadStudentNameException {
-        if (name.length() > 200) {
-            throw new BadStudentNameException();
+        if (name == null || name.length() > 200) {
+            throw new BadStudentNameException("The name is too long or null.");
         }
     }
     
     private void checkId(String id) throws BadStudentIdException {
-        if (id.length() > 200) {
-            throw new BadStudentIdException();
+        if (id == null || id.length() > 200) {
+            throw new BadStudentIdException("The id is too long or null.");
         }
     }
 }
