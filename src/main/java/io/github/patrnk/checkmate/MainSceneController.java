@@ -4,6 +4,7 @@ import io.github.patrnk.checkmate.persistence.PersistenceManager;
 import io.github.patrnk.checkmate.persistence.Record;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -28,19 +29,25 @@ import javafx.util.Callback;
 public class MainSceneController implements Initializable {
     
     @FXML
-    private AnchorPane anchor;
-    
-    @FXML
-    private TableView<Record> testResultTable;
+    private AnchorPane anchor; 
     
     @FXML
     private TableView<Test> testsTable;
     
     @FXML
-    private TableColumn<Test, String> nameColumn;
+    private TableColumn<Test, String> testNameColumn;
     
     @FXML
-    private TableColumn<Test, String> idColumn;   
+    private TableColumn<Test, String> testIdColumn;   
+    
+    @FXML
+    private TableView<Record> testResultTable;
+    
+    @FXML
+    private TableColumn<Record, String> studentNameColumn;
+    
+    @FXML
+    private TableColumn<Record, String> studentIdColumn; 
     
     @FXML
     private Button checkButton;
@@ -103,21 +110,25 @@ public class MainSceneController implements Initializable {
         }
     }
     
+    private ObservableList<Record> testResult;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         populateTestsTable();
+        prepareToPopulateTestResultTable();
     }
     
     private void populateTestsTable() {
-        nameColumn.setCellValueFactory(getNameColumnCellValueFactory());
-        idColumn.setCellValueFactory(getIdColumnCellValueFactory());
+        testNameColumn.setCellValueFactory(getTestNameColumnCellValueFactory());
+        testIdColumn.setCellValueFactory(getTestIdColumnCellValueFactory());
         
-        ObservableList<Test> tests = FXCollections.observableArrayList(PersistenceManager.getExistingTests());
+        ObservableList<Test> tests = 
+            FXCollections.observableArrayList(PersistenceManager.getExistingTests());
         testsTable.setItems(tests);
     }
     
     private Callback<CellDataFeatures<Test, String>, ObservableValue<String>> 
-    getNameColumnCellValueFactory() {
+    getTestNameColumnCellValueFactory() {
         return new Callback<CellDataFeatures<Test, String>, ObservableValue<String>>() { 
             @Override
             public ObservableValue<String> call(CellDataFeatures<Test, String> param) {
@@ -128,12 +139,43 @@ public class MainSceneController implements Initializable {
     }
     
     private Callback<CellDataFeatures<Test, String>, ObservableValue<String>> 
-    getIdColumnCellValueFactory() {
+    getTestIdColumnCellValueFactory() {
         return new Callback<CellDataFeatures<Test, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(CellDataFeatures<Test, String> param) {
                 String id = param.getValue().getInfo().getId().toString();
                 return new SimpleStringProperty(id);
+            }
+        };
+    }
+    
+    private void prepareToPopulateTestResultTable() {
+        studentNameColumn.setCellValueFactory(getStudentNameColumnCellValueFactory());
+        studentIdColumn.setCellValueFactory(getStudentIdColumnCellValueFactory());
+        
+        List<Record> records = PersistenceManager.getExistingTestResults();
+        testResult = FXCollections.observableArrayList(records);
+        testResultTable.setItems(testResult);
+    }
+    
+    private Callback<CellDataFeatures<Record, String>, ObservableValue<String>> 
+    getStudentNameColumnCellValueFactory() {
+        return new Callback<CellDataFeatures<Record, String>, ObservableValue<String>>() { 
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<Record, String> param) {
+                String name = param.getValue().getStudentName();
+                return new SimpleStringProperty(name);
+            }
+        };
+    }
+    
+    private Callback<CellDataFeatures<Record, String>, ObservableValue<String>> 
+    getStudentIdColumnCellValueFactory() {
+        return new Callback<CellDataFeatures<Record, String>, ObservableValue<String>>() { 
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<Record, String> param) {
+                String name = param.getValue().getStudentId();
+                return new SimpleStringProperty(name);
             }
         };
     }

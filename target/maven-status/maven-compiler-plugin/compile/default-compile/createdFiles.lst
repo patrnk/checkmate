@@ -2,6 +2,7 @@ io/github/patrnk/checkmate/persistence/Record.class
 io/github/patrnk/checkmate/CreateTestSceneController.class
 io/github/patrnk/checkmate/MainSceneController$2.class
 io/github/patrnk/checkmate/persistence/BadStudentIdException.class
+io/github/patrnk/checkmate/MainSceneController$4.class
 io/github/patrnk/checkmate/TooManyQuestionsException.class
 io/github/patrnk/checkmate/CreateTestSceneController$2.class
 io/github/patrnk/checkmate/PermissiveTestFactory.class
@@ -25,7 +26,6 @@ io/github/patrnk/checkmate/CmUtils.class
 io/github/patrnk/checkmate/TestInfo$SerializationProxy.class
 io/github/patrnk/checkmate/AnswerNormalizer.class
 io/github/patrnk/checkmate/MainSceneController.class
-io/github/patrnk/checkmate/CheckType.class
 io/github/patrnk/checkmate/Test.class
 io/github/patrnk/checkmate/PermissiveTest.class
 io/github/patrnk/checkmate/BadTestNameException.class
@@ -33,3 +33,4 @@ io/github/patrnk/checkmate/persistence/BadStudentNameException.class
 io/github/patrnk/checkmate/AnswerParser.class
 io/github/patrnk/checkmate/CreateTestSceneController$3.class
 io/github/patrnk/checkmate/TestFactory.class
+io/github/patrnk/checkmate/MainSceneController$5.class

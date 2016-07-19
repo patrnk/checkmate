@@ -19,7 +19,6 @@
 /Users/vergeev/Dropbox/CheckMate/src/main/java/io/github/patrnk/checkmate/AnswerNotProvidedException.java
 /Users/vergeev/Dropbox/CheckMate/src/main/java/io/github/patrnk/checkmate/TooManyAnswersException.java
 /Users/vergeev/Dropbox/CheckMate/src/main/java/io/github/patrnk/checkmate/AnswerNormalizer.java
-/Users/vergeev/Dropbox/CheckMate/src/main/java/io/github/patrnk/checkmate/CheckType.java
 /Users/vergeev/Dropbox/CheckMate/src/main/java/io/github/patrnk/checkmate/persistence/BadStudentIdException.java
 /Users/vergeev/Dropbox/CheckMate/src/main/java/io/github/patrnk/checkmate/MainSceneController.java
 /Users/vergeev/Dropbox/CheckMate/src/main/java/io/github/patrnk/checkmate/BadTestNameException.java
