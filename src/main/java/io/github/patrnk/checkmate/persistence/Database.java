@@ -31,14 +31,14 @@ final class Database {
     }
     
     private static void createTablesIfNeeded() throws SQLException {
-        createGlobalTableIfNeeded();
+        createTestResultTableIfNeeded();
     }
     
-    private static void createGlobalTableIfNeeded() throws SQLException {
+    private static void createTestResultTableIfNeeded() throws SQLException {
         ResultSet tables = 
-            connection.getMetaData().getTables(null, null, "global", null);
+            connection.getMetaData().getTables(null, null, "testResult", null);
         if (!tables.next()) {   
-            String createQuery = "CREATE TABLE global " +
+            String createQuery = "CREATE TABLE testResult " +
                 "(test_id int, " +
                 "student_name nvarchar(" + MAX_STRING_LENGTH.toString() + ")," +
                 "student_id nvarchar(" + MAX_STRING_LENGTH.toString() + "), " +
@@ -59,11 +59,10 @@ final class Database {
      * @throws SQLException in case the method is broken and needs to be rewritten
      */
     public static void addRecord(Record record) throws SQLException {
-        
         checkStringLength(record.getStudentName(), record.getStudentId(), 
             record.getAnswerFileName());
         
-        String insertSql = "INSERT INTO global " +
+        String insertSql = "INSERT INTO testResult " +
                 "(test_id, student_name, student_id, answer_file) VALUES " +
                 "(      ?,            ?,          ?,           ?)";
         PreparedStatement insert = 
@@ -78,7 +77,7 @@ final class Database {
     
     public static List<Record> fetchRecords() throws SQLException {
         List<Record> records = new ArrayList();
-        String selectSql = "SELECT * FROM global";
+        String selectSql = "SELECT * FROM testResult";
         Statement select = Database.getConnection().createStatement();
         ResultSet rawRecords = select.executeQuery(selectSql);
         while (rawRecords.next()) {
