@@ -52,6 +52,7 @@ public class CheckSceneController implements Initializable {
             
             PersistenceManager.writeDownTestResults(
                 studentName, studentId, checkedAnswers, test.getInfo().getId());
+            nameField.getScene().getWindow().hide();
         } catch (BadTestInfoException ex) {
             String error = BadTestInfoException.getAppropriateErrorMessage(ex);
             errorLabel.setText(error);
