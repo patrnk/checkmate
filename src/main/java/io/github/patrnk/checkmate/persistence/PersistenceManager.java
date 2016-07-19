@@ -168,7 +168,7 @@ public final class PersistenceManager {
      * @return list of Records object with data.
      *      In case of failure, returns an empty list.
      */
-    public List<Record> getExistingTestResults() {
+    public static List<Record> getExistingTestResults() {
         List<Record> records = new ArrayList();
         try {
             records = Database.fetchRecords();
