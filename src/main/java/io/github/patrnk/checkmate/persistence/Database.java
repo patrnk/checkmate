@@ -88,7 +88,6 @@ final class Database {
             while (rawRecords.next()) {
                 Integer testId = rawRecords.getInt("test_id");
                 String studentName = rawRecords.getString("student_name");
-                System.out.println(rawRecords.getString("student_name"));
                 String studentId = rawRecords.getString("student_id");
                 String answerFilename = rawRecords.getString("answer_file");
                 try {
