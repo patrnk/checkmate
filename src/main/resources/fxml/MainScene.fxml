@@ -1,21 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="anchor" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.patrnk.checkmate.MainSceneController">
+<AnchorPane id="AnchorPane" fx:id="anchor" prefHeight="582.0" prefWidth="891.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.patrnk.checkmate.MainSceneController">
     <children>
-      <TableView fx:id="testResultTable" layoutX="14.0" layoutY="10.0" onMouseClicked="#testResultTableClicked" prefHeight="380.0" prefWidth="419.0" />
-      <Button fx:id="checkButton" disable="true" layoutX="585.0" layoutY="294.0" mnemonicParsing="false" onAction="#openCheckScene" text="Проверить..." />
-      <Button layoutX="541.0" layoutY="45.0" mnemonicParsing="false" onAction="#openCreateTestScene" prefHeight="27.0" prefWidth="143.0" text="Создать листок..." />
-      <TableView fx:id="testsTable" layoutX="446.0" layoutY="87.0" onMouseClicked="#testsTableClicked" prefHeight="200.0" prefWidth="240.0">
+      <TableView fx:id="testResultTable" layoutX="456.0" layoutY="35.0" onMouseClicked="#testResultTableClicked" prefHeight="400.0" prefWidth="419.0">
          <columns>
-            <TableColumn fx:id="nameColumn" editable="false" prefWidth="128.0" sortable="false" text="Название" />
-            <TableColumn fx:id="idColumn" editable="false" prefWidth="110.0" sortable="false" text="ID" />
+            <TableColumn editable="false" prefWidth="209.0" sortable="false" text="Имя" />
+            <TableColumn editable="false" prefWidth="209.0" sortable="false" text="Идентификатор" />
+         </columns></TableView>
+      <Button fx:id="checkButton" disable="true" layoutX="456.0" layoutY="532.0" mnemonicParsing="false" onAction="#openCheckScene" prefHeight="27.0" prefWidth="189.0" text="Ввести работу вручную" />
+      <Button layoutX="16.0" layoutY="532.0" mnemonicParsing="false" onAction="#openCreateTestScene" prefHeight="27.0" prefWidth="128.0" text="Создать тест" />
+      <TableView fx:id="testsTable" layoutX="16.0" layoutY="35.0" onMouseClicked="#testsTableClicked" prefHeight="485.0" prefWidth="409.0">
+         <columns>
+            <TableColumn fx:id="nameColumn" editable="false" prefWidth="256.0" sortable="false" text="Название" />
+            <TableColumn fx:id="idColumn" editable="false" prefWidth="152.0" sortable="false" text="ID" />
          </columns>
       </TableView>
+      <Label layoutX="596.0" layoutY="17.0" text="Проверенные работы" />
+      <Label layoutX="189.0" layoutY="17.0" text="Тесты" />
+      <Button disable="true" layoutX="456.0" layoutY="493.0" mnemonicParsing="false" text="Получить работы по почте" />
+      <Button disable="true" layoutX="593.0" layoutY="447.0" mnemonicParsing="false" text="Посмотреть работу" />
+      <Button disable="true" layoutX="728.0" layoutY="532.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="145.0" text="Удалить работу" />
+      <Accordion layoutX="465.0" layoutY="137.0" />
+      <Button disable="true" layoutX="728.0" layoutY="493.0" mnemonicParsing="false" text="Удалить все работы" />
+      <Button disable="true" layoutX="297.0" layoutY="532.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="128.0" text="Удалить тест" />
+      <Button disable="true" layoutX="157.0" layoutY="532.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="128.0" text="Посмотреть тест" />
     </children>
 </AnchorPane>
