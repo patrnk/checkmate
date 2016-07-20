@@ -1,7 +1,7 @@
 package io.github.patrnk.checkmate;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  *
@@ -18,5 +18,5 @@ public interface Test extends Serializable {
      * @return list of TestAnswer with the same answers and grades. All answers
      *      with number greater than that provided in answer key are dropped.
      */
-    public List<TestAnswer> check(List<TestAnswer> studentAnswers);
+    public ArrayList<TestAnswer> check(ArrayList<TestAnswer> studentAnswers);
 }

@@ -1,7 +1,6 @@
 package io.github.patrnk.checkmate.persistence;
 
 import io.github.patrnk.checkmate.BadTestIdException;
-import io.github.patrnk.checkmate.CmUtils;
 import io.github.patrnk.checkmate.Test;
 import io.github.patrnk.checkmate.TestAnswer;
 import java.io.File;
@@ -11,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +56,7 @@ public final class PersistenceManager {
      *      reason Record constructor throws them.
      */
     public static void writeDownTestResults(String studentName, String studentId, 
-        List<TestAnswer> answers, Integer testId) 
+        ArrayList<TestAnswer> answers, Integer testId) 
         throws BadStudentNameException, BadStudentIdException, IOException {
         
         new File(ANSWER_FOLDER).mkdir();
@@ -99,7 +99,7 @@ public final class PersistenceManager {
      * Assumes that all the directories provided exist.
      * If it's not the case, throws IOException.
      */
-    private static void writeDown(String filepath, Object o) 
+    private static void writeDown(String filepath, Serializable o) 
         throws FileNotFoundException, IOException {
         FileOutputStream out = new FileOutputStream(filepath);
         ObjectOutputStream oos = new ObjectOutputStream(out);
@@ -127,14 +127,13 @@ public final class PersistenceManager {
         return tests;
     }
     
-    public static List<TestAnswer> getAnswerForRecord(Record record) {
+    public static ArrayList<TestAnswer> getAnswersForRecord(Record record) {
         String filepath = ANSWER_FOLDER;
         filepath += File.separator; 
         filepath += record.getAnswerFileName();
-        filepath += SUFFIX_SEPARATOR;
-        filepath += ANSWER_SUFFIX;
         File file = new File(filepath);
-        List<TestAnswer> answers = (List<TestAnswer>) getExistingObject(file);
+        ArrayList<TestAnswer> answers 
+            = (ArrayList<TestAnswer>) getExistingObject(file);
         return answers;
     }
     
@@ -173,6 +172,7 @@ public final class PersistenceManager {
         } catch (IOException | ClassNotFoundException ex) {
             // Can't really do anything about it.
             // Let's pretend it never happened.
+            ex.printStackTrace();
         }
         return null;
     }

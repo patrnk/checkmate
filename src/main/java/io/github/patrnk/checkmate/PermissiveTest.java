@@ -54,8 +54,8 @@ public class PermissiveTest implements Test {
     private final Integer LOW_GRADE = 0;
     
     @Override
-    public List<TestAnswer> check(List<TestAnswer> studentAnswers) {
-        List<TestAnswer> answers = removeExtraneousAnswers(studentAnswers);
+    public ArrayList<TestAnswer> check(ArrayList<TestAnswer> studentAnswers) {
+        ArrayList<TestAnswer> answers = removeExtraneousAnswers(studentAnswers);
         for (int i = 0; i < answers.size(); i++) {
             String answer = answers.get(i).getAnswer();
             Matcher m = answerKey.get(i).matcher(answer);
@@ -68,9 +68,9 @@ public class PermissiveTest implements Test {
         return answers;
     }
     
-    private List<TestAnswer> removeExtraneousAnswers(List<TestAnswer> studentAnswers) {
+    private ArrayList<TestAnswer> removeExtraneousAnswers(ArrayList<TestAnswer> studentAnswers) {
         if (studentAnswers.size() > answerKey.size()) {
-            List<TestAnswer> clearedStudentAnswers = new ArrayList();
+            ArrayList<TestAnswer> clearedStudentAnswers = new ArrayList();
             for (int i = 0; i < answerKey.size(); i++) {
                 clearedStudentAnswers.add(studentAnswers.get(i));
             }

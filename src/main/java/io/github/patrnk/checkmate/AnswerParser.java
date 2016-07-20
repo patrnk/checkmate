@@ -1,8 +1,6 @@
  package io.github.patrnk.checkmate;
 
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.List;
 
 
 final class AnswerParser {
@@ -17,11 +15,11 @@ final class AnswerParser {
     
     private static final Integer QUESTIONS_MAX = 1000;
     
-    public static List<TestAnswer> getTestAnswers(String rawAnswers) 
+    public static ArrayList<TestAnswer> getTestAnswers(String rawAnswers) 
         throws MalformedTestDescriptionException, 
         TooManyQuestionsException, TooManyAnswersException {
         
-        List<TestAnswer> answers = new ArrayList();
+        ArrayList<TestAnswer> answers = new ArrayList();
         rawAnswers = rawAnswers.trim();
         rawAnswers = rawAnswers.toLowerCase();
         String[] questions = rawAnswers.split(QUESTION_SEPARATOR_REGEX);
