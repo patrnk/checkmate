@@ -199,6 +199,8 @@ public final class PersistenceManager {
         String filepath = TESTS_FOLDER;
         filepath += File.separator;
         filepath += test.getInfo().getId().toString();
+        filepath += SUFFIX_SEPARATOR;
+        filepath += TESTS_SUFFIX;
         deleteFile(filepath);
     }
     
