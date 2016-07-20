@@ -56,6 +56,9 @@ public class MainSceneController implements Initializable {
     
     @FXML
     private Button viewTestButton;
+    
+    @FXML
+    private Button deleteTestButton;
 
     @FXML 
     private void openCreateTestScene(ActionEvent event) {
@@ -145,6 +148,7 @@ public class MainSceneController implements Initializable {
         if (selected != null) {
             checkButton.setDisable(false);
             viewTestButton.setDisable(false);
+            deleteTestButton.setDisable(false);
         }
     }
     
@@ -154,6 +158,17 @@ public class MainSceneController implements Initializable {
         String headText = selected.getInfo().getName();
         String bodyText = selected.getInfo().getDescription();
         openViewScene(headText, bodyText);
+    }
+    
+    @FXML
+    private void deleteTestButtonClicked() {
+        Test selected = testsTable.getSelectionModel().getSelectedItem();
+        try {
+            PersistenceManager.deleteTest(selected);
+            testsTable.getItems().remove(selected);
+        } catch (IOException ex) {
+            // Couldn't delete the results. Well, there's nothing we can do.
+        }
     }
 
     @Override
@@ -167,7 +182,7 @@ public class MainSceneController implements Initializable {
         testNameColumn.setCellValueFactory(getTestNameColumnCellValueFactory());
         testIdColumn.setCellValueFactory(getTestIdColumnCellValueFactory());
     }
-    
+     
     private void setValueFactoriesTestResultTable() {
         studentNameColumn.setCellValueFactory(getStudentNameColumnCellValueFactory());
         studentIdColumn.setCellValueFactory(getStudentIdColumnCellValueFactory());
