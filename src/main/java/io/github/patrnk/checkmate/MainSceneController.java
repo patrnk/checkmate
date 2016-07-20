@@ -129,28 +129,45 @@ public class MainSceneController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        anchor.sceneProperty().addListener(new ChangeListener<Scene>() {
+        anchor.sceneProperty().addListener(populateTablesOnShownSceneListener());
+    }
+    
+    private ChangeListener<Scene> populateTablesOnShownSceneListener() {
+        return new ChangeListener<Scene>() {
             @Override
             public void changed(ObservableValue<? extends Scene> observable,
                     Scene oldValue, Scene newValue) {
+                
                 if (newValue != null) {
-                    anchor.getScene().windowProperty().addListener(new ChangeListener<Window>() {
-                        @Override
-                        public void changed(ObservableValue<? extends Window> observable, Window oldValue, Window newValue) {
-                            if (newValue != null) {
-                                ((Stage)anchor.getScene().getWindow()).setOnShown(new EventHandler<WindowEvent>() {
-                                    @Override
-                                    public void handle(WindowEvent event) {
-                                        populateTestsTable();
-                                        prepareToPopulateTestResultTable();
-                                    }
-                                });
-                            }
-                        }
-                    });
+                    anchor.getScene().windowProperty()
+                        .addListener(populateTablesOnShownWindowListener());
                 }
             }
-        });
+        };
+    }
+    
+    private ChangeListener<Window> populateTablesOnShownWindowListener() {
+        return new ChangeListener<Window>() {
+            @Override
+            public void changed(ObservableValue<? extends Window> observable, 
+                Window oldValue, Window newValue) {
+                
+                if (newValue != null) {
+                    ((Stage)anchor.getScene().getWindow())
+                        .setOnShown(populateTablesOnShownHandler());
+                }
+            }
+        }; 
+    }
+    
+    private EventHandler<WindowEvent> populateTablesOnShownHandler() {
+        return new EventHandler<WindowEvent>() {            
+            @Override
+            public void handle(WindowEvent event) {
+                populateTestsTable();
+                prepareToPopulateTestResultTable();
+            }
+        };
     }
     
     private void populateTestsTable() {
