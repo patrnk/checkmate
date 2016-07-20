@@ -97,19 +97,19 @@ public class MainSceneController implements Initializable {
         }
     }
     
-    @FXML
-    private void openViewScene(ActionEvent event) {
+    private void openViewScene(String headText, String bodyText) {
         FXMLLoader loader;
         Parent root;
         try {
             loader = new FXMLLoader(getClass().getResource("/fxml/ViewScene.fxml"));
             root = (Parent)loader.load();
             final Stage stage = new Stage();
+            stage.setTitle("Просмотр");
             stage.setScene(new Scene(root));
             
             ViewSceneController controller = 
                 ((ViewSceneController)loader.getController());
-            
+            controller.setText(headText, bodyText);
             
             stage.show();
         } catch (IOException e) {
@@ -146,6 +146,14 @@ public class MainSceneController implements Initializable {
             checkButton.setDisable(false);
             viewTestButton.setDisable(false);
         }
+    }
+    
+    @FXML
+    private void viewTestButtonClicked() {
+        Test selected = testsTable.getSelectionModel().getSelectedItem();
+        String headText = selected.getInfo().getName();
+        String bodyText = selected.getInfo().getDescription();
+        openViewScene(headText, bodyText);
     }
 
     @Override

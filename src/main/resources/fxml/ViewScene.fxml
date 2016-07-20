@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="318.0" prefWidth="249.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="io.github.patrnk.checkmate.ViewSceneController">
+   <children>
+      <TextArea fx:id="bodyTextArea" editable="false" layoutX="25.0" layoutY="75.0" prefHeight="229.0" prefWidth="200.0" promptText="Описания нет." />
+      <Label fx:id="headTextLabel" layoutX="25.0" layoutY="14.0" prefHeight="45.0" prefWidth="200.0" text="Заголовка нет." textAlignment="CENTER" wrapText="true" />
+   </children>
+</AnchorPane>
