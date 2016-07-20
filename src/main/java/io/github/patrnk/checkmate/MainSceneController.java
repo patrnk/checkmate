@@ -21,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -52,6 +53,9 @@ public class MainSceneController implements Initializable {
     
     @FXML
     private Button checkButton;
+    
+    @FXML
+    private Button viewTestButton;
 
     @FXML 
     private void openCreateTestScene(ActionEvent event) {
@@ -93,6 +97,26 @@ public class MainSceneController implements Initializable {
         }
     }
     
+    @FXML
+    private void openViewScene(ActionEvent event) {
+        FXMLLoader loader;
+        Parent root;
+        try {
+            loader = new FXMLLoader(getClass().getResource("/fxml/ViewScene.fxml"));
+            root = (Parent)loader.load();
+            final Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            
+            ViewSceneController controller = 
+                ((ViewSceneController)loader.getController());
+            
+            
+            stage.show();
+        } catch (IOException e) {
+            CmUtils.printExceptionAndExit(e);
+        }
+    }
+    
     private EventHandler<WindowEvent> showMainEventHandler() {
         return new EventHandler<WindowEvent>() {
                 @Override
@@ -120,6 +144,7 @@ public class MainSceneController implements Initializable {
         Test selected = testsTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
             checkButton.setDisable(false);
+            viewTestButton.setDisable(false);
         }
     }
 
