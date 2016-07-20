@@ -62,7 +62,10 @@ public class MainSceneController implements Initializable {
     
     @FXML
     private Button deleteTestButton;
-
+    
+    @FXML
+    private Button viewTestResultButton;
+    
     @FXML 
     private void openCreateTestScene(ActionEvent event) {
         FXMLLoader loader;
@@ -142,7 +145,7 @@ public class MainSceneController implements Initializable {
     
     @FXML
     private void testResultTableClicked() {
-        System.out.println(String.valueOf(testResultTable.getSelectionModel().getSelectedIndex()));
+        
     }
     
     @FXML
@@ -177,10 +180,16 @@ public class MainSceneController implements Initializable {
         Test selected = testsTable.getSelectionModel().getSelectedItem();
         try {
             PersistenceManager.deleteTest(selected);
+            // TODO: delete all the test results too.
             testsTable.getItems().remove(selected);
         } catch (IOException ex) {
             // Couldn't delete the results. Well, there's nothing we can do.
         }
+    }
+    
+    @FXML
+    private void viewTestResultButtonClicked() {
+        
     }
 
     Map<Integer, List<Record>> testResult;
