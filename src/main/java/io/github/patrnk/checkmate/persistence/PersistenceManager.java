@@ -127,6 +127,17 @@ public final class PersistenceManager {
         return tests;
     }
     
+    public static List<TestAnswer> getAnswerForRecord(Record record) {
+        String filepath = ANSWER_FOLDER;
+        filepath += File.separator; 
+        filepath += record.getAnswerFileName();
+        filepath += SUFFIX_SEPARATOR;
+        filepath += ANSWER_SUFFIX;
+        File file = new File(filepath);
+        List<TestAnswer> answers = (List<TestAnswer>) getExistingObject(file);
+        return answers;
+    }
+    
     /**
      * Gets you serialized objects in the directory.
      * Assumes that objects serialized into files with specified suffix
@@ -144,19 +155,26 @@ public final class PersistenceManager {
         File[] files = folder.listFiles();
         for (File file : files) {
             if (getSuffix(file.getName()).equals(suffix)) {
-                try {
-                    FileInputStream in = new FileInputStream(file.getPath());
-                    ObjectInputStream ois = new ObjectInputStream(in);
-                    Object o = ois.readObject();
+                Object o = getExistingObject(file);
+                if (o != null) {
                     objects.add(o);
-                } catch (IOException | ClassNotFoundException ex) {
-                    // TODO: find a better way to handle the exception (in case of an attack)
-                    // print a warning or something, but don't shut down.
-                    CmUtils.printExceptionAndExit(ex);
                 }
             }
         }
         return objects;
+    }
+    
+    private static Object getExistingObject(File file) {
+        try {
+            FileInputStream in = new FileInputStream(file.getPath());
+            ObjectInputStream ois = new ObjectInputStream(in);
+            Object o = ois.readObject();
+            return o;
+        } catch (IOException | ClassNotFoundException ex) {
+            // Can't really do anything about it.
+            // Let's pretend it never happened.
+        }
+        return null;
     }
     
     /**
