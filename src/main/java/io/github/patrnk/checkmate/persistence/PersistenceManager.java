@@ -46,8 +46,7 @@ public final class PersistenceManager {
     private final static String ANSWER_SUFFIX = "ans";
     
     /**
-     * Writes down the information provided and returns Record object that 
-     * allows get read it back.
+     * Writes down the information provided.
      * @param studentName name of a student that owns the results
      * @param studentId id of a student that owns the results
      * @param answers student answers
@@ -55,10 +54,8 @@ public final class PersistenceManager {
      * @throws IOException if the method couldn't store the results
      * @throws BadStudentNameException, BadStudentIdException for the same 
      *      reason Record constructor throws them.
-     * @returns Record object that contains all the information needed to 
-     *      recover written info.
      */
-    public static Record getWrittenRecord(String studentName, String studentId, 
+    public static void writeDownTestResults(String studentName, String studentId, 
         List<TestAnswer> answers, Integer testId) 
         throws BadStudentNameException, BadStudentIdException, IOException {
         
@@ -73,7 +70,6 @@ public final class PersistenceManager {
             deleteFile(filepath);
             throw new IOException("Something went wrong with the DB.");
         }
-        return newRecord;
     }
     
     /**
