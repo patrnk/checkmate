@@ -4,6 +4,10 @@ import io.github.patrnk.checkmate.persistence.PersistenceManager;
 import io.github.patrnk.checkmate.persistence.Record;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
@@ -21,7 +25,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -143,13 +146,22 @@ public class MainSceneController implements Initializable {
     }
     
     @FXML
-    private void testsTableClicked() {
+     private void testsTableClicked() {
         Test selected = testsTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
             checkButton.setDisable(false);
             viewTestButton.setDisable(false);
             deleteTestButton.setDisable(false);
+            showResultsForTest(selected.getInfo().getId());
         }
+    }
+    
+    private void showResultsForTest(Integer testId) {
+        List<Record> recordsForTheTest = testResult.get(testId);
+        if (recordsForTheTest == null) {
+            recordsForTheTest = new ArrayList();
+        }
+        testResultTable.setItems(FXCollections.observableArrayList(recordsForTheTest));
     }
     
     @FXML
@@ -171,11 +183,25 @@ public class MainSceneController implements Initializable {
         }
     }
 
+    Map<Integer, List<Record>> testResult;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setValueFactoriesTestsTable();
         setValueFactoriesTestResultTable();
         anchor.sceneProperty().addListener(populateTablesOnShownSceneListener());
+        testResult = getRecordsByTestId(PersistenceManager.getExistingTestResults());
+    }
+    
+    private Map<Integer, List<Record>> getRecordsByTestId(List<Record> resultList) {
+        Map<Integer, List<Record>> result = new HashMap();
+        for (Record rec : resultList) {
+            if (result.get(rec.getTestId()) == null) {
+                result.put(rec.getTestId(), new ArrayList());
+            }
+            result.get(rec.getTestId()).add(rec);
+        }
+        return result;
     }
     
     private void setValueFactoriesTestsTable() {
@@ -221,7 +247,6 @@ public class MainSceneController implements Initializable {
             @Override
             public void handle(WindowEvent event) {
                 getTestsTableItems();
-                getTestResultTableItems();
             }
         };
     }
@@ -230,12 +255,6 @@ public class MainSceneController implements Initializable {
         ObservableList<Test> tests = FXCollections
             .observableArrayList(PersistenceManager.getExistingTests());
         testsTable.setItems(tests);
-    }
-    
-    private void getTestResultTableItems() {
-        ObservableList<Record> testResult = FXCollections
-            .observableArrayList(PersistenceManager.getExistingTestResults());
-        testResultTable.setItems(testResult);
     }
     
     private Callback<CellDataFeatures<Test, String>, ObservableValue<String>> 
