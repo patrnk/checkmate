@@ -53,6 +53,23 @@ public class MainSceneController implements Initializable {
     
     @FXML
     private Button checkButton;
+
+    @FXML 
+    private void openCreateTestScene(ActionEvent event) {
+        FXMLLoader loader;
+        Parent root;
+        try {
+            loader = new FXMLLoader(getClass().getResource("/fxml/CreateTestScene.fxml"));
+            root = (Parent)loader.load();
+            final Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.onHiddenProperty().setValue(showMainEventHandler());
+            hideMainWindow();
+            stage.show();            
+        } catch (IOException e) {
+            CmUtils.printExceptionAndExit(e);
+        }
+    }
     
     @FXML
     private void openCheckScene(ActionEvent event) {
@@ -63,13 +80,8 @@ public class MainSceneController implements Initializable {
             root = (Parent)loader.load();
             final Stage stage = new Stage();
             stage.setScene(new Scene(root));
-            stage.onHiddenProperty().setValue(new EventHandler<WindowEvent>() {
-                @Override
-                public void handle(WindowEvent event) {
-                    ((Stage)anchor.getScene().getWindow()).show();
-                }
-            });
-            ((Stage)anchor.getScene().getWindow()).hide();
+            stage.onHiddenProperty().setValue(showMainEventHandler());
+            hideMainWindow();
             
             CheckSceneController controller = 
                 ((CheckSceneController)loader.getController());
@@ -80,6 +92,23 @@ public class MainSceneController implements Initializable {
         } catch (IOException e) {
             CmUtils.printExceptionAndExit(e);
         }
+    }
+    
+    private EventHandler<WindowEvent> showMainEventHandler() {
+        return new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent event) {
+                    showMainWindow();
+                }
+            };
+    }
+    
+    private void hideMainWindow() {
+        ((Stage)anchor.getScene().getWindow()).hide();
+    }
+
+    private void showMainWindow() {
+        ((Stage)anchor.getScene().getWindow()).show();
     }
     
     @FXML
@@ -94,22 +123,7 @@ public class MainSceneController implements Initializable {
             checkButton.setDisable(false);
         }
     }
-        
-    @FXML 
-    private void openCreateTestScene(ActionEvent event) {
-        FXMLLoader loader;
-        Parent root;
-        try {
-            loader = new FXMLLoader(getClass().getResource("/fxml/CreateTestScene.fxml"));
-            root = (Parent)loader.load();
-            final Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();            
-        } catch (IOException e) {
-            CmUtils.printExceptionAndExit(e);
-        }
-    }
-    
+
     private ObservableList<Test> tests;
     private ObservableList<Record> testResult;
     
