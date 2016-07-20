@@ -160,10 +160,7 @@ public class MainSceneController implements Initializable {
     }
     
     private void showResultsForTest(Integer testId) {
-        List<Record> recordsForTheTest = testResult.get(testId);
-        if (recordsForTheTest == null) {
-            recordsForTheTest = new ArrayList();
-        }
+        List<Record> recordsForTheTest = testResult.getOrDefault(testId, new ArrayList());
         testResultTable.setItems(FXCollections.observableArrayList(recordsForTheTest));
     }
     
