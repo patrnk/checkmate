@@ -107,12 +107,6 @@ public final class PersistenceManager {
         oos.flush();
     }
     
-    private static void deleteFile(String filepath) throws IOException {
-        if (!(new File(filepath)).delete()) {
-            throw new IOException("File cannot be deleted: " + filepath);
-        }
-    }
-    
     /**
      * Returns the tests stored in some long-term storage.
      * @return list of deserialized tests. 
@@ -194,6 +188,24 @@ public final class PersistenceManager {
             suffix = filename.substring(suffixIndex + 1);
         }
         return suffix;
+    }
+    
+    /**
+     * Removes the test from long-term storage.
+     * @param test the test to remove
+     * @throws IOException if not succeeded.
+     */
+    public static void deleteTest(Test test) throws IOException {
+        String filepath = TESTS_FOLDER;
+        filepath += File.separator;
+        filepath += test.getInfo().getId().toString();
+        deleteFile(filepath);
+    }
+    
+    private static void deleteFile(String filepath) throws IOException {
+        if (!(new File(filepath)).delete()) {
+            throw new IOException("File cannot be deleted: " + filepath);
+        }
     }
     
     private PersistenceManager() {
