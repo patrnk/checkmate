@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,6 +24,7 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 
@@ -64,7 +66,6 @@ public class MainSceneController implements Initializable {
             stage.onHiddenProperty().setValue(new EventHandler<WindowEvent>() {
                 @Override
                 public void handle(WindowEvent event) {
-                    //anchor.setDisable(false);
                     ((Stage)anchor.getScene().getWindow()).show();
                 }
             });
@@ -76,7 +77,6 @@ public class MainSceneController implements Initializable {
             controller.setTest(selectedTest);
             
             stage.show();
-            //anchor.setDisable(true);
         } catch (IOException e) {
             CmUtils.printExceptionAndExit(e);
         }
@@ -94,7 +94,7 @@ public class MainSceneController implements Initializable {
             checkButton.setDisable(false);
         }
     }
-    
+        
     @FXML 
     private void openCreateTestScene(ActionEvent event) {
         FXMLLoader loader;
@@ -115,8 +115,28 @@ public class MainSceneController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        populateTestsTable();
-        prepareToPopulateTestResultTable();
+        anchor.sceneProperty().addListener(new ChangeListener<Scene>() {
+            @Override
+            public void changed(ObservableValue<? extends Scene> observable,
+                    Scene oldValue, Scene newValue) {
+                if (newValue != null) {
+                    anchor.getScene().windowProperty().addListener(new ChangeListener<Window>() {
+                        @Override
+                        public void changed(ObservableValue<? extends Window> observable, Window oldValue, Window newValue) {
+                            if (newValue != null) {
+                                ((Stage)anchor.getScene().getWindow()).setOnShown(new EventHandler<WindowEvent>() {
+                                    @Override
+                                    public void handle(WindowEvent event) {
+                                        populateTestsTable();
+                                        prepareToPopulateTestResultTable();
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
     
     private void populateTestsTable() {
