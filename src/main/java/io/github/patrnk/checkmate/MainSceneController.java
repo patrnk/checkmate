@@ -145,7 +145,10 @@ public class MainSceneController implements Initializable {
     
     @FXML
     private void testResultTableClicked() {
-        
+        Record selected = testResultTable.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            viewTestResultButton.setDisable(false);
+        }
     }
     
     @FXML
@@ -186,7 +189,20 @@ public class MainSceneController implements Initializable {
     
     @FXML
     private void viewTestResultButtonClicked() {
-        
+        Record selected = testResultTable.getSelectionModel().getSelectedItem();
+        String headText = selected.getStudentName();
+        ArrayList<TestAnswer> answers = PersistenceManager.getAnswersForRecord(selected);
+        String bodyText = turnAnswersToString(answers);
+        openViewScene(headText, bodyText);
+    }
+    
+    private String turnAnswersToString(List<TestAnswer> rawAnswers) {
+        String answers = "Номер) Ответ : Балл\n";
+        for (int i = 0; i < rawAnswers.size(); i++) {
+            answers += (i + 1) + ") " + rawAnswers.get(i).getAnswer() + 
+                " : " + rawAnswers.get(i).getGrade() + "\n";
+        }
+        return answers;
     }
 
     Map<Integer, List<Record>> testResult;
