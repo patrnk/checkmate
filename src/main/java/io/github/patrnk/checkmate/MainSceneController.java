@@ -4,7 +4,6 @@ import io.github.patrnk.checkmate.persistence.PersistenceManager;
 import io.github.patrnk.checkmate.persistence.Record;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
@@ -124,12 +123,21 @@ public class MainSceneController implements Initializable {
         }
     }
 
-    private ObservableList<Test> tests;
-    private ObservableList<Record> testResult;
-    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        setValueFactoriesTestsTable();
+        setValueFactoriesTestResultTable();
         anchor.sceneProperty().addListener(populateTablesOnShownSceneListener());
+    }
+    
+    private void setValueFactoriesTestsTable() {
+        testNameColumn.setCellValueFactory(getTestNameColumnCellValueFactory());
+        testIdColumn.setCellValueFactory(getTestIdColumnCellValueFactory());
+    }
+    
+    private void setValueFactoriesTestResultTable() {
+        studentNameColumn.setCellValueFactory(getStudentNameColumnCellValueFactory());
+        studentIdColumn.setCellValueFactory(getStudentIdColumnCellValueFactory());
     }
     
     private ChangeListener<Scene> populateTablesOnShownSceneListener() {
@@ -164,18 +172,22 @@ public class MainSceneController implements Initializable {
         return new EventHandler<WindowEvent>() {            
             @Override
             public void handle(WindowEvent event) {
-                populateTestsTable();
-                prepareToPopulateTestResultTable();
+                getTestsTableItems();
+                getTestResultTableItems();
             }
         };
     }
     
-    private void populateTestsTable() {
-        testNameColumn.setCellValueFactory(getTestNameColumnCellValueFactory());
-        testIdColumn.setCellValueFactory(getTestIdColumnCellValueFactory());
-        
-        tests = FXCollections.observableArrayList(PersistenceManager.getExistingTests());
+    private void getTestsTableItems() {
+        ObservableList<Test> tests = FXCollections
+            .observableArrayList(PersistenceManager.getExistingTests());
         testsTable.setItems(tests);
+    }
+    
+    private void getTestResultTableItems() {
+        ObservableList<Record> testResult = FXCollections
+            .observableArrayList(PersistenceManager.getExistingTestResults());
+        testResultTable.setItems(testResult);
     }
     
     private Callback<CellDataFeatures<Test, String>, ObservableValue<String>> 
@@ -199,16 +211,7 @@ public class MainSceneController implements Initializable {
             }
         };
     }
-    
-    private void prepareToPopulateTestResultTable() {
-        studentNameColumn.setCellValueFactory(getStudentNameColumnCellValueFactory());
-        studentIdColumn.setCellValueFactory(getStudentIdColumnCellValueFactory());
         
-        List<Record> records = PersistenceManager.getExistingTestResults();
-        testResult = FXCollections.observableArrayList(records);
-        testResultTable.setItems(testResult);
-    }
-    
     private Callback<CellDataFeatures<Record, String>, ObservableValue<String>> 
     getStudentNameColumnCellValueFactory() {
         return new Callback<CellDataFeatures<Record, String>, ObservableValue<String>>() { 
