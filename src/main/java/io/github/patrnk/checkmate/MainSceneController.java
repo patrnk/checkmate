@@ -213,7 +213,12 @@ public class MainSceneController implements Initializable {
     @FXML
     private void deleteTestResultButtonClicked() {
         Record selected = testResultTable.getSelectionModel().getSelectedItem();
-        // TODO: Persistence manager stuff.
+        try {
+            PersistenceManager.deleteTestResult(selected.getAnswerFileName());
+            testResultTable.getItems().remove(selected);
+        } catch (IOException ex) {
+            // There's not much we can do. Let's pretend it never happened.
+        }
     }
     
     Map<Integer, List<Record>> testResult;
