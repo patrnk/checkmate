@@ -222,6 +222,19 @@ public final class PersistenceManager {
         deleteFile(filepath);
     }
     
+    public static void deleteTestResult(String filename) throws IOException {
+        try {
+            Database.deleteRecord(filename);
+            
+            String filepath = ANSWER_FOLDER;
+            filepath += File.separator;
+            filepath += filename;
+            deleteFile(filepath);
+        } catch (SQLException ex) {
+            throw new IOException("Something went wrong with the DB.");
+        }
+    }
+    
     private static void deleteFile(String filepath) throws IOException {
         if (!(new File(filepath)).delete()) {
             throw new IOException("File cannot be deleted: " + filepath);
