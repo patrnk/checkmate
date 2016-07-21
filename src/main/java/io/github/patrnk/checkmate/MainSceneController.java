@@ -213,7 +213,6 @@ public class MainSceneController implements Initializable {
         setValueFactoriesTestsTable();
         setValueFactoriesTestResultTable();
         anchor.sceneProperty().addListener(populateTablesOnShownSceneListener());
-        testResult = getRecordsByTestId(PersistenceManager.getExistingTestResults());
     }
     
     private Map<Integer, List<Record>> getRecordsByTestId(List<Record> resultList) {
@@ -269,15 +268,22 @@ public class MainSceneController implements Initializable {
         return new EventHandler<WindowEvent>() {            
             @Override
             public void handle(WindowEvent event) {
-                getTestsTableItems();
+                setTestsTableItems();
+                setTestResultTableItems();
             }
         };
     }
     
-    private void getTestsTableItems() {
+    private void setTestsTableItems() {
         ObservableList<Test> tests = FXCollections
             .observableArrayList(PersistenceManager.getExistingTests());
         testsTable.setItems(tests);
+    }
+    
+    private void setTestResultTableItems() {
+        testResult 
+            = getRecordsByTestId(PersistenceManager.getExistingTestResults());
+        testResultTable.setItems(null);
     }
     
     private Callback<CellDataFeatures<Test, String>, ObservableValue<String>> 
