@@ -114,6 +114,14 @@ final class Database {
         }
     }
     
+    public void deleteRecord(String answerFileName) throws SQLException {
+        String deleteSql = "DELETE FROM testResult WHERE answer_file=?";
+        try (PreparedStatement delete = 
+            Database.getConnection().prepareStatement(deleteSql)) {
+            delete.executeUpdate();
+        }
+    }
+    
     private Database() {
         throw new AssertionError("You cannot instantiate the Database class");
     }
