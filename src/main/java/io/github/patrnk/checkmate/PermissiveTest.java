@@ -99,6 +99,11 @@ public class PermissiveTest implements Test {
         return true;
     }
     
+    @Override
+    public Integer getMaxGrade() {
+        return answerKey.size() * 2;
+    }
+    
     private static class SerializationProxy implements Serializable {
         TestInfo info;
         

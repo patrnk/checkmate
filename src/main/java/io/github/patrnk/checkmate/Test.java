@@ -19,4 +19,6 @@ public interface Test extends Serializable {
      *      with number greater than that provided in answer key are dropped.
      */
     public ArrayList<TestAnswer> check(ArrayList<TestAnswer> studentAnswers);
+    
+    public Integer getMaxGrade();
 }
