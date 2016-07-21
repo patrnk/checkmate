@@ -192,6 +192,7 @@ public class MainSceneController implements Initializable {
         Test selected = testsTable.getSelectionModel().getSelectedItem();
         String headText = selected.getInfo().getName();
         String bodyText = selected.getInfo().getDescription();
+        bodyText += "\n\nМаксимум баллов: " + selected.getMaxGrade();
         openViewScene(headText, bodyText);
     }
     
@@ -213,8 +214,13 @@ public class MainSceneController implements Initializable {
     private void viewTestResultButtonClicked() {
         Record selected = testResultTable.getSelectionModel().getSelectedItem();
         String headText = selected.getStudentName();
+        
         ArrayList<TestAnswer> answers = PersistenceManager.getAnswersForRecord(selected);
         String bodyText = turnAnswersToString(answers);
+        bodyText += "\n" + sumOfGrades(answers);
+        Test selectedTest = testsTable.getSelectionModel().getSelectedItem();
+        bodyText += " из " + selectedTest.getMaxGrade();
+        
         openViewScene(headText, bodyText);
     }
     
@@ -225,6 +231,14 @@ public class MainSceneController implements Initializable {
                 " : " + rawAnswers.get(i).getGrade() + "\n";
         }
         return answers;
+    }
+    
+    private Integer sumOfGrades(List<TestAnswer> answers) {
+        Integer sum = 0;
+        for (TestAnswer answer : answers) {
+            sum += answer.getGrade();
+        }
+        return sum;
     }
     
     @FXML
