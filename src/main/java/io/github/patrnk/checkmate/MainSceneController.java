@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -188,9 +189,11 @@ public class MainSceneController implements Initializable {
     private void deleteTestButtonClicked() {
         Test selected = testsTable.getSelectionModel().getSelectedItem();
         try {
-            PersistenceManager.deleteTest(selected);
             deleteResultForSelectedTest();
-            testsTable.getItems().remove(selected);
+            if (testResultTable.getItems().isEmpty()) {
+                PersistenceManager.deleteTest(selected);
+                testsTable.getItems().remove(selected);
+            }
         } catch (IOException ex) {
             // Couldn't delete the results. Well, there's nothing we can do.
         }
@@ -227,19 +230,21 @@ public class MainSceneController implements Initializable {
     
     @FXML
     private void deleteResultForSelectedTest() {
-        List<Record> results = testResultTable.getItems();
-        for (Record result : results) {
+        Iterator<Record> iterator = testResultTable.getItems().iterator();
+        while(iterator.hasNext()) {
+            Record result = iterator.next();
             try {
                 PersistenceManager.deleteTestResult(result.getAnswerFileName());
-                testResultTable.getItems().remove(result);
+                iterator.remove();
             } catch (IOException ex) {
                 // There's not much we can do. Let's pretend it's never happened.
-            }    
+            }   
         }
     }
     
     Map<Integer, List<Record>> testResult;
     
+    // TODO: disable some sets of buttons
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setValueFactoriesTestsTable();
