@@ -172,6 +172,7 @@ public class MainSceneController implements Initializable {
         }
     }
     
+    @FXML
     private void showResultsForTest(Integer testId) {
         List<Record> recordsForTheTest = testResult.getOrDefault(testId, new ArrayList());
         testResultTable.setItems(FXCollections.observableArrayList(recordsForTheTest));
