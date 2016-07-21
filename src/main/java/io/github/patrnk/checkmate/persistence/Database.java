@@ -120,9 +120,10 @@ final class Database {
      * @throws SQLException if something went wrong with the SQL request.
      */
     public static void deleteRecord(String answerFileName) throws SQLException {
-        String deleteSql = "DELETE FROM testResult WHERE answer_file=?";
+        String deleteSql = "DELETE FROM testResult WHERE answer_file= ? ;";
         try (PreparedStatement delete = 
             Database.getConnection().prepareStatement(deleteSql)) {
+            delete.setString(1, answerFileName);
             delete.executeUpdate();
         }
     }
