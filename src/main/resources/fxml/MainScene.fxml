@@ -26,7 +26,7 @@
       <Label layoutX="189.0" layoutY="17.0" text="Тесты" />
       <Button disable="true" layoutX="16.0" layoutY="501.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="205.0" text="Получить работы по почте" />
       <Button fx:id="viewTestResultButton" disable="true" layoutX="456.0" layoutY="501.0" mnemonicParsing="false" onAction="#viewTestResultButtonClicked" prefHeight="27.0" text="Посмотреть работу" />
-      <Button disable="true" layoutX="736.0" layoutY="501.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="139.0" text="Удалить работу" />
+      <Button fx:id="deleteTestResultButton" disable="true" layoutX="736.0" layoutY="501.0" mnemonicParsing="false" onAction="#deleteTestResultButtonClicked" prefHeight="27.0" prefWidth="139.0" text="Удалить работу" />
       <Accordion layoutX="465.0" layoutY="137.0" />
       <Button disable="true" layoutX="715.0" layoutY="536.0" mnemonicParsing="false" prefWidth="160.0" text="Удалить все работы" />
       <Button fx:id="deleteTestButton" disable="true" layoutX="296.0" layoutY="536.0" mnemonicParsing="false" onAction="#deleteTestButtonClicked" prefHeight="27.0" prefWidth="130.0" text="Удалить тест" />

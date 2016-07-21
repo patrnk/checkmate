@@ -66,6 +66,9 @@ public class MainSceneController implements Initializable {
     @FXML
     private Button viewTestResultButton;
     
+    @FXML
+    private Button deleteTestResultButton;
+    
     @FXML 
     private void openCreateTestScene(ActionEvent event) {
         FXMLLoader loader;
@@ -144,15 +147,7 @@ public class MainSceneController implements Initializable {
     }
     
     @FXML
-    private void testResultTableClicked() {
-        Record selected = testResultTable.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            viewTestResultButton.setDisable(false);
-        }
-    }
-    
-    @FXML
-     private void testsTableClicked() {
+    private void testsTableClicked() {
         Test selected = testsTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
             checkButton.setDisable(false);
@@ -160,6 +155,15 @@ public class MainSceneController implements Initializable {
             deleteTestButton.setDisable(false);
             showResultsForTest(selected.getInfo().getId());
             viewTestResultButton.setDisable(true);
+        }
+    }
+       
+    @FXML
+    private void testResultTableClicked() {
+        Record selected = testResultTable.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            viewTestResultButton.setDisable(false);
+            deleteTestResultButton.setDisable(false);
         }
     }
     
@@ -205,7 +209,13 @@ public class MainSceneController implements Initializable {
         }
         return answers;
     }
-
+    
+    @FXML
+    private void deleteTestResultButtonClicked() {
+        Record selected = testResultTable.getSelectionModel().getSelectedItem();
+        // TODO: Persistence manager stuff.
+    }
+    
     Map<Integer, List<Record>> testResult;
     
     @Override
