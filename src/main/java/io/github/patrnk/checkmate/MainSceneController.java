@@ -245,6 +245,7 @@ public class MainSceneController implements Initializable {
             Record result = iterator.next();
             try {
                 PersistenceManager.deleteTestResult(result.getAnswerFileName());
+                testResult.get(result.getTestId()).remove(result);
                 iterator.remove();
             } catch (IOException ex) {
                 // There's not much we can do. Let's pretend it's never happened.
