@@ -155,6 +155,7 @@ public class MainSceneController implements Initializable {
             deleteTestButton.setDisable(false);
             showResultsForTest(selected.getInfo().getId());
             viewTestResultButton.setDisable(true);
+            deleteTestResultButton.setDisable(true);
         }
     }
        
