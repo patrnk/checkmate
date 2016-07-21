@@ -162,7 +162,12 @@ public class MainSceneController implements Initializable {
             deleteTestResultButton.setDisable(true);
         }
     }
-       
+    
+    private void showResultsForTest(Integer testId) {
+        List<Record> recordsForTheTest = testResult.getOrDefault(testId, new ArrayList());
+        testResultTable.setItems(FXCollections.observableArrayList(recordsForTheTest));
+    }
+    
     @FXML
     private void testResultTableClicked() {
         Record selected = testResultTable.getSelectionModel().getSelectedItem();
@@ -170,11 +175,6 @@ public class MainSceneController implements Initializable {
             viewTestResultButton.setDisable(false);
             deleteTestResultButton.setDisable(false);
         }
-    }
-    
-    private void showResultsForTest(Integer testId) {
-        List<Record> recordsForTheTest = testResult.getOrDefault(testId, new ArrayList());
-        testResultTable.setItems(FXCollections.observableArrayList(recordsForTheTest));
     }
     
     @FXML
