@@ -114,7 +114,12 @@ final class Database {
         }
     }
     
-    public void deleteRecord(String answerFileName) throws SQLException {
+    /**
+     * Deletes the row with the record.
+     * @param answerFileName used as an identifier of the record.
+     * @throws SQLException if something went wrong with the SQL request.
+     */
+    public static void deleteRecord(String answerFileName) throws SQLException {
         String deleteSql = "DELETE FROM testResult WHERE answer_file=?";
         try (PreparedStatement delete = 
             Database.getConnection().prepareStatement(deleteSql)) {
