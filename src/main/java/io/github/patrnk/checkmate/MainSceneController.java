@@ -148,18 +148,17 @@ public class MainSceneController implements Initializable {
 
     private void showMainWindow() {
         ((Stage)anchor.getScene().getWindow()).show();
+        setDisableTestButtons(true);
+        setDisableResultButtons(true);
     }
     
     @FXML
     private void testsTableClicked() {
         Test selected = testsTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            checkButton.setDisable(false);
-            viewTestButton.setDisable(false);
-            deleteTestButton.setDisable(false);
+            setDisableTestButtons(false);
             showResultsForTest(selected.getInfo().getId());
-            viewTestResultButton.setDisable(true);
-            deleteTestResultButton.setDisable(true);
+            setDisableResultButtons(true);
         }
     }
     
@@ -172,9 +171,20 @@ public class MainSceneController implements Initializable {
     private void testResultTableClicked() {
         Record selected = testResultTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            viewTestResultButton.setDisable(false);
-            deleteTestResultButton.setDisable(false);
+            setDisableResultButtons(false);
         }
+    }
+    
+    private void setDisableTestButtons(Boolean value) {
+        checkButton.setDisable(value);
+        viewTestButton.setDisable(value);
+        deleteTestButton.setDisable(value);
+        deleteAllResultsButton.setDisable(value);
+    }
+    
+    private void setDisableResultButtons(Boolean value) {
+        viewTestResultButton.setDisable(value);
+        deleteTestResultButton.setDisable(value);
     }
     
     @FXML
