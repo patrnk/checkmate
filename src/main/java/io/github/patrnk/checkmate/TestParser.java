@@ -2,6 +2,7 @@ package io.github.patrnk.checkmate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Knows how classes are written in String; how answers are written.
@@ -21,7 +22,103 @@ public final class TestParser
      */
     private static final String ANSWER_SEPARATOR_REGEX = "\\)";
     
+    /**
+     * Turns a formatted description of test answers into regex patterns that
+     *      can be used as answer key.
+     * Take the example input:
+     * <code> 
+     * 1) 3
+     * 2) абвг
+     * 2) abcde
+     * 4) *Proton
+     * 5) *256
+     * </code>
+     * Note that questions are separated by line breaks and answers by ")".
+     * Answer to the first question is "3", so the pattern matches only "3".
+     * Answer to the second question is either "абвг" or "abcde". Pattern also 
+     *      matches symbols in any order, i.e. "abdec" is a correct answer too. 
+     *      Notice that "abc" is an incorrect answer.
+     * Answer to the third question is "Proton". And "proton". 
+     *      And even "pRoToN". What matters is the order of the symbols.
+     * Answer to the fifth answer is only 256.
+     * Every pattern is case-insensitive.
+     * @param rawAnswers answer description in the format described above.
+     * @return list of patterns that works as described above. 
+     *      Element is null if no answer provided.
+     * @throws MalformedTestDescriptionException if rawAnswers is not formatted correctly.
+     * @throws TooManyQuestionsException if number of one of the questions exceeds 1000.
+     * @throws TooManyAnswersException if there are more than 1000 answers provided.
+     */
+    public List<Pattern> getAnswerKey(String rawAnswers) 
+        throws MalformedTestDescriptionException, 
+        TooManyQuestionsException, TooManyAnswersException 
+    {
+        List<List<String>> questions = this.getSeparatedLowerCaseAnswers(rawAnswers);
+        List<Pattern> answerKey = nullPatternList(questions.size());
+        for (int i = 0; i < questions.size(); i++) {
+            for (String answer : questions.get(i)) {
+                Pattern regex = formRegex(answerKey.get(i), answer);
+                answerKey.set(i, regex);
+            }
+        }
+        return answerKey;
+    }
     
+    /**
+     * Creates List<Pattern> of a given size with null elements.
+     * @param size size of the list
+     * @return list of nulls.
+     */
+    private List<Pattern> nullPatternList(Integer size) 
+    {
+        List<Pattern> nullList = new ArrayList(size);
+        while (nullList.size() < size) {
+            nullList.add(null);
+        }
+        return nullList;
+    }
+    
+    private Pattern formRegex(Pattern previousPattern, String answer) 
+    {
+        String PREFIX = "^(";
+        String SUFFIX = ")$";
+        String regex = PREFIX;
+        if (previousPattern != null) {
+            // copy previous answer without prefix and suffix.
+            String previousAnswer = previousPattern.toString();
+            assert(previousAnswer.startsWith(PREFIX));
+            assert(previousAnswer.endsWith(SUFFIX));
+            regex += previousAnswer.substring(PREFIX.length(),
+                previousAnswer.length() - SUFFIX.length());
+            regex += "|";
+        }
+        
+        if (answer.charAt(0) == '*') {
+            regex += Pattern.quote(answer.substring(1));
+        } else {
+            regex += formUnorderedAnwser(answer);
+        }
+        
+        regex += SUFFIX;
+        return Pattern.compile(regex);
+    }
+    
+    private String formUnorderedAnwser(String answer) 
+    {
+        String unorderedAnswer = "";
+        for (char c : answer.toCharArray()) {
+            unorderedAnswer += "(?=.*";
+            unorderedAnswer += Pattern.quote(String.valueOf(c));
+            unorderedAnswer += ")";
+        }
+        unorderedAnswer += "[";
+        for (char c : answer.toCharArray()) {
+            unorderedAnswer += Pattern.quote(String.valueOf(c));
+        }
+        unorderedAnswer += "]";
+        unorderedAnswer += "{" + answer.length() + "}";
+        return unorderedAnswer;
+    }
     
     /**
      * Same as getSeparatedAnswers() but case-insensitive.
