@@ -23,6 +23,46 @@ public final class TestParser
     private static final String ANSWER_SEPARATOR_REGEX = "\\)";
     
     /**
+     * Returns answers that are to be graded. Don't confuse with answer key.
+     * @param rawAnswers string of answers in the following form:
+     *      <code>
+     *      1) 2
+     *      2) Pluto
+     *      3) 32
+     *      </code>.
+     *      In other words "question_number)answer".
+     * @return array of answers without grades. 
+     *      Answer to i-th question is element with index i - 1.
+     *      
+     */
+    public ArrayList<TestAnswer> getTestAnswers(String rawAnswers) 
+        throws MalformedTestDescriptionException, 
+        TooManyQuestionsException, TooManyAnswersException {
+        List<List<String>> questions = this.getSeparatedLowerCaseAnswers(rawAnswers);
+        ArrayList<TestAnswer> answers = nullTestAnswerList(questions.size());
+        for (int i = 0; i < questions.size(); i++) {
+            if (questions.get(i).size() > 1) {
+                throw new MalformedTestDescriptionException("There must be only "
+                    + "one answer to be graded.", i + 1);
+            }
+            String answer = "";
+            if (questions.get(i).size() == 1) {
+                answer = questions.get(i).get(0);
+            }
+            answers.set(i, new TestAnswer(answer));
+        }
+        return answers;
+    }
+    
+    private ArrayList<TestAnswer> nullTestAnswerList(Integer size) {
+        ArrayList<TestAnswer> nullList = new ArrayList(size);
+        while (nullList.size() < size) {
+            nullList.add(null);
+        }
+        return nullList;
+    }
+    
+    /**
      * Turns a formatted description of test answers into regex patterns that
      *      can be used as answer key.
      * Take the example input:
