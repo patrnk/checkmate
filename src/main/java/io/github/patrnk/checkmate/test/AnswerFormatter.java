@@ -1,5 +1,9 @@
-package io.github.patrnk.checkmate;
+package io.github.patrnk.checkmate.test;
 
+import io.github.patrnk.checkmate.test.exception.MalformedTestDescriptionException;
+import io.github.patrnk.checkmate.test.exception.TooManyAnswersException;
+import io.github.patrnk.checkmate.test.exception.TooManyQuestionsException;
+import io.github.patrnk.checkmate.test.TestAnswer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

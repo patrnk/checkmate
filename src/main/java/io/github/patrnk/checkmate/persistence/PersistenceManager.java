@@ -1,8 +1,8 @@
 package io.github.patrnk.checkmate.persistence;
 
-import io.github.patrnk.checkmate.BadTestIdException;
-import io.github.patrnk.checkmate.Test;
-import io.github.patrnk.checkmate.TestAnswer;
+import io.github.patrnk.checkmate.test.exception.BadTestIdException;
+import io.github.patrnk.checkmate.test.Test;
+import io.github.patrnk.checkmate.test.TestAnswer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

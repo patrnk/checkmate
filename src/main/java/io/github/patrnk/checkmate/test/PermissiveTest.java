@@ -1,5 +1,7 @@
-package io.github.patrnk.checkmate;
+package io.github.patrnk.checkmate.test;
 
+import io.github.patrnk.checkmate.test.exception.AnswerNotProvidedException;
+import io.github.patrnk.checkmate.test.exception.BadTestInfoException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;

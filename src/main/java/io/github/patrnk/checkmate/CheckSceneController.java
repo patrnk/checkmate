@@ -1,5 +1,9 @@
 package io.github.patrnk.checkmate;
 
+import io.github.patrnk.checkmate.test.exception.BadTestInfoException;
+import io.github.patrnk.checkmate.test.AnswerFormatter;
+import io.github.patrnk.checkmate.test.TestAnswer;
+import io.github.patrnk.checkmate.test.Test;
 import io.github.patrnk.checkmate.persistence.BadStudentIdException;
 import io.github.patrnk.checkmate.persistence.BadStudentNameException;
 import io.github.patrnk.checkmate.persistence.PersistenceManager;

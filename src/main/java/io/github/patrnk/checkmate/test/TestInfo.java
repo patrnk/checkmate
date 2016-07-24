@@ -1,5 +1,7 @@
-package io.github.patrnk.checkmate;
+package io.github.patrnk.checkmate.test;
 
+import io.github.patrnk.checkmate.test.exception.BadTestIdException;
+import io.github.patrnk.checkmate.test.exception.BadTestNameException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;

@@ -1,5 +1,7 @@
 package io.github.patrnk.checkmate;
 
+import io.github.patrnk.checkmate.test.TestAnswer;
+import io.github.patrnk.checkmate.test.Test;
 import io.github.patrnk.checkmate.persistence.PersistenceManager;
 import io.github.patrnk.checkmate.persistence.Record;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package io.github.patrnk.checkmate;
+package io.github.patrnk.checkmate.test.exception;
 
 
 public class BadTestInfoException extends Exception {

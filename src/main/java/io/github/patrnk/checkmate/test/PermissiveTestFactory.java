@@ -1,4 +1,6 @@
-package io.github.patrnk.checkmate;
+package io.github.patrnk.checkmate.test;
+
+import io.github.patrnk.checkmate.test.exception.BadTestInfoException;
 
 
 public final class PermissiveTestFactory implements TestFactory {

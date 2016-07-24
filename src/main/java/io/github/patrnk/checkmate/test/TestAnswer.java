@@ -1,4 +1,4 @@
-package io.github.patrnk.checkmate;
+package io.github.patrnk.checkmate.test;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
