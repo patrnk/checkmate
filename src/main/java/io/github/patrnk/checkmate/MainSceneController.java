@@ -58,6 +58,9 @@ public class MainSceneController implements Initializable {
     private TableColumn<Record, String> studentIdColumn; 
     
     @FXML
+    private Button emailCheckButton;
+    
+    @FXML
     private Button checkButton;
     
     @FXML
@@ -74,6 +77,30 @@ public class MainSceneController implements Initializable {
     
     @FXML
     private Button deleteAllResultsButton;
+    
+    @FXML
+    private void openEmailCheckScene() {
+        FXMLLoader loader;
+        Parent root;
+        try {
+            loader = new FXMLLoader(
+                getClass().getResource("/fxml/EmailCheckScene.fxml"));
+            root = (Parent)loader.load();
+            final Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.onHiddenProperty().setValue(showMainEventHandler());
+            hideMainWindow();
+            
+            EmailCheckSceneController controller = 
+                ((EmailCheckSceneController)loader.getController());
+            Test selectedTest = testsTable.getSelectionModel().getSelectedItem();
+            controller.setTest(selectedTest);
+            
+            stage.show();
+        } catch (IOException e) {
+            CmUtils.printExceptionAndExit(e);
+        }
+    }
     
     @FXML 
     private void openCreateTestScene(ActionEvent event) {
@@ -182,6 +209,7 @@ public class MainSceneController implements Initializable {
         viewTestButton.setDisable(value);
         deleteTestButton.setDisable(value);
         deleteAllResultsButton.setDisable(value);
+        emailCheckButton.setDisable(value);
     }
     
     private void setDisableResultButtons(Boolean value) {
