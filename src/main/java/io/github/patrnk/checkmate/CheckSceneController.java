@@ -6,6 +6,7 @@ import io.github.patrnk.checkmate.persistence.PersistenceManager;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,8 +43,11 @@ public class CheckSceneController implements Initializable {
             }
             checkIfFieldsAreEmpty();
             
+            AnswerFormatter formatter = new AnswerFormatter();
             String rawAnswers = answerArea.getText();
-            ArrayList<TestAnswer> answers = AnswerParser.getTestAnswers(rawAnswers);
+            List<List<String>> separatedAnswers 
+                = formatter.getSeparatedLowerCaseAnswers(rawAnswers);
+            ArrayList<TestAnswer> answers = formatter.getTestAnswers(separatedAnswers);
             ArrayList<TestAnswer> checkedAnswers = test.check(answers);
             String studentName = nameField.getText();
             String studentId = idField.getText();
