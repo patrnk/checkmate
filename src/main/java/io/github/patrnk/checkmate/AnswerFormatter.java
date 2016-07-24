@@ -48,7 +48,8 @@ public final class AnswerFormatter
      * @param value a string to normalize
      * @return normal (see definition above) string
      */
-    public String normalize(String value) {
+    public String normalize(String value) 
+    {
         if (value.startsWith("*")) {
             return null;
         }
