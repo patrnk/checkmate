@@ -18,8 +18,6 @@ public class PermissiveTest implements Test {
         return info;
     }
     
-    private final AnswerNormalizer normalizer = new AnswerNormalizer();
-    
     private final AnswerFormatter formatter = new AnswerFormatter();
     
     private final List<Pattern> answerKey;

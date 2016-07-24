@@ -62,7 +62,7 @@ public class CreateTestSceneController implements Initializable {
     @FXML
     private void saveButtonClicked(ActionEvent event) {
        try {
-            TestInfo info = new TestInfo(nameField.getText(), 
+            TestInfo info = new TestInfo(nameField.getText(),
                 idField.getText(), contentArea.getText());
             Test test = new PermissiveTest(info);
             PersistenceManager.writeDownTest(test);

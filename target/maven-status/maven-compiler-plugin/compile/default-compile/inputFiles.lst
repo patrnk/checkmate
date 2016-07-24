@@ -15,6 +15,7 @@
 /Users/vergeev/Dropbox/CheckMate/src/main/java/io/github/patrnk/checkmate/CheckSceneController.java
 /Users/vergeev/Dropbox/CheckMate/src/main/java/io/github/patrnk/checkmate/TestInfo.java
 /Users/vergeev/Dropbox/CheckMate/src/main/java/io/github/patrnk/checkmate/persistence/Record.java
+/Users/vergeev/Dropbox/CheckMate/src/main/java/io/github/patrnk/checkmate/ViewSceneController.java
 /Users/vergeev/Dropbox/CheckMate/src/main/java/io/github/patrnk/checkmate/BadTestIdException.java
 /Users/vergeev/Dropbox/CheckMate/src/main/java/io/github/patrnk/checkmate/AnswerNotProvidedException.java
 /Users/vergeev/Dropbox/CheckMate/src/main/java/io/github/patrnk/checkmate/TooManyAnswersException.java
@@ -23,4 +24,5 @@
 /Users/vergeev/Dropbox/CheckMate/src/main/java/io/github/patrnk/checkmate/MainSceneController.java
 /Users/vergeev/Dropbox/CheckMate/src/main/java/io/github/patrnk/checkmate/BadTestNameException.java
 /Users/vergeev/Dropbox/CheckMate/src/main/java/io/github/patrnk/checkmate/persistence/PersistenceManager.java
+/Users/vergeev/Dropbox/CheckMate/src/main/java/io/github/patrnk/checkmate/TestParser.java
 /Users/vergeev/Dropbox/CheckMate/src/main/java/io/github/patrnk/checkmate/BadTestInfoException.java
