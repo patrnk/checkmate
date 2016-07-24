@@ -3,7 +3,6 @@ package io.github.patrnk.checkmate;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -19,9 +18,9 @@ public class PermissiveTest implements Test {
         return info;
     }
     
-    private final TestDescriptionRegexFormatter 
-        formatter = new TestDescriptionRegexFormatter();
     private final AnswerNormalizer normalizer = new AnswerNormalizer();
+    
+    private final AnswerFormatter formatter = new AnswerFormatter();
     
     private final List<Pattern> answerKey;
     private final List<List<String>> normalAnswerKey;
@@ -30,15 +29,10 @@ public class PermissiveTest implements Test {
         if (info == null) {
             throw new IllegalArgumentException("Test info cannot be null");
         }
-        try {
-            answerKey = formatter.formRegexList(info.getDescription());
-            normalAnswerKey = normalizer.getNormalAnswers(info.getDescription());
-        } catch (ParseException ex) {
-            throw new MalformedTestDescriptionException("The line " 
-                + ex.getErrorOffset() + " formatted incorrectly. Expecting "
-                + "\"number)answer\" format.", ex,
-                ex.getErrorOffset());
-        }
+        answerKey = formatter.getAnswerKey(info.getDescription());
+        List<List<String>> answers 
+            = formatter.getSeparatedLowerCaseAnswers(info.getDescription());
+        normalAnswerKey = formatter.normalize(answers);
         for (int i = 0; i < answerKey.size(); i++) {
             if (answerKey.get(i) == null) {
                 throw new AnswerNotProvidedException(i + 1);
@@ -80,7 +74,7 @@ public class PermissiveTest implements Test {
     }
     
     private Integer midOrLow(int questionNumber, String studentAnswer) {
-        String normalStudentAnswer = normalizer.normalize(studentAnswer);
+        String normalStudentAnswer = formatter.normalize(studentAnswer);
         List<String> normalAnswers = normalAnswerKey.get(questionNumber);
         for (String normalAnswer : normalAnswers) {
             if (allKeysFound(normalAnswer, normalStudentAnswer)) {
