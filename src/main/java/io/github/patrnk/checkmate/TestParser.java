@@ -1,6 +1,7 @@
 package io.github.patrnk.checkmate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -21,6 +22,44 @@ public final class TestParser
      * A symbol that separates a question number and an answer.
      */
     private static final String ANSWER_SEPARATOR_REGEX = "\\)";
+    
+    /**
+     * Applies normalize(String value) to each answer.
+     * @param values list of lists of strings to normalize.
+     * @return normalized strings.
+     */
+    public List<List<String>> normalize(List<List<String>> values) 
+    {
+        List<List<String>> normalStrings = new ArrayList();
+        for (List<String> stringList : values) {
+            normalStrings.add(new ArrayList());
+            for (String answer : stringList) {
+                String normalAnswer = TestParser.this.normalize(answer);
+                normalStrings.get(normalStrings.size() - 1).add(normalAnswer);
+            }
+        }
+        return normalStrings;
+    }
+    
+    /**
+     * Makes the passed string "normal".
+     * "Normal" means that all characters are lower-case, alphabetically sorted.
+     * If the answer starts with *, then its normal form is null value.
+     * @param value a string to normalize
+     * @return normal (see definition above) string
+     */
+    public String normalize(String value) {
+        if (value.startsWith("*")) {
+            return null;
+        }
+        String[] elements = value.split(""); // behavior may vary between ver.
+        Arrays.sort(elements);
+        String normalValue = "";
+        for (String element : elements) {
+            normalValue += element;
+        }
+        return normalValue;
+    }
     
     /**
      * Returns answers that are to be graded. Don't confuse with answer key.
