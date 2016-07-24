@@ -132,9 +132,14 @@ public final class PersistenceManager {
         filepath += File.separator; 
         filepath += record.getAnswerFileName();
         File file = new File(filepath);
-        ArrayList<TestAnswer> answers 
+        if (file.exists()) {
+            file.mkdir();
+            ArrayList<TestAnswer> answers 
             = (ArrayList<TestAnswer>) getExistingObject(file);
-        return answers;
+            return answers;
+        } else {
+            return new ArrayList();
+        }
     }
     
     /**
@@ -151,6 +156,9 @@ public final class PersistenceManager {
             String folderPath, String suffix) {
         List<Object> objects = new ArrayList();
         File folder = new File(folderPath);
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
         File[] files = folder.listFiles();
         for (File file : files) {
             if (getSuffix(file.getName()).equals(suffix)) {
