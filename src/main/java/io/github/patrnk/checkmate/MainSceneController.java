@@ -245,11 +245,22 @@ public class MainSceneController implements Initializable {
         Record selected = testResultTable.getSelectionModel().getSelectedItem();
         String headText = selected.getStudentName();
         
-        ArrayList<TestAnswer> answers = PersistenceManager.getAnswersForRecord(selected);
-        String bodyText = turnAnswersToString(answers);
-        bodyText += "\n" + sumOfGrades(answers);
-        Test selectedTest = testsTable.getSelectionModel().getSelectedItem();
-        bodyText += " из " + selectedTest.getMaxGrade();
+        ArrayList<TestAnswer> answers 
+            = PersistenceManager.getAnswersForRecord(selected);
+        String bodyText;
+        if (answers != null) {
+            bodyText = turnAnswersToString(answers);
+            bodyText += "\n" + sumOfGrades(answers);
+            Test selectedTest = testsTable.getSelectionModel().getSelectedItem();
+            bodyText += " из " + selectedTest.getMaxGrade();
+        } else {
+            String error = PersistenceManager.getErrorForRecord(selected);
+            if (error != null) {
+                bodyText = error;
+            } else {
+                bodyText = "Произошла ошибка. Работа недоступна.";
+            }
+        }
         
         openViewScene(headText, bodyText);
     }
