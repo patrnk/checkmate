@@ -41,22 +41,31 @@ public class EmailCheckSceneController implements Initializable {
     private Label statusLabel;
     
     @FXML
-    private Button checkButton;
-    
-    @FXML
-    private void enableCheckButton() {
-        checkButton.setDisable(false);
-    }
-    
-    @FXML
     private void checkButtonClicked() {
+        statusLabel.setVisible(true);
+        statusLabel.setText("Проверяем...");
         if (test == null) {
             throw new AssertionError("Test property for this scene must be "
                 + "non-null. Use setTest(). ");
         }
-        AuthorizeEmail(emailField.getText(), passField.getText());
+        String login = emailField.getText();
+        String pass = passField.getText();
+        try {
+            Mailbox mail = new Mailbox(login, pass);
+            mail.retrieveAndGradeAndStoreTestResults(test);
+            statusLabel.getScene().getWindow().hide();
+        } catch (AuthenticationFailedException ex) {
+            statusLabel.setVisible(true);
+            statusLabel.setText("Неверный логин или пароль.");
+        } catch (MessagingException | IOException ex) {
+            statusLabel.setVisible(true);
+            statusLabel.setText("Не удалось подключиться.");
+            Logger.getLogger(EmailCheckSceneController.class.getName())
+                .log(Level.SEVERE, null, ex);
+        }
     }
     
+    // sample code
     private void AuthorizeEmail(String login, String password) {
         Properties props = new Properties();
         props.setProperty("mail.store.protocol", "imaps");
@@ -67,7 +76,7 @@ public class EmailCheckSceneController implements Initializable {
         try {
             store = session.getStore();
             System.out.println("got storage.");
-            store.connect("imap.yandex.ru", 993, "chemistry.check", "peanutbutter");
+            store.connect("imap.yandex.ru", 993, login, password);
             System.out.println("connected.");
             Folder inbox = store.getFolder("INBOX");
             inbox.open(Folder.READ_WRITE);
@@ -96,7 +105,8 @@ public class EmailCheckSceneController implements Initializable {
         } catch (MessagingException | IOException ex) {
             statusLabel.setVisible(true);
             statusLabel.setText("Не удалось подключиться.");
-            Logger.getLogger(EmailCheckSceneController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EmailCheckSceneController.class.getName())
+                .log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(EmailCheckSceneController.class.getName()).log(Level.SEVERE, null, ex);
         } 
