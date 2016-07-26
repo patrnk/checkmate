@@ -31,13 +31,15 @@ import org.jsoup.Jsoup;
 
 public final class Mailbox {
     
-    private final Store store;
+    private final Folder inbox;
     
     public Mailbox(String login, String password) 
             throws NoSuchProviderException, AuthenticationFailedException, 
                    MessagingException {
-        this.store = this.getStore();
-        this.store.connect("imap.yandex.ru", 993, login, password);
+        Store store = this.getStore();
+        store.connect("imap.yandex.ru", 993, login, password);
+        this.inbox = store.getFolder("INBOX");
+        inbox.open(Folder.READ_WRITE);
     }
     
     private Store getStore() throws NoSuchProviderException {
@@ -61,6 +63,7 @@ public final class Mailbox {
         List<Message> testMessages = getTestMessages(testId);
 //        System.out.println("Got testMessages: " + testMessages.size());
         gradeAndStoreResults(testMessages, test);
+        inbox.close(true);
     }
     
         
@@ -72,8 +75,6 @@ public final class Mailbox {
      */
     private List<Message> getTestMessages(String testId) 
             throws MessagingException {
-        Folder inbox = store.getFolder("INBOX");
-        inbox.open(Folder.READ_WRITE);
         FlagTerm unseenFlag = new FlagTerm(new Flags(Flags.Flag.SEEN), false);
         Message unreadMessages[] = inbox.search(unseenFlag);
         List<Message> testMessages = new ArrayList();
@@ -114,14 +115,14 @@ public final class Mailbox {
             studentAnswers = test.check(studentAnswers);
             PersistenceManager.writeDownTestResults(studentName, studentId, 
                 studentAnswers, test.getInfo().getId());
-            //inbox.setFlags(new Message[] {lastMessage}, new Flags(Flags.Flag.SEEN), true);
         } catch (BadTestInfoException ex) {
             studentName = "! " + studentName;
             String error = BadTestInfoException.getAppropriateErrorMessage(ex);
             error += "\nВот так выглядит письмо:\n" + messageText;
             PersistenceManager.writeDownTestResults(
                 studentName, studentId, error, test.getInfo().getId());  
-        }     
+        }
+        inbox.setFlags(new Message[] {result}, new Flags(Flags.Flag.SEEN), true);   
 //        System.out.println("Another message: ");
 //        System.out.println(studentName);
 //        System.out.println(studentId);
