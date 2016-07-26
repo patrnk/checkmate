@@ -309,6 +309,7 @@ public class MainSceneController implements Initializable {
                 // There's not much we can do. Let's pretend it's never happened.
             }   
         }
+        setDisableResultButtons(true);
     }
     
     Map<Integer, List<Record>> testResult;
