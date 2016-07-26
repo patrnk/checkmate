@@ -311,18 +311,19 @@ public final class PersistenceManager
             
             String filepath = ANSWER_FOLDER;
             filepath += File.separator;
+            String errorFilePath = filepath + ERROR_INDICATOR;
             filepath += filename;
+            errorFilePath += filename;
             deleteFile(filepath);
+            deleteFile(errorFilePath);
         } catch (SQLException ex) {
             throw new IOException("Something went wrong with the DB.");
         }
     }
     
-    private static void deleteFile(String filepath) throws IOException 
+    private static void deleteFile(String filepath) 
     {
-        if (!(new File(filepath)).delete()) {
-            throw new IOException("File cannot be deleted: " + filepath);
-        }
+        (new File(filepath)).delete();
     }
     
     private PersistenceManager() 
