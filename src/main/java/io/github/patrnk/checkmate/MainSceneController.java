@@ -258,7 +258,8 @@ public class MainSceneController implements Initializable {
             if (error != null) {
                 bodyText = error;
             } else {
-                bodyText = "Произошла ошибка. Работа недоступна.";
+                bodyText = "Произошла ошибка. Работа недоступна. "
+                    + "Проверьте почту вручную.";
             }
         }
         
