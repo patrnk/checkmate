@@ -75,6 +75,36 @@ public final class PersistenceManager
         }
     }
     
+    private static final String ERROR_INDICATOR = "!";
+    
+    /**
+     * Writes down the information provided.
+     * @param studentName name of a student that owns the results
+     * @param studentId id of a student that owns the results
+     * @param error text of error occurred while checking answers.
+     * @param testId the id of the test the answers belong to
+     * @throws IOException if the method couldn't store the results
+     * @throws BadStudentNameException, BadStudentIdException for the same 
+     *      reason Record constructor throws them.
+     */
+    public static void writeDownTestResults(String studentName, String studentId, 
+        String error, Integer testId) 
+        throws BadStudentNameException, BadStudentIdException, IOException 
+    {
+        new File(ANSWER_FOLDER).mkdir();
+        String filename = getUniqueRandomFilename(ANSWER_FOLDER, ANSWER_SUFFIX);
+        String errorFilename = ERROR_INDICATOR + filename;
+        String filepath = ANSWER_FOLDER + File.separator + errorFilename;
+        writeDown(filepath, error);
+        Record newRecord = new Record(testId, studentName, studentId, filename);
+        try {
+            Database.addRecord(newRecord);
+        } catch (SQLException ex) {
+            deleteFile(filepath);
+            throw new IOException("Something went wrong with the DB.");
+        }
+    }
+    
     /**
      * @return filename that's unique in the directory folderPath. 
      *      The filename contains suffix
@@ -134,6 +164,13 @@ public final class PersistenceManager
         return tests;
     }
     
+    /**
+     * Gets stored answers for the record provided.
+     * If there was an error while grading the answers, returns null.
+     *      To get further info about the error, see getErrorForRecord().
+     * @param record
+     * @return stored answers for the record.
+     */
     public static ArrayList<TestAnswer> getAnswersForRecord(Record record)
     {
         String filepath = ANSWER_FOLDER;
@@ -146,7 +183,29 @@ public final class PersistenceManager
                 = (ArrayList<TestAnswer>) getExistingObject(file);
             return answers;
         } else {
-            return new ArrayList();
+            return null;
+        }
+    }
+    
+    /**
+     * Gets stored error for the record provided.
+     * In case there's no error stored, returns null.
+     * @param record
+     * @return the text of an error occurred while grading the answers. Or null.
+     */
+    public static String getErrorForRecord(Record record) 
+    {
+        String filepath = ANSWER_FOLDER;
+        filepath += File.separator; 
+        filepath += ERROR_INDICATOR;
+        filepath += record.getAnswerFileName();
+        File file = new File(filepath);
+        if (file.exists()) {
+            file.mkdir();
+            String error = (String) getExistingObject(file);
+            return error;
+        } else {
+            return null;
         }
     }
     
