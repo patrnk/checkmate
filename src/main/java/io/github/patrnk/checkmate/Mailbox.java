@@ -61,7 +61,6 @@ public final class Mailbox {
             throws MessagingException, IOException {
         String testId = test.getInfo().getId().toString();
         List<Message> testMessages = getTestMessages(testId);
-//        System.out.println("Got testMessages: " + testMessages.size());
         gradeAndStoreResults(testMessages, test);
         inbox.close(true);
     }
@@ -122,11 +121,7 @@ public final class Mailbox {
             PersistenceManager.writeDownTestResults(
                 studentName, studentId, error, test.getInfo().getId());  
         }
-        inbox.setFlags(new Message[] {result}, new Flags(Flags.Flag.SEEN), true);   
-//        System.out.println("Another message: ");
-//        System.out.println(studentName);
-//        System.out.println(studentId);
-//        System.out.println(messageText);
+        inbox.setFlags(new Message[] {result}, new Flags(Flags.Flag.SEEN), true);
     }
     
     /**
