@@ -1,6 +1,5 @@
 package io.github.patrnk.checkmate.persistence;
 
-import io.github.patrnk.checkmate.CmUtils;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
