@@ -7,11 +7,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 
-/**
- * FXML Controller class
- *
- * @author vergeev
- */
 public class ViewSceneController implements Initializable {
 
     @FXML

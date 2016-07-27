@@ -6,10 +6,6 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 
-/**
- * 
- * @author vergeev
- */
 public final class TestInfo implements Serializable {
     
     public static final int MAX_NAME_LENGTH = 255;
@@ -56,7 +52,7 @@ public final class TestInfo implements Serializable {
     }
     
     public TestInfo(String name, Integer id, String testDescription)
-        throws BadTestNameException {
+            throws BadTestNameException {
         checkName(name);
         this.name = name;
         this.id = id;
@@ -64,7 +60,7 @@ public final class TestInfo implements Serializable {
     }
 
     public TestInfo(String name, String id, String testDescription)
-        throws BadTestNameException, BadTestIdException {
+            throws BadTestNameException, BadTestIdException {
         checkName(name);
         this.name = name;
         try {
@@ -102,7 +98,7 @@ public final class TestInfo implements Serializable {
     }
     
     private void readObject(ObjectInputStream stream) 
-        throws InvalidObjectException {
+            throws InvalidObjectException {
         throw new InvalidObjectException("Proxy required");
     }
 }

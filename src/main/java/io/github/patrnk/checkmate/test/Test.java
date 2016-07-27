@@ -3,10 +3,6 @@ package io.github.patrnk.checkmate.test;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/**
- *
- * @author vergeev
- */
 public interface Test extends Serializable {
     
     public TestInfo getInfo();

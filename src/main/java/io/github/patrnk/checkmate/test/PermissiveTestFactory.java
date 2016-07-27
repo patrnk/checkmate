@@ -4,6 +4,7 @@ import io.github.patrnk.checkmate.test.exception.BadTestInfoException;
 
 
 public final class PermissiveTestFactory implements TestFactory {
+    
     private static final String TITLE = "Нестандартный";
     private static final String SUMMARY = "...";
     

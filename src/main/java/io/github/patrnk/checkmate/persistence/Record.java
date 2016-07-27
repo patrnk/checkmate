@@ -28,9 +28,8 @@ public final class Record {
     }
     
     public Record(Integer testId, String studentName, 
-        String studentId, String answerFileName) throws BadStudentNameException, 
-        BadStudentIdException {
-        
+            String studentId, String answerFileName) 
+            throws BadStudentNameException, BadStudentIdException {   
         checkName(studentName);
         checkId(studentId);
         this.testId = testId;

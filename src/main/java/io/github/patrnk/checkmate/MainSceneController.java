@@ -394,7 +394,7 @@ public class MainSceneController implements Initializable {
     }
     
     private Callback<CellDataFeatures<Test, String>, ObservableValue<String>> 
-    getTestNameColumnCellValueFactory() {
+            getTestNameColumnCellValueFactory() {
         return new Callback<CellDataFeatures<Test, String>, ObservableValue<String>>() { 
             @Override
             public ObservableValue<String> call(CellDataFeatures<Test, String> param) {
@@ -405,7 +405,7 @@ public class MainSceneController implements Initializable {
     }
     
     private Callback<CellDataFeatures<Test, String>, ObservableValue<String>> 
-    getTestIdColumnCellValueFactory() {
+            getTestIdColumnCellValueFactory() {
         return new Callback<CellDataFeatures<Test, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(CellDataFeatures<Test, String> param) {
@@ -416,7 +416,7 @@ public class MainSceneController implements Initializable {
     }
         
     private Callback<CellDataFeatures<Record, String>, ObservableValue<String>> 
-    getStudentNameColumnCellValueFactory() {
+            getStudentNameColumnCellValueFactory() {
         return new Callback<CellDataFeatures<Record, String>, ObservableValue<String>>() { 
             @Override
             public ObservableValue<String> call(CellDataFeatures<Record, String> param) {
@@ -427,7 +427,7 @@ public class MainSceneController implements Initializable {
     }
     
     private Callback<CellDataFeatures<Record, String>, ObservableValue<String>> 
-    getStudentIdColumnCellValueFactory() {
+            getStudentIdColumnCellValueFactory() {
         return new Callback<CellDataFeatures<Record, String>, ObservableValue<String>>() { 
             @Override
             public ObservableValue<String> call(CellDataFeatures<Record, String> param) {

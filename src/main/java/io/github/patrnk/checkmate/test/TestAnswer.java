@@ -8,7 +8,6 @@ import java.io.Serializable;
  * The way of storing student's answers.
  * Each instance contains student's answer itself and the grade for the answer.
  * It's guaranteed that the answer is not null.
- * @author vergeev
  */
 public class TestAnswer implements Serializable {
     
@@ -55,7 +54,7 @@ public class TestAnswer implements Serializable {
     }
     
     private void readObject(ObjectInputStream s)
-        throws IOException, ClassNotFoundException {
+            throws IOException, ClassNotFoundException {
         s.defaultReadObject();
         if (answer == null) {
             throw new AssertionError("Answer cannot be null.");

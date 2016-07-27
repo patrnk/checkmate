@@ -36,8 +36,8 @@ public class MalformedTestDescriptionException extends BadTestInfoException {
         this.badLine = badLine;
     }
     
-    public MalformedTestDescriptionException(String message, 
-            Throwable cause, int badLine) {
+    public MalformedTestDescriptionException(
+            String message, Throwable cause, int badLine) {
         super(message, cause);    
         if (badLine <= 0) {
             throw new IllegalArgumentException("Number of the bad line must be "

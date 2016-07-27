@@ -3,18 +3,15 @@ package io.github.patrnk.checkmate.test;
 import io.github.patrnk.checkmate.test.exception.MalformedTestDescriptionException;
 import io.github.patrnk.checkmate.test.exception.TooManyAnswersException;
 import io.github.patrnk.checkmate.test.exception.TooManyQuestionsException;
-import io.github.patrnk.checkmate.test.TestAnswer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Knows how classes are written in String; how answers are written.
- * @author vergeev
+ * Knows how classes are written in String; knows how answers are written.
  */
-public final class AnswerFormatter 
-{
+public final class AnswerFormatter {
     private static final Integer QUESTIONS_MAX = 1000;
     
     /**
@@ -32,8 +29,7 @@ public final class AnswerFormatter
      * @param values list of lists of strings to normalize.
      * @return normalized strings.
      */
-    public List<List<String>> normalize(List<List<String>> values) 
-    {
+    public List<List<String>> normalize(List<List<String>> values) {
         List<List<String>> normalStrings = new ArrayList();
         for (List<String> stringList : values) {
             normalStrings.add(new ArrayList());
@@ -52,8 +48,7 @@ public final class AnswerFormatter
      * @param value a string to normalize
      * @return normal (see definition above) string
      */
-    public String normalize(String value) 
-    {
+    public String normalize(String value) {
         if (value.startsWith("*")) {
             return null;
         }
@@ -74,8 +69,7 @@ public final class AnswerFormatter
      *      has size bigger than 1.
      */
     public ArrayList<TestAnswer> getTestAnswers(List<List<String>> answerList) 
-        throws MalformedTestDescriptionException 
-    {
+            throws MalformedTestDescriptionException {
         ArrayList<TestAnswer> answers = nullTestAnswerList(answerList.size());
         for (int i = 0; i < answerList.size(); i++) {
             if (answerList.get(i).size() > 1) {
@@ -91,8 +85,7 @@ public final class AnswerFormatter
         return answers;
     }
     
-    private ArrayList<TestAnswer> nullTestAnswerList(Integer size) 
-    {
+    private ArrayList<TestAnswer> nullTestAnswerList(Integer size) {
         ArrayList<TestAnswer> nullList = new ArrayList(size);
         while (nullList.size() < size) {
             nullList.add(null);
@@ -128,9 +121,8 @@ public final class AnswerFormatter
      * @throws TooManyAnswersException if there are more than 1000 answers provided.
      */
     public List<Pattern> getAnswerKey(String rawAnswers) 
-        throws MalformedTestDescriptionException, 
-        TooManyQuestionsException, TooManyAnswersException 
-    {
+            throws MalformedTestDescriptionException, 
+            TooManyQuestionsException, TooManyAnswersException {
         List<List<String>> questions = this.getSeparatedLowerCaseAnswers(rawAnswers);
         List<Pattern> answerKey = nullPatternList(questions.size());
         for (int i = 0; i < questions.size(); i++) {
@@ -147,8 +139,7 @@ public final class AnswerFormatter
      * @param size size of the list
      * @return list of nulls.
      */
-    private List<Pattern> nullPatternList(Integer size) 
-    {
+    private List<Pattern> nullPatternList(Integer size) {
         List<Pattern> nullList = new ArrayList(size);
         while (nullList.size() < size) {
             nullList.add(null);
@@ -156,8 +147,7 @@ public final class AnswerFormatter
         return nullList;
     }
     
-    private Pattern formRegex(Pattern previousPattern, String answer) 
-    {
+    private Pattern formRegex(Pattern previousPattern, String answer) {
         String PREFIX = "^(";
         String SUFFIX = ")$";
         String regex = PREFIX;
@@ -181,8 +171,7 @@ public final class AnswerFormatter
         return Pattern.compile(regex);
     }
     
-    private String formUnorderedAnwser(String answer) 
-    {
+    private String formUnorderedAnwser(String answer) {
         String unorderedAnswer = "";
         for (char c : answer.toCharArray()) {
             unorderedAnswer += "(?=.*";
@@ -202,9 +191,8 @@ public final class AnswerFormatter
      * Same as getSeparatedAnswers() but case-insensitive.
      */
     public List<List<String>> getSeparatedLowerCaseAnswers(String rawAnswers) 
-        throws MalformedTestDescriptionException, 
-        TooManyQuestionsException, TooManyAnswersException 
-    {
+            throws MalformedTestDescriptionException, 
+            TooManyQuestionsException, TooManyAnswersException {
         return getSeparatedAnswers(rawAnswers.toLowerCase());
     }
     
@@ -222,9 +210,8 @@ public final class AnswerFormatter
      * @throws TooManyAnswersException if there are more than 1000 answers provided.
      */
     public List<List<String>> getSeparatedAnswers(String rawAnswers)
-        throws MalformedTestDescriptionException, 
-        TooManyQuestionsException, TooManyAnswersException 
-    {
+            throws MalformedTestDescriptionException, 
+            TooManyQuestionsException, TooManyAnswersException {
         List<List<String>> answers = new ArrayList();
         rawAnswers = rawAnswers.trim();
         String[] questions = rawAnswers.split(QUESTION_SEPARATOR_REGEX);
@@ -254,8 +241,7 @@ public final class AnswerFormatter
      *      to the format.
      */
     private void throwExceptionIfQuestionMalformed(String question, Integer errorOffset) 
-        throws MalformedTestDescriptionException 
-    {
+            throws MalformedTestDescriptionException {
         if (!question.matches(".+" + ANSWER_SEPARATOR_REGEX + ".+")) {
             throw new MalformedTestDescriptionException("The line number "
                 + (errorOffset+1) + " formatted incorrectly. ", (errorOffset+1));
@@ -275,8 +261,7 @@ public final class AnswerFormatter
      *      It's guaranteed that <code>0 <= index <= 1000</code>.
      */
     private Integer getQuestionIndex(String question, Integer errorOffset)
-        throws MalformedTestDescriptionException, TooManyQuestionsException
-    {
+            throws MalformedTestDescriptionException, TooManyQuestionsException {
         Integer questionNumber = -1;
         try {
             questionNumber = Integer.valueOf(

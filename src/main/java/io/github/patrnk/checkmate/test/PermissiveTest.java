@@ -120,8 +120,7 @@ public class PermissiveTest implements Test {
         return new SerializationProxy(this);
     }
     
-    private void readObject(ObjectInputStream stream) 
-        throws InvalidObjectException {
+    private void readObject(ObjectInputStream stream) throws InvalidObjectException {
         throw new InvalidObjectException("Proxy required");
     }
 }

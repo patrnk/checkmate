@@ -18,9 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public final class PersistenceManager 
-{
-    
+public final class PersistenceManager {    
     private final static String SUFFIX_SEPARATOR = ".";
     
     private final static String TESTS_FOLDER = "tests";
@@ -32,8 +30,7 @@ public final class PersistenceManager
      * @throws BadTestIdException if the test with that id already exists. 
      */
     public static void writeDownTest(Test t) 
-        throws BadTestIdException, IOException 
-    {
+            throws BadTestIdException, IOException {
         new File(TESTS_FOLDER).mkdir();
         String filename = t.getInfo().getId().toString();
         filename += SUFFIX_SEPARATOR + TESTS_SUFFIX;
@@ -59,9 +56,8 @@ public final class PersistenceManager
      *      reason Record constructor throws them.
      */
     public static void writeDownTestResults(String studentName, String studentId, 
-        ArrayList<TestAnswer> answers, Integer testId) 
-        throws BadStudentNameException, BadStudentIdException, IOException 
-    {
+            ArrayList<TestAnswer> answers, Integer testId) 
+            throws BadStudentNameException, BadStudentIdException, IOException {
         new File(ANSWER_FOLDER).mkdir();
         String filename = getUniqueRandomFilename(ANSWER_FOLDER, ANSWER_SUFFIX);
         String filepath = ANSWER_FOLDER + File.separator + filename;
@@ -88,9 +84,8 @@ public final class PersistenceManager
      *      reason Record constructor throws them.
      */
     public static void writeDownTestResults(String studentName, String studentId, 
-        String error, Integer testId) 
-        throws BadStudentNameException, BadStudentIdException, IOException 
-    {
+            String error, Integer testId) 
+            throws BadStudentNameException, BadStudentIdException, IOException {
         new File(ANSWER_FOLDER).mkdir();
         String filename = getUniqueRandomFilename(ANSWER_FOLDER, ANSWER_SUFFIX);
         String errorFilename = ERROR_INDICATOR + filename;
@@ -109,8 +104,7 @@ public final class PersistenceManager
      * @return filename that's unique in the directory folderPath. 
      *      The filename contains suffix
      */
-    private static String getUniqueRandomFilename(String folderPath, String suffix)
-    {
+    private static String getUniqueRandomFilename(String folderPath, String suffix) {
         String filename = getRandomFileName() + SUFFIX_SEPARATOR + suffix;
         String filepath = folderPath + File.separator + filename;
         while (new File(filepath).exists()) {
@@ -123,8 +117,7 @@ public final class PersistenceManager
     /**
      * @return a random number in a form of a string.
      */
-    private static String getRandomFileName()
-    {
+    private static String getRandomFileName() {
         Double d = (Math.random() * 1000000);
         Integer i = d.intValue();
         return i.toString();
@@ -135,8 +128,7 @@ public final class PersistenceManager
      * If it's not the case, throws IOException.
      */
     private static void writeDown(String filepath, Serializable o) 
-        throws FileNotFoundException, IOException 
-    {
+            throws FileNotFoundException, IOException {
         FileOutputStream out = new FileOutputStream(filepath);
         ObjectOutputStream oos = new ObjectOutputStream(out);
         oos.writeObject(o);
@@ -148,8 +140,7 @@ public final class PersistenceManager
      * @return list of deserialized tests. 
      *      In case of a failure returns empty list.
      */
-    public static List<Test> getExistingTests()
-    {
+    public static List<Test> getExistingTests() {
         List<Test> tests = new ArrayList();
         List<Object> potentialTests = getExistingObjects(
             TESTS_FOLDER, TESTS_SUFFIX);
@@ -171,8 +162,7 @@ public final class PersistenceManager
      * @param record
      * @return stored answers for the record.
      */
-    public static ArrayList<TestAnswer> getAnswersForRecord(Record record)
-    {
+    public static ArrayList<TestAnswer> getAnswersForRecord(Record record) {
         String filepath = ANSWER_FOLDER;
         filepath += File.separator; 
         filepath += record.getAnswerFileName();
@@ -193,8 +183,7 @@ public final class PersistenceManager
      * @param record
      * @return the text of an error occurred while grading the answers. Or null.
      */
-    public static String getErrorForRecord(Record record) 
-    {
+    public static String getErrorForRecord(Record record) {
         String filepath = ANSWER_FOLDER;
         filepath += File.separator; 
         filepath += ERROR_INDICATOR;
@@ -219,9 +208,7 @@ public final class PersistenceManager
      *      Others are ignored
      * @return list of deserialized objects
      */
-    private static List<Object> getExistingObjects(
-            String folderPath, String suffix) 
-    {
+    private static List<Object> getExistingObjects(String folderPath, String suffix) {
         List<Object> objects = new ArrayList();
         File folder = new File(folderPath);
         if (!folder.exists()) {
@@ -239,8 +226,7 @@ public final class PersistenceManager
         return objects;
     }
     
-    private static Object getExistingObject(File file) 
-    {
+    private static Object getExistingObject(File file) {
         try {
             FileInputStream in = new FileInputStream(file.getPath());
             ObjectInputStream ois = new ObjectInputStream(in);
@@ -260,8 +246,7 @@ public final class PersistenceManager
      * @return list of Records object with data.
      *      In case of failure, returns an empty list.
      */
-    public static List<Record> getExistingTestResults() 
-    {
+    public static List<Record> getExistingTestResults() {
         List<Record> records = new ArrayList();
         try {
             records = Database.fetchRecords();
@@ -279,8 +264,7 @@ public final class PersistenceManager
      * @param filename a string that is treated as a name of a file.
      * @return suffix or empty string if the filename doesn't have one.
      */
-    private static String getSuffix(String filename) 
-    {
+    private static String getSuffix(String filename) {
         String suffix = "";
         Integer suffixIndex = filename.lastIndexOf(SUFFIX_SEPARATOR);
         if (suffixIndex != -1) {
@@ -294,8 +278,7 @@ public final class PersistenceManager
      * @param test the test to remove
      * @throws IOException if not succeeded.
      */
-    public static void deleteTest(Test test) throws IOException 
-    {
+    public static void deleteTest(Test test) throws IOException {
         String filepath = TESTS_FOLDER;
         filepath += File.separator;
         filepath += test.getInfo().getId().toString();
@@ -304,8 +287,7 @@ public final class PersistenceManager
         deleteFile(filepath);
     }
     
-    public static void deleteTestResult(String filename) throws IOException 
-    {
+    public static void deleteTestResult(String filename) throws IOException {
         try {
             Database.deleteRecord(filename);
             
@@ -321,13 +303,11 @@ public final class PersistenceManager
         }
     }
     
-    private static void deleteFile(String filepath) 
-    {
+    private static void deleteFile(String filepath) {
         (new File(filepath)).delete();
     }
     
-    private PersistenceManager() 
-    {
+    private PersistenceManager() {
         throw new AssertionError("You cannot instantiate PersistenceManager");
     }
 }

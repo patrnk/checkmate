@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package io.github.patrnk.checkmate;
 
 import io.github.patrnk.checkmate.test.exception.BadTestInfoException;
@@ -30,11 +25,6 @@ import javafx.scene.control.TextField;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
-/**
- * FXML Controller class
- *
- * @author vergeev
- */
 public class CreateTestSceneController implements Initializable {
     
     @FXML
@@ -82,9 +72,6 @@ public class CreateTestSceneController implements Initializable {
         }
     }
     
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         populateFactoryBox();

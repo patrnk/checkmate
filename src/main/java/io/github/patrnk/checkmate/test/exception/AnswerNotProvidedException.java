@@ -36,8 +36,8 @@ public class AnswerNotProvidedException extends BadTestInfoException {
         this.questionNumber = questionNumber;
     }
     
-    public AnswerNotProvidedException(String message, Throwable cause, 
-        int questionNumber) {
+    public AnswerNotProvidedException(
+            String message, Throwable cause, int questionNumber) {
         super(message, cause);
         if (questionNumber <= 0) {
             throw new IllegalArgumentException("Number of the question must be "
