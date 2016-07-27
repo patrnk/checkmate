@@ -10,6 +10,8 @@ import io.github.patrnk.checkmate.persistence.PersistenceManager;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -69,7 +71,9 @@ public class CreateTestSceneController implements Initializable {
         } catch (IOException ex) {
             errorLabel.setText("Мы не можем записать новый тест на диск. "
                 + "Напишите разработчику: patrnk@gmail.com.");
-        }
+            Logger.getLogger(CreateTestSceneController.class.getName()).log(Level.SEVERE, null, ex);
+        }   
+       
     }
     
     @Override

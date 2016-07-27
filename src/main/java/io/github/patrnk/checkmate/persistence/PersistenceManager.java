@@ -67,7 +67,7 @@ public final class PersistenceManager {
             Database.addRecord(newRecord);
         } catch (SQLException ex) {
             deleteFile(filepath);
-            throw new IOException("Something went wrong with the DB.");
+            throw new IOException("Something went wrong with the DB.", ex);
         }
     }
     
@@ -96,7 +96,7 @@ public final class PersistenceManager {
             Database.addRecord(newRecord);
         } catch (SQLException ex) {
             deleteFile(filepath);
-            throw new IOException("Something went wrong with the DB.");
+            throw new IOException("Something went wrong with the DB.", ex);
         }
     }
     
@@ -149,7 +149,7 @@ public final class PersistenceManager {
                 Test t = (Test) potentialTest;
                 tests.add(t);
             } catch (ClassCastException ex) {
-                // TODO: log the thing but don't disturb the user, it's no big deal
+                Logger.getLogger(PersistenceManager.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return tests;
@@ -233,8 +233,6 @@ public final class PersistenceManager {
             Object o = ois.readObject();
             return o;
         } catch (IOException | ClassNotFoundException ex) {
-            // Can't really do anything about it.
-            // Let's pretend it never happened.
             Logger.getLogger(PersistenceManager.class.getName())
                 .log(Level.SEVERE, null, ex);
         }
@@ -299,7 +297,7 @@ public final class PersistenceManager {
             deleteFile(filepath);
             deleteFile(errorFilePath);
         } catch (SQLException ex) {
-            throw new IOException("Something went wrong with the DB.");
+            throw new IOException("Something went wrong with the DB.", ex);
         }
     }
     

@@ -7,6 +7,8 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -109,6 +111,7 @@ public class PermissiveTest implements Test {
             try {
                 return new PermissiveTest(this.info);
             } catch (BadTestInfoException ex) {
+                Logger.getLogger(PermissiveTest.class.getName()).log(Level.SEVERE, null, ex);
                 return null;
             }
         }

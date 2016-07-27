@@ -12,6 +12,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -97,8 +99,8 @@ public class MainSceneController implements Initializable {
             controller.setTest(selectedTest);
             
             stage.show();
-        } catch (IOException e) {
-            CmUtils.printExceptionAndExit(e);
+        } catch (IOException ex) {
+            Logger.getLogger(MainSceneController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -114,8 +116,8 @@ public class MainSceneController implements Initializable {
             stage.onHiddenProperty().setValue(showMainEventHandler());
             hideMainWindow();
             stage.show();            
-        } catch (IOException e) {
-            CmUtils.printExceptionAndExit(e);
+        } catch (IOException ex) {
+            Logger.getLogger(MainSceneController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -137,8 +139,8 @@ public class MainSceneController implements Initializable {
             controller.setTest(selectedTest);
             
             stage.show();
-        } catch (IOException e) {
-            CmUtils.printExceptionAndExit(e);
+        } catch (IOException ex) {
+            Logger.getLogger(MainSceneController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -157,8 +159,8 @@ public class MainSceneController implements Initializable {
             controller.setText(headText, bodyText);
             
             stage.show();
-        } catch (IOException e) {
-            CmUtils.printExceptionAndExit(e);
+        } catch (IOException ex) {
+            Logger.getLogger(MainSceneController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -236,7 +238,7 @@ public class MainSceneController implements Initializable {
                 testsTable.getItems().remove(selected);
             }
         } catch (IOException ex) {
-            // Couldn't delete the results. Well, there's nothing we can do.
+            Logger.getLogger(MainSceneController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -292,7 +294,7 @@ public class MainSceneController implements Initializable {
             testResultTable.getItems().remove(selectedRecord);
             testResult.get(selectedTest.getInfo().getId()).remove(selectedRecord);
         } catch (IOException ex) {
-            // There's not much we can do. Let's pretend it's never happened.
+            Logger.getLogger(MainSceneController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -306,7 +308,7 @@ public class MainSceneController implements Initializable {
                 testResult.get(result.getTestId()).remove(result);
                 iterator.remove();
             } catch (IOException ex) {
-                // There's not much we can do. Let's pretend it's never happened.
+                Logger.getLogger(MainSceneController.class.getName()).log(Level.SEVERE, null, ex);
             }   
         }
         setDisableResultButtons(true);
@@ -314,7 +316,6 @@ public class MainSceneController implements Initializable {
     
     Map<Integer, List<Record>> testResult;
     
-    // TODO: disable some sets of buttons
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setValueFactoriesTestsTable();
@@ -348,7 +349,6 @@ public class MainSceneController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Scene> observable,
                     Scene oldValue, Scene newValue) {
-                
                 if (newValue != null) {
                     anchor.getScene().windowProperty()
                         .addListener(populateTablesOnShownWindowListener());
@@ -361,8 +361,7 @@ public class MainSceneController implements Initializable {
         return new ChangeListener<Window>() {
             @Override
             public void changed(ObservableValue<? extends Window> observable, 
-                Window oldValue, Window newValue) {
-                
+                    Window oldValue, Window newValue) {
                 if (newValue != null) {
                     ((Stage)anchor.getScene().getWindow())
                         .setOnShown(populateTablesOnShownHandler());

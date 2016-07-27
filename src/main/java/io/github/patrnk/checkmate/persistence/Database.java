@@ -26,7 +26,7 @@ final class Database {
                 connection = DriverManager.getConnection("jdbc:sqlite:mockup.db");
                 createTablesIfNeeded();
             } catch (ClassNotFoundException | SQLException ex) {
-                CmUtils.printExceptionAndExit(ex);
+                Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return connection;
@@ -94,7 +94,6 @@ final class Database {
                     Record record = new Record(testId, studentName, studentId, answerFilename);
                     records.add(record);
                 } catch (BadStudentNameException | BadStudentIdException ex) {
-                    // Is this how you log the thing? 
                     Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
