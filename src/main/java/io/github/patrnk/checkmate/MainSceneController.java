@@ -297,6 +297,9 @@ public class MainSceneController implements Initializable {
             PersistenceManager.deleteTestResult(selectedRecord.getAnswerFileName());
             testResultTable.getItems().remove(selectedRecord);
             testResult.get(selectedTest.getInfo().getId()).remove(selectedRecord);
+            if (testResult.get(selectedTest.getInfo().getId()).isEmpty()) {
+                setDisableResultButtons(true);
+            }
         } catch (IOException ex) {
             Logger.getLogger(MainSceneController.class.getName()).log(Level.SEVERE, null, ex);
         }
