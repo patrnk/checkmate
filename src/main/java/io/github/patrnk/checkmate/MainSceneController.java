@@ -89,6 +89,7 @@ public class MainSceneController implements Initializable {
                 getClass().getResource("/fxml/EmailCheckScene.fxml"));
             root = (Parent)loader.load();
             final Stage stage = new Stage();
+            stage.setResizable(false);
             stage.setScene(new Scene(root));
             stage.onHiddenProperty().setValue(showMainEventHandler());
             hideMainWindow();
@@ -112,6 +113,7 @@ public class MainSceneController implements Initializable {
             loader = new FXMLLoader(getClass().getResource("/fxml/CreateTestScene.fxml"));
             root = (Parent)loader.load();
             final Stage stage = new Stage();
+            stage.setResizable(false);
             stage.setScene(new Scene(root));
             stage.onHiddenProperty().setValue(showMainEventHandler());
             hideMainWindow();
@@ -129,6 +131,7 @@ public class MainSceneController implements Initializable {
             loader = new FXMLLoader(getClass().getResource("/fxml/CheckScene.fxml"));
             root = (Parent)loader.load();
             final Stage stage = new Stage();
+            stage.setResizable(false);
             stage.setScene(new Scene(root));
             stage.onHiddenProperty().setValue(showMainEventHandler());
             hideMainWindow();
@@ -151,6 +154,7 @@ public class MainSceneController implements Initializable {
             loader = new FXMLLoader(getClass().getResource("/fxml/ViewScene.fxml"));
             root = (Parent)loader.load();
             final Stage stage = new Stage();
+            stage.setResizable(false);
             stage.setTitle("Просмотр");
             stage.setScene(new Scene(root));
             
