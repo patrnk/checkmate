@@ -9,11 +9,10 @@ import io.github.patrnk.checkmate.test.Test;
 import io.github.patrnk.checkmate.test.TestAnswer;
 import io.github.patrnk.checkmate.test.exception.BadTestInfoException;
 import java.io.IOException;
+import java.security.ProviderException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.mail.Address;
 import javax.mail.AuthenticationFailedException;
 import javax.mail.BodyPart;
@@ -30,78 +29,53 @@ import org.jsoup.Jsoup;
 
 
 public final class Mailbox {
+    // A little convention: do not close inbox folder anywhere.
     
     private final Folder inbox;
     
     public Mailbox(String login, String password) 
-            throws NoSuchProviderException, AuthenticationFailedException, 
-                   MessagingException {
+            throws AuthenticationFailedException, MessagingException {
         Store store = this.getStore();
         store.connect("imap.yandex.ru", 993, login, password);
         this.inbox = store.getFolder("INBOX");
         inbox.open(Folder.READ_WRITE);
     }
     
-    private Store getStore() throws NoSuchProviderException {
+    private Store getStore() {
         Properties props = new Properties();
         props.setProperty("mail.store.protocol", "imaps");
-        props.setProperty("mail.imaps.ssl.trust", "imap.yandex.ru");
-        props.setProperty("mail.imaps.connectionpoolsize", "10");
-        Session session = Session.getDefaultInstance(props, null);
-        return session.getStore();
+        props.setProperty("mail.imap.ssl.trust", "imap.yandex.ru");
+        try {
+            Session session = Session.getDefaultInstance(props, null);
+            return session.getStore();
+        } catch (NoSuchProviderException ex) {
+            throw new ProviderException(ex);
+        }
     }
     
     /**
-     * Retrieves all the mail relating to the test and grades every one of them.
-     * @param test the test to which the results are related.
-     * @throws MessagingException
-     * @throws IOException
+     * Gets the first unread message that has testId as a first word 
+     *      in the subject.
+     * Returns null if there are no such messages.
+     * @param testId the first word in the subject of the message targeted.
+     * @return the first unread message that has testId as a first word 
+     *      in the subject, null if there are no such messages.
      */
-    public void retrieveAndGradeAndStoreTestResults(Test test) 
-            throws MessagingException, IOException {
-        String testId = test.getInfo().getId().toString();
-        List<Message> testMessages = getTestMessages(testId);
-        gradeAndStoreResults(testMessages, test);
-        inbox.close(true);
-    }
-    
-        
-    /**
-     * Gets messages related to the test.
-     * @param testId id of the test to which messages are related.
-     * @return messages related to the test.
-     * @throws MessagingException
-     */
-    private List<Message> getTestMessages(String testId) 
-            throws MessagingException {
+    public IMAPMessage getTestResult(String testId) throws MessagingException {
         FlagTerm unseenFlag = new FlagTerm(new Flags(Flags.Flag.SEEN), false);
-        Message unreadMessages[] = inbox.search(unseenFlag);
-        List<Message> testMessages = new ArrayList();
-        for (Message unreadMessage : unreadMessages) {
-            ((IMAPMessage)unreadMessage).setPeek(true);
-            String messageTestId = unreadMessage.getSubject().split(" ")[0];
-            if (testId.equals(messageTestId)) {
-                testMessages.add(unreadMessage);
+        IMAPMessage[] unreadMessages = (IMAPMessage[])inbox.search(unseenFlag);
+        for (IMAPMessage message : unreadMessages) {
+            if (testId.equals(message.getSubject().split(" ")[0])) {
+                return message;
             }
         }
-        return testMessages;
+        return null;
     }
     
-    private void gradeAndStoreResults(List<Message> results, Test test) 
-            throws MessagingException, IOException {
-        for (Message result : results) {
-            try {
-                gradeAndStoreResult(result, test);
-            } catch (BadStudentNameException | BadStudentIdException ex) {
-                Logger.getLogger(Mailbox.class.getName())
-                    .log(Level.SEVERE, null, ex);
-            }
-        }
-    }
-    
-    private void gradeAndStoreResult(Message result, Test test) 
-            throws BadStudentNameException, BadStudentIdException, 
-                  MessagingException, IOException {
+    public void writeDownTestResults(IMAPMessage result, Test test)
+        throws BadStudentNameException, BadStudentIdException, 
+               MessagingException, IOException {
+        result.setPeek(true);
         String studentName = getStudentName(result.getSubject());
         String studentId = getEmailAddress(result.getFrom()[0]);
         String messageText = getTextFromMessage(result).trim();

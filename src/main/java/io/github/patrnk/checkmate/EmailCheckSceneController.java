@@ -1,5 +1,8 @@
 package io.github.patrnk.checkmate;
 
+import com.sun.mail.imap.IMAPMessage;
+import io.github.patrnk.checkmate.persistence.BadStudentIdException;
+import io.github.patrnk.checkmate.persistence.BadStudentNameException;
 import io.github.patrnk.checkmate.test.Test;
 import java.io.IOException;
 import java.net.URL;
@@ -12,7 +15,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javax.mail.AuthenticationFailedException;
+import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 public class EmailCheckSceneController implements Initializable {
 
@@ -35,18 +40,26 @@ public class EmailCheckSceneController implements Initializable {
         }
         String login = emailField.getText();
         String pass = passField.getText();
+        String testId = test.getInfo().getId().toString();
         try {
             Mailbox mail = new Mailbox(login, pass);
-            mail.retrieveAndGradeAndStoreTestResults(test);
+            IMAPMessage result = mail.getTestResult(testId);
+            while (result != null) {
+                mail.writeDownTestResults(result, test);
+                result = mail.getTestResult(testId);
+            }
             statusLabel.getScene().getWindow().hide();
         } catch (AuthenticationFailedException ex) {
             statusLabel.setVisible(true);
             statusLabel.setText("Неверный логин или пароль.");
-        } catch (MessagingException | IOException ex) {
+        } catch (MessagingException ex) {
             statusLabel.setVisible(true);
             statusLabel.setText("Не удалось подключиться.");
             Logger.getLogger(EmailCheckSceneController.class.getName())
                 .log(Level.SEVERE, null, ex);
+        } catch (IOException | BadStudentNameException | BadStudentIdException ex) {
+            Logger.getLogger(EmailCheckSceneController.class.getName()).log(
+                Level.SEVERE, null, ex);
         }
     }
     
