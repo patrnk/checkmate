@@ -46,7 +46,7 @@ public final class Mailbox {
         props.setProperty("mail.store.protocol", "imaps");
         props.setProperty("mail.imap.ssl.trust", "imap.yandex.ru");
         try {
-            Session session = Session.getDefaultInstance(props, null);
+            Session session = Session.getInstance(props, null);
             return session.getStore();
         } catch (NoSuchProviderException ex) {
             throw new ProviderException(ex);
