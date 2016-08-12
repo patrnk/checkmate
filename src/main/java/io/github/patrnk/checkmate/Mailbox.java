@@ -15,19 +15,22 @@ import java.util.List;
 import java.util.Properties;
 import javax.mail.Address;
 import javax.mail.AuthenticationFailedException;
-import javax.mail.BodyPart;
 import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.NoSuchProviderException;
+import javax.mail.Part;
 import javax.mail.Session;
 import javax.mail.Store;
-import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.MimeMessage;
 import javax.mail.search.FlagTerm;
 import org.jsoup.Jsoup;
 
-
+/**
+ * TODO: make it return messages and parse messages in persistence manager
+ */
 public final class Mailbox {
     // A little convention: do not close inbox folder anywhere.
     
@@ -76,9 +79,10 @@ public final class Mailbox {
         throws BadStudentNameException, BadStudentIdException, 
                MessagingException, IOException {
         result.setPeek(true);
-        String studentName = getStudentName(result.getSubject());
-        String studentId = getEmailAddress(result.getFrom()[0]);
-        String messageText = getTextFromMessage(result).trim();
+        MimeMessage result_copy = new MimeMessage(result);
+        String studentName = getStudentName(result_copy.getSubject());
+        String studentId = getEmailAddress(result_copy.getFrom()[0]);
+        String messageText = getText(result_copy).trim();
         AnswerFormatter formatter = new AnswerFormatter();
         try {
             List<List<String>> rawAnswers 
@@ -133,35 +137,46 @@ public final class Mailbox {
         return rawAddress.substring(startingIndex, endingIndex);
     }
     
-    private String getTextFromMessage(Message message) 
+    /**
+     * Return the primary text content of the message.
+     */
+    private String getText(Part p) 
             throws MessagingException, IOException {
-        String result = "";
-        if (message.isMimeType("text/plain")) {
-            result = message.getContent().toString();
-        } else if (message.isMimeType("multipart/*")) {
-            MimeMultipart mimeMultipart = (MimeMultipart) message.getContent();
-            result = getTextFromMimeMultipart(mimeMultipart);
+        if (p.isMimeType("text/*")) {
+            String s = (String)p.getContent();
+            if (p.isMimeType("text/html")) {
+                s = Jsoup.parse(s).text();
+            }
+            return s;
         }
-        return result;
-    }
-
-    private String getTextFromMimeMultipart(MimeMultipart mimeMultipart) 
-        throws MessagingException, IOException {
-        String result = "";
-        int count = mimeMultipart.getCount();
-        for (int i = 0; i < count; i++) {
-            BodyPart bodyPart = mimeMultipart.getBodyPart(i);
-            if (bodyPart.isMimeType("text/plain")) {
-                result = result + "\n" + bodyPart.getContent();
-                break; // without break same text appears twice in my tests
-            } else if (bodyPart.isMimeType("text/html")) {
-                String html = (String) bodyPart.getContent();
-                result = result + "\n" + Jsoup.parse(html).text();
-            } else if (bodyPart.getContent() instanceof MimeMultipart){
-                MimeMultipart content = (MimeMultipart)bodyPart.getContent();
-                result = result + getTextFromMimeMultipart(content);
+        if (p.isMimeType("multipart/alternative")) {
+            // prefer plaintext over html
+            Multipart mp = (Multipart)p.getContent();
+            String text = null;
+            for (int i = 0; i < mp.getCount(); i++) {
+                Part bp = mp.getBodyPart(i);
+                if (bp.isMimeType("text/plain")) {
+                    String s = getText(bp);
+                    if (s != null)
+                        return s;
+                } else if (bp.isMimeType("text/html")) {
+                    if (text == null)
+                        text = getText(bp);
+                    continue;
+                } else {
+                    return getText(bp);
+                }
+            }
+            return text;
+        } else if (p.isMimeType("multipart/*")) {
+            Multipart mp = (Multipart)p.getContent();
+            for (int i = 0; i < mp.getCount(); i++) {
+                String s = getText(mp.getBodyPart(i));
+                if (s != null)
+                    return s;
             }
         }
-        return result;
+
+        return null;
     }
 }
