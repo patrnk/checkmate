@@ -9,9 +9,11 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Knows how classes are written in String; knows how answers are written.
+ * A formatting tool used to translate a raw String of answers 
+ *      into an array of answers.
  */
 public final class AnswerFormatter {
+    
     private static final Integer QUESTIONS_MAX = 1000;
     
     /**
