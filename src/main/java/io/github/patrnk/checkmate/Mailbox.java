@@ -146,6 +146,8 @@ public final class Mailbox {
             String s = (String)p.getContent();
             if (p.isMimeType("text/html")) {
                 s = Jsoup.parse(s).text();
+                AnswerFormatter f = new AnswerFormatter();
+                s = f.recoverMissingQuestionSeparators(s);
             }
             return s;
         }

@@ -27,6 +27,11 @@ public final class AnswerFormatter {
     private static final String ANSWER_SEPARATOR_REGEX = "\\)";
     
     /**
+     * A symbol that separates a question number and an answer.
+     */
+    private static final String ANSWER_SEPARATOR = ")";
+    
+    /**
      * Applies normalize(String value) to each answer.
      * @param values list of lists of strings to normalize.
      * @return normalized strings.
@@ -286,6 +291,30 @@ public final class AnswerFormatter {
     }
     
     private String getAnswer(String question) {
-        return question.split(ANSWER_SEPARATOR_REGEX)[1].trim();
+        return question.split(ANSWER_SEPARATOR_REGEX, 2)[1].trim();
+    }
+    
+    /**
+     * Inserts missing question separators.
+     * Based on the position of ANSWER_SEPARATOR_REGEX symbols and whitespaces
+     *      guesses where QUESTION_SEPARATOR_REGEX should have been.
+     * @param corruptAnswer the string with missing QUESTION_SEPARATOR_REGEX.
+     *      Questions must be separated by a whitespace.
+     * @return same string as corruptAnswer but 
+     *      with QUESTION_SEPARATOR_REGEX symbols in place.
+     */
+    public String recoverMissingQuestionSeparators(String corruptAnswer) {
+        String correctedAnswerSeparator =
+            corruptAnswer.replaceAll(" +" + ANSWER_SEPARATOR_REGEX, ANSWER_SEPARATOR);
+        String[] elements = correctedAnswerSeparator.split(" "); 
+        String recovered = elements[0];
+        for (int i = 1; i < elements.length; i++) {
+            if (elements[i].matches(".*" + ANSWER_SEPARATOR_REGEX + ".*")) {
+                recovered += ANSWER_SEPARATOR + elements[i];
+            } else {
+                recovered += " " + elements[i];
+            }
+        }
+        return recovered;
     }
 }
