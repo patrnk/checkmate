@@ -241,6 +241,9 @@ public class MainSceneController implements Initializable {
                 PersistenceManager.deleteTest(selected);
                 testsTable.getItems().remove(selected);
             }
+            if (testsTable.getItems().isEmpty()) {
+                setDisableTestButtons(true);
+            }
         } catch (IOException ex) {
             Logger.getLogger(MainSceneController.class.getName()).log(Level.SEVERE, null, ex);
         }
