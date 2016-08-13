@@ -17,12 +17,27 @@ public final class AnswerFormatter {
     private static final Integer QUESTIONS_MAX = 1000;
     
     /**
-     * A symbol that separates two consecutive answers.
+     * A regex of a symbol that separates two consecutive questions.
+     * A question consists of question number + answerSeparator + answer.
      */
     private static final String QUESTION_SEPARATOR_REGEX = "\n";
+
+    /**
+     * A symbol that separates two consecutive questions.
+     * A question consists of question number + answerSeparator + answer.
+     */
+    private static final String QUESTION_SEPARATOR = "\n";
     
     /**
-     * A symbol that separates a question number and an answer.
+     * Returns a symbol that separates two consecutive questions.
+     * A question consists of question number + answerSeparator + answer.
+     */
+    public String questionSeparator() {
+        return QUESTION_SEPARATOR;
+    }
+    
+    /**
+     * A regex of a symbol that separates a question number and an answer.
      */
     private static final String ANSWER_SEPARATOR_REGEX = "\\)";
     
@@ -30,6 +45,13 @@ public final class AnswerFormatter {
      * A symbol that separates a question number and an answer.
      */
     private static final String ANSWER_SEPARATOR = ")";
+    
+    /**
+     * Returns a symbol that separates a question number and an answer.
+     */
+    public String answerSeparator() {
+        return ANSWER_SEPARATOR;
+    }
     
     /**
      * Applies normalize(String value) to each answer.
@@ -103,7 +125,8 @@ public final class AnswerFormatter {
     /**
      * Turns a formatted description of test answers into regex patterns that
      *      can be used as answer key.
-     * Take the example input:
+     * Let's assume that answerSeparator is ")" and questionSeparator is "\n".
+     * Then the input might look like this:
      * <code> 
      * 1) 3
      * 2) абвг
@@ -111,7 +134,6 @@ public final class AnswerFormatter {
      * 4) *Proton
      * 5) *256
      * </code>
-     * Note that questions are separated by line breaks and answers by ")".
      * Answer to the first question is "3", so the pattern matches only "3".
      * Answer to the second question is either "абвг" or "abcde". Pattern also 
      *      matches symbols in any order, i.e. "abdec" is a correct answer too. 
@@ -208,7 +230,7 @@ public final class AnswerFormatter {
      * If a question has number i than its index in the 
      *      returned list will be i - 1.
      * The format is simple: questions must be separated with symbol described 
-     * in QUESTION_SEPARATOR_REGEX and answers with ANSWER_SEPARATOR_REGEX.
+     * in questionSeparator and answers with answerSeparator.
      * For case-insensitive version, use getSeparatedLowerCaseAnswers.
      * @param rawAnswers the formatted description of test.
      * @return list of questions, each containing list of answers.
@@ -296,12 +318,12 @@ public final class AnswerFormatter {
     
     /**
      * Inserts missing question separators.
-     * Based on the position of ANSWER_SEPARATOR_REGEX symbols and whitespaces
-     *      guesses where QUESTION_SEPARATOR_REGEX should have been.
-     * @param corruptAnswer the string with missing QUESTION_SEPARATOR_REGEX.
+     * Based on the position of answerSeparators and whitespaces
+     *      guesses where questionSeparators should have been.
+     * @param corruptAnswer the string with missing questionSeparators.
      *      Questions must be separated by a whitespace.
      * @return same string as corruptAnswer but 
-     *      with QUESTION_SEPARATOR_REGEX symbols in place.
+     *      with questionSeparators symbols in place.
      */
     public String recoverMissingQuestionSeparators(String corruptAnswer) {
         String correctedAnswerSeparator =
