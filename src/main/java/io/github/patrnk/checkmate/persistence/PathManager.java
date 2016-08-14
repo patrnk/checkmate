@@ -51,6 +51,7 @@ final class PathManager {
     private final String SUFFIX_SEPARATOR = ".";
     private final String TEST_SUFFIX = "tst";
     private final String RESULT_SUFFIX = "res";
+    private final String RESULT_ERROR_SUFFIX = "err";
     
     /**
      * Formats the name of the file and concatenates it to the folder path.
@@ -125,6 +126,40 @@ final class PathManager {
             filepath = this.getResultFilePath(randomName);
         }
         return filepath;
+    }
+
+    /**
+     * Returns path which can be used to create the result error file.
+     * Works in the same way as getResultErrorFilePath(String filename) 
+     *      but generates the name itself.
+     * Cannot be used to create billions of files.
+     * @return path which can be used to create the result error file.
+     * @throws IOException if the folder of the file doesn't exist 
+     *      and cannot be created.
+     */    
+    public String getResultErrorFilePath() throws IOException {
+        String randomName = this.getRandomNumberString();
+        String filepath = this.getResultErrorFilePath(randomName);
+        while (new File(filepath).exists()) {
+            randomName = this.getRandomNumberString();
+            filepath = this.getResultErrorFilePath(randomName);
+        }
+        return filepath;
+    }
+    
+    /**
+     * Returns path which can be used to create the result file.
+     * @return path which can be used to create the result file.
+     * @throws IOException if the folder of the file doesn't exist 
+     *      and cannot be created.
+     */
+    public String getResultErrorFilePath(String filename) throws IOException {
+        String formattedName = getResultErrorFileName(filename);
+        return this.getResultFolderPath() + File.separator + formattedName;
+    }
+    
+    private String getResultErrorFileName(String name) {
+        return name + SUFFIX_SEPARATOR + RESULT_ERROR_SUFFIX;
     }
    
     /**
