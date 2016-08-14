@@ -21,21 +21,22 @@ public final class Record {
         return studentId;
     }
      
-    private final String answerFileName;
+    private final String resultFilename;
     
-    public String getAnswerFileName() {
-        return answerFileName;
+    public String getResultFilename() {
+        return resultFilename;
     }
     
     public Record(Integer testId, String studentName, 
-            String studentId, String answerFileName) 
+            String studentId, String resultFilename) 
             throws BadStudentNameException, BadStudentIdException {   
         checkName(studentName);
         checkId(studentId);
+        checkResultFilename(resultFilename);
         this.testId = testId;
         this.studentName = studentName;
         this.studentId = studentId;
-        this.answerFileName = answerFileName;
+        this.resultFilename = resultFilename;
     }
 
     private void checkName(String name) throws BadStudentNameException {
@@ -47,6 +48,13 @@ public final class Record {
     private void checkId(String id) throws BadStudentIdException {
         if (id == null || id.length() > 200) {
             throw new BadStudentIdException("The id is too long or null.");
+        }
+    }
+    
+    private void checkResultFilename(String name) {
+        if (name == null || name.length() > 250) {
+            throw new IllegalArgumentException("resultFilename cannot be more "
+                + "than 250 characters long.");
         }
     }
 }
