@@ -75,18 +75,6 @@ final class PathManager {
     }
     
     /**
-     * Formats the name of the file and concatenates it to the folder path.
-     * @param filename the name of the file that's intended for test results.
-     * @return path which can be used to create the file.
-     * @throws IOException if the folder of the file doesn't exist 
-     *      and cannot be created.
-     */
-    public String getResultFilePath(String filename) throws IOException {
-        String formattedName = this.getResultFileName(filename);
-        return this.getResultFolderPath() + File.separator + formattedName;
-    }
-    
-    /**
      * Returns path which can be used to create the result file.
      * Equivalent to to getUniqueRandomResultFilePath().
      * Works in the same way as getResultFilePath(String filename) 
@@ -98,6 +86,18 @@ final class PathManager {
      */
     public String getResultFilePath() throws IOException {
         return getUniqueRandomResultFilePath();
+    }
+    
+    /**
+     * Formats the name of the file and concatenates it to the folder path.
+     * @param filename the name of the file that's intended for test results.
+     * @return path which can be used to create the file.
+     * @throws IOException if the folder of the file doesn't exist 
+     *      and cannot be created.
+     */
+    public String getResultFilePath(String filename) throws IOException {
+        String formattedName = this.getResultFileName(filename);
+        return this.getResultFolderPath() + File.separator + formattedName;
     }
     
     /**
