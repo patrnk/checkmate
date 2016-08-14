@@ -24,19 +24,19 @@ public final class PersistenceManager {
     
     /**
      * Persists test over time serializing it into a file.
-     * @param t test to serialize
+     * @param test test to serialize
+     * @throws IOException if the method couldn't store the test
      * @throws BadTestIdException if the test with that id already exists. 
      */
-    public static void writeDownTest(Test t) 
+    public static void writeDownTest(Test test) 
             throws BadTestIdException, IOException {
-        new File(PATHS.getTestFolderPath()).mkdir();
-        String name = t.getInfo().getId().toString();
-        String path = PATHS.getTestFolderPath() + PATHS.getTestFileName(name);
+        String name = test.getInfo().getId().toString();
+        String path = PATHS.getTestFilePath(name);
         if ((new File(path)).exists()) {
             throw new BadTestIdException("A test with id " + name + 
                 " already exists.");
         }
-        writeDown(path, t);
+        writeDown(path, test);
     }
     
     /**
@@ -52,11 +52,9 @@ public final class PersistenceManager {
     public static void writeDownTestResults(String studentName, String studentId, 
             ArrayList<TestAnswer> answers, Integer testId) 
             throws BadStudentNameException, BadStudentIdException, IOException {
-        new File(ANSWER_FOLDER).mkdir();
-        String filename = getUniqueRandomFilename(ANSWER_FOLDER, ANSWER_SUFFIX);
-        String filepath = ANSWER_FOLDER + File.separator + filename;
+        String filepath = PATHS.getResultFilePath();
         writeDown(filepath, answers);
-        Record newRecord = new Record(testId, studentName, studentId, filename);
+        Record newRecord = new Record(testId, studentName, studentId, filepath);
         try {
             Database.addRecord(newRecord);
         } catch (SQLException ex) {
@@ -80,41 +78,15 @@ public final class PersistenceManager {
     public static void writeDownTestResults(String studentName, String studentId, 
             String error, Integer testId) 
             throws BadStudentNameException, BadStudentIdException, IOException {
-        new File(ANSWER_FOLDER).mkdir();
-        String filename = getUniqueRandomFilename(ANSWER_FOLDER, ANSWER_SUFFIX);
-        String errorFilename = ERROR_INDICATOR + filename;
-        String filepath = ANSWER_FOLDER + File.separator + errorFilename;
+        String filepath = PATHS.getResultErrorFilePath();
         writeDown(filepath, error);
-        Record newRecord = new Record(testId, studentName, studentId, filename);
+        Record newRecord = new Record(testId, studentName, studentId, filepath);
         try {
             Database.addRecord(newRecord);
         } catch (SQLException ex) {
             deleteFile(filepath);
             throw new IOException("Something went wrong with the DB.", ex);
         }
-    }
-    
-    /**
-     * @return filename that's unique in the directory folderPath. 
-     *      The filename contains suffix
-     */
-    private static String getUniqueRandomFilename(String folderPath, String suffix) {
-        String filename = getRandomFileName() + SUFFIX_SEPARATOR + suffix;
-        String filepath = folderPath + File.separator + filename;
-        while (new File(filepath).exists()) {
-            filename = getRandomFileName() + SUFFIX_SEPARATOR + suffix;
-            filepath = folderPath + File.separator + filename;
-        }
-        return filename;
-    }
-   
-    /**
-     * @return a random number in a form of a string.
-     */
-    private static String getRandomFileName() {
-        Double d = (Math.random() * 1000000);
-        Integer i = d.intValue();
-        return i.toString();
     }
     
     /**
@@ -159,7 +131,7 @@ public final class PersistenceManager {
     public static ArrayList<TestAnswer> getAnswersForRecord(Record record) {
         String filepath = ANSWER_FOLDER;
         filepath += File.separator; 
-        filepath += record.getAnswerFileName();
+        filepath += record.getResultFilepath();
         File file = new File(filepath);
         if (file.exists()) {
             file.mkdir();
@@ -181,7 +153,7 @@ public final class PersistenceManager {
         String filepath = ANSWER_FOLDER;
         filepath += File.separator; 
         filepath += ERROR_INDICATOR;
-        filepath += record.getAnswerFileName();
+        filepath += record.getResultFilepath();
         File file = new File(filepath);
         if (file.exists()) {
             file.mkdir();
