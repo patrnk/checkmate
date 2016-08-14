@@ -21,22 +21,22 @@ public final class Record {
         return studentId;
     }
      
-    private final String resultFilename;
+    private final String resultFilepath;
     
-    public String getResultFilename() {
-        return resultFilename;
+    public String getResultFilepath() {
+        return resultFilepath;
     }
     
     public Record(Integer testId, String studentName, 
-            String studentId, String resultFilename) 
+            String studentId, String resultFilepath) 
             throws BadStudentNameException, BadStudentIdException {   
         checkName(studentName);
         checkId(studentId);
-        checkResultFilename(resultFilename);
+        checkResultFilename(resultFilepath);
         this.testId = testId;
         this.studentName = studentName;
         this.studentId = studentId;
-        this.resultFilename = resultFilename;
+        this.resultFilepath = resultFilepath;
     }
 
     private void checkName(String name) throws BadStudentNameException {

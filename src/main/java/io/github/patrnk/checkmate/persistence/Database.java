@@ -61,7 +61,7 @@ final class Database {
      */
     public static void addRecord(Record record) throws SQLException {
         checkStringLength(record.getStudentName(), record.getStudentId(), 
-            record.getAnswerFileName());
+            record.getResultFilepath());
         String insertSql = "INSERT INTO testResult " +
                 "(test_id, student_name, student_id, answer_file) VALUES " +
                 "(      ?,            ?,          ?,           ?);";
@@ -71,7 +71,7 @@ final class Database {
             insert.setInt(1, record.getTestId());
             insert.setString(2, record.getStudentName());
             insert.setString(3, record.getStudentId());
-            insert.setString(4, record.getAnswerFileName());
+            insert.setString(4, record.getResultFilepath());
             insert.executeUpdate();
         } finally {
             insert.close();

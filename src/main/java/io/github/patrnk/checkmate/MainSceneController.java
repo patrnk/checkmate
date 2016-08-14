@@ -297,7 +297,7 @@ public class MainSceneController implements Initializable {
         Test selectedTest = testsTable.getSelectionModel().getSelectedItem();
         Record selectedRecord = testResultTable.getSelectionModel().getSelectedItem();
         try {
-            PersistenceManager.deleteTestResult(selectedRecord.getAnswerFileName());
+            PersistenceManager.deleteTestResult(selectedRecord.getResultFilepath());
             testResultTable.getItems().remove(selectedRecord);
             testResult.get(selectedTest.getInfo().getId()).remove(selectedRecord);
             if (testResult.get(selectedTest.getInfo().getId()).isEmpty()) {
@@ -314,7 +314,7 @@ public class MainSceneController implements Initializable {
         while(iterator.hasNext()) {
             Record result = iterator.next();
             try {
-                PersistenceManager.deleteTestResult(result.getAnswerFileName());
+                PersistenceManager.deleteTestResult(result.getResultFilepath());
                 testResult.get(result.getTestId()).remove(result);
                 iterator.remove();
             } catch (IOException ex) {
