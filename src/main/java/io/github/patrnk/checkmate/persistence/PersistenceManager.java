@@ -19,11 +19,9 @@ import java.util.logging.Logger;
 
 
 public final class PersistenceManager {    
-    private final static String SUFFIX_SEPARATOR = ".";
     
-    private final static String TESTS_FOLDER = "tests";
-    private final static String TESTS_SUFFIX = "tst";
-       
+    private static final PathManager PATHS = new PathManager();
+    
     /**
      * Persists test over time serializing it into a file.
      * @param t test to serialize
@@ -31,19 +29,15 @@ public final class PersistenceManager {
      */
     public static void writeDownTest(Test t) 
             throws BadTestIdException, IOException {
-        new File(TESTS_FOLDER).mkdir();
-        String filename = t.getInfo().getId().toString();
-        filename += SUFFIX_SEPARATOR + TESTS_SUFFIX;
-        String filePath = TESTS_FOLDER + File.separator + filename;
-        if ((new File(filePath)).exists()) {
-            throw new BadTestIdException("A test with id " + filename + 
+        new File(PATHS.getTestFolderPath()).mkdir();
+        String name = t.getInfo().getId().toString();
+        String path = PATHS.getTestFolderPath() + PATHS.getTestFileName(name);
+        if ((new File(path)).exists()) {
+            throw new BadTestIdException("A test with id " + name + 
                 " already exists.");
         }
-        writeDown(filePath, t);
+        writeDown(path, t);
     }
-    
-    private final static String ANSWER_FOLDER = "answers";
-    private final static String ANSWER_SUFFIX = "ans";
     
     /**
      * Writes down the information provided.
