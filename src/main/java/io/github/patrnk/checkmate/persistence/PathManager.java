@@ -1,6 +1,7 @@
 package io.github.patrnk.checkmate.persistence;
 
 import java.io.File;
+import java.io.IOException;
 
 
 class PathManager {
@@ -9,20 +10,44 @@ class PathManager {
     private final String TEST_FOLDER = "tests";
     private final String RESULT_FOLDER = "results";
     
-    /**
+    /**  
      * Returns the folder path where you can store Test objects.
      * The returned string has File.separator as last character for convenience.
+     * Ensures that the directory actually exists.
+     * @throws IOException if the directory doesn't exist and cannot be created.
      */
-    public String getTestFolderPath() {
+    public String getTestFolderPath() throws IOException {
+        String folder = constructTestFolderPath();
+        ensureFileExists(folder);
+        return folder;
+    }
+    
+    private String constructTestFolderPath() {
         return COMMON_FOLDER + File.separator + TEST_FOLDER + File.separator;
     }
     
     /**
      * Returns the folder path where you can store test results.
      * The returned string has File.separator as last character for convenience.
+     * Ensures that the directory actually exists.
+     * @throws IOException if the directory doesn't exist and cannot be created.
      */
-    public String getResultFolderPath() {
+    public String getResultFolderPath() throws IOException {
+        String folder = constructResultFolderPath();
+        ensureFileExists(folder);
+        return folder;
+    }
+    
+    private String constructResultFolderPath() {
         return COMMON_FOLDER + File.separator + RESULT_FOLDER + File.separator;
+    }
+    
+    private void ensureFileExists(String directory) throws IOException {
+        File folder = new File(directory);
+        if (!folder.mkdir() && !folder.exists()) {
+            throw new IOException("Can't create a file or folder here: " + 
+                folder.getCanonicalPath());
+        }
     }
     
     private final String SUFFIX_SEPARATOR = ".";
