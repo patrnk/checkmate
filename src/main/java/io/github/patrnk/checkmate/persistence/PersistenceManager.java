@@ -109,11 +109,11 @@ public final class PersistenceManager {
      * Returns the tests stored in some long-term storage.
      * @return list of deserialized tests. 
      *      In case of a failure returns empty list.
+     * @throws IOException if there's no tests folder and one can't be created.
      */
-    public static List<Test> getExistingTests() {
+    public static List<Test> getExistingTests() throws IOException {
         List<Test> tests = new ArrayList();
-        List<Object> potentialTests = getExistingObjects(
-            TESTS_FOLDER, TESTS_SUFFIX);
+        List<Object> potentialTests = getExistingObjects(TESTS);
         for (Object potentialTest : potentialTests) {
             try { 
                 Test t = (Test) potentialTest;
@@ -127,16 +127,14 @@ public final class PersistenceManager {
     }
     
     /**
-     * Gets stored answers for the record provided.
+     * Gets stored results for the record provided.
      * If there was an error while grading the answers, returns null.
      *      To get further info about the error, see getErrorForRecord().
-     * @param record
+     * @param record that contains info on where to look for the results.
      * @return stored answers for the record.
      */
-    public static ArrayList<TestAnswer> getAnswersForRecord(Record record) {
-        String filepath = ANSWER_FOLDER;
-        filepath += File.separator; 
-        filepath += record.getResultFilepath();
+    public static ArrayList<TestAnswer> getResultsForRecord(Record record) {
+        String filepath = record.getResultFilepath();
         File file = new File(filepath);
         if (file.exists()) {
             file.mkdir();
@@ -155,10 +153,7 @@ public final class PersistenceManager {
      * @return the text of an error occurred while grading the answers. Or null.
      */
     public static String getErrorForRecord(Record record) {
-        String filepath = ANSWER_FOLDER;
-        filepath += File.separator; 
-        filepath += ERROR_INDICATOR;
-        filepath += record.getResultFilepath();
+        String filepath = record.getResultFilepath();
         File file = new File(filepath);
         if (file.exists()) {
             file.mkdir();
@@ -179,19 +174,20 @@ public final class PersistenceManager {
      *      Others are ignored
      * @return list of deserialized objects
      */
-    private static List<Object> getExistingObjects(String folderPath, String suffix) {
+    private static List<Object> getExistingObjects(StoredData object)
+            throws IOException {
         List<Object> objects = new ArrayList();
-        File folder = new File(folderPath);
+        File folder = new File(object.getFolderPath());
         if (!folder.exists()) {
             folder.mkdir();
         }
         File[] files = folder.listFiles();
         for (File file : files) {
-            if (getSuffix(file.getName()).equals(suffix)) {
+            if (object.canBeContructed(file.getName())) {
                 Object o = getExistingObject(file);
                 if (o != null) {
                     objects.add(o);
-                }
+                }                
             }
         }
         return objects;
