@@ -221,22 +221,6 @@ public final class PersistenceManager {
         }
         return records;
     }
-  
-    /**
-     * Return suffix of the filename.
-     * Suffix is the part of the filename that comes after SUFFIX_SEPARATOR.
-     * Never returns null.
-     * @param filename a string that is treated as a name of a file.
-     * @return suffix or empty string if the filename doesn't have one.
-     */
-    private static String getSuffix(String filename) {
-        String suffix = "";
-        Integer suffixIndex = filename.lastIndexOf(SUFFIX_SEPARATOR);
-        if (suffixIndex != -1) {
-            suffix = filename.substring(suffixIndex + 1);
-        }
-        return suffix;
-    }
     
     /**
      * Removes the test from long-term storage.
@@ -244,25 +228,21 @@ public final class PersistenceManager {
      * @throws IOException if not succeeded.
      */
     public static void deleteTest(Test test) throws IOException {
-        String filepath = TESTS_FOLDER;
-        filepath += File.separator;
-        filepath += test.getInfo().getId().toString();
-        filepath += SUFFIX_SEPARATOR;
-        filepath += TESTS_SUFFIX;
+        String name = test.getInfo().getId().toString();
+        String filepath = TESTS.getFilePath(name);
         deleteFile(filepath);
     }
     
-    public static void deleteTestResult(String filename) throws IOException {
+    /**
+     * Deletes the test results from long-term storage.
+     * @param record record which contains info about which file to remove
+     * @throws IOException in case it's impossible to do
+     */
+    public static void deleteResultForRecord(Record record) throws IOException {
         try {
-            Database.deleteRecord(filename);
-            
-            String filepath = ANSWER_FOLDER;
-            filepath += File.separator;
-            String errorFilePath = filepath + ERROR_INDICATOR;
-            filepath += filename;
-            errorFilePath += filename;
+            Database.deleteRecord(record.getResultFilepath());
+            String filepath = record.getResultFilepath();
             deleteFile(filepath);
-            deleteFile(errorFilePath);
         } catch (SQLException ex) {
             throw new IOException("Something went wrong with the DB.", ex);
         }

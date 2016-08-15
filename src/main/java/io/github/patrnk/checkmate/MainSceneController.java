@@ -255,7 +255,7 @@ public class MainSceneController implements Initializable {
         String headText = selected.getStudentName();
         
         ArrayList<TestAnswer> answers 
-            = PersistenceManager.getAnswersForRecord(selected);
+            = PersistenceManager.getResultsForRecord(selected);
         String bodyText;
         if (answers != null) {
             bodyText = turnAnswersToString(answers);
@@ -297,7 +297,7 @@ public class MainSceneController implements Initializable {
         Test selectedTest = testsTable.getSelectionModel().getSelectedItem();
         Record selectedRecord = testResultTable.getSelectionModel().getSelectedItem();
         try {
-            PersistenceManager.deleteTestResult(selectedRecord.getResultFilepath());
+            PersistenceManager.deleteResultForRecord(selectedRecord);
             testResultTable.getItems().remove(selectedRecord);
             testResult.get(selectedTest.getInfo().getId()).remove(selectedRecord);
             if (testResult.get(selectedTest.getInfo().getId()).isEmpty()) {
@@ -314,7 +314,7 @@ public class MainSceneController implements Initializable {
         while(iterator.hasNext()) {
             Record result = iterator.next();
             try {
-                PersistenceManager.deleteTestResult(result.getResultFilepath());
+                PersistenceManager.deleteResultForRecord(result);
                 testResult.get(result.getTestId()).remove(result);
                 iterator.remove();
             } catch (IOException ex) {
@@ -391,9 +391,13 @@ public class MainSceneController implements Initializable {
     }
     
     private void setTestsTableItems() {
-        ObservableList<Test> tests = FXCollections
-            .observableArrayList(PersistenceManager.getExistingTests());
-        testsTable.setItems(tests);
+        try {
+            ObservableList<Test> tests = FXCollections
+                .observableArrayList(PersistenceManager.getExistingTests());
+            testsTable.setItems(tests);
+        } catch (IOException ex) {
+            Logger.getLogger(MainSceneController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private void setTestResultTableItems() {
