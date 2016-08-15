@@ -52,11 +52,6 @@ final class Database {
     
     /**
      * Sets new record of the test results in the database.
-     * @param testId id of the test that the student has taken.
-     * @param studentName name of the student
-     * @param studentId id of the student
-     * @param answerFileName name of a file where student answers and grades
-     *      are stored
      * @throws SQLException in case the method is broken and needs to be rewritten
      */
     public static void addRecord(Record record) throws SQLException {
@@ -88,9 +83,9 @@ final class Database {
                 Integer testId = rawRecords.getInt("test_id");
                 String studentName = rawRecords.getString("student_name");
                 String studentId = rawRecords.getString("student_id");
-                String answerFilename = rawRecords.getString("answer_file");
+                String resultFilePath = rawRecords.getString("answer_file");
                 try {
-                    Record record = new Record(testId, studentName, studentId, answerFilename);
+                    Record record = new Record(testId, studentName, studentId, resultFilePath);
                     records.add(record);
                 } catch (BadStudentNameException | BadStudentIdException ex) {
                     Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
@@ -114,14 +109,14 @@ final class Database {
     
     /**
      * Deletes the row with the record.
-     * @param answerFileName used as an identifier of the record.
+     * @param resultFilePath used as an identifier of the record.
      * @throws SQLException if something went wrong with the SQL request.
      */
-    public static void deleteRecord(String answerFileName) throws SQLException {
+    public static void deleteRecord(String resultFilePath) throws SQLException {
         String deleteSql = "DELETE FROM testResult WHERE answer_file= ? ;";
         try (PreparedStatement delete = 
             Database.getConnection().prepareStatement(deleteSql)) {
-            delete.setString(1, answerFileName);
+            delete.setString(1, resultFilePath);
             delete.executeUpdate();
         }
     }
