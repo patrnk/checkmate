@@ -36,7 +36,7 @@ final class StoredData {
     
     private void ensureFileExists(String directory) throws IOException {
         File folder = new File(directory);
-        if (!folder.mkdir() && !folder.exists()) {
+        if (!folder.mkdirs() && !folder.exists()) {
             throw new IOException("Can't create a file or folder here: " + 
                 folder.getCanonicalPath());
         }
