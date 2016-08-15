@@ -20,11 +20,11 @@ import java.util.logging.Logger;
 
 public final class PersistenceManager {    
     
-    private static final StoredData TESTS = new StoredData("tests", ".tst");
+    private static final StoredData TESTS = new StoredData("tests", "tst");
     
-    private static final StoredData RESULTS = new StoredData("results", ".tst");
+    private static final StoredData RESULTS = new StoredData("results", "tst");
     
-    private static final StoredData RESULT_ERRORS = new StoredData("results", ".err");
+    private static final StoredData RESULT_ERRORS = new StoredData("results", "err");
     
     /**
      * Persists test over time serializing it into a file.
