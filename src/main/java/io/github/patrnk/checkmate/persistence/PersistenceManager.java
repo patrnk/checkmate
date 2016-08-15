@@ -136,8 +136,7 @@ public final class PersistenceManager {
     public static ArrayList<TestAnswer> getResultsForRecord(Record record) {
         String filepath = record.getResultFilepath();
         File file = new File(filepath);
-        if (file.exists()) {
-            file.mkdir();
+        if (file.exists() && RESULTS.canBeContructed(file.getName())) {
             ArrayList<TestAnswer> answers 
                 = (ArrayList<TestAnswer>) getExistingObject(file);
             return answers;
@@ -155,8 +154,7 @@ public final class PersistenceManager {
     public static String getErrorForRecord(Record record) {
         String filepath = record.getResultFilepath();
         File file = new File(filepath);
-        if (file.exists()) {
-            file.mkdir();
+        if (file.exists() && RESULT_ERRORS.canBeContructed(file.getName())) {
             String error = (String) getExistingObject(file);
             return error;
         } else {
@@ -178,9 +176,6 @@ public final class PersistenceManager {
             throws IOException {
         List<Object> objects = new ArrayList();
         File folder = new File(object.getFolderPath());
-        if (!folder.exists()) {
-            folder.mkdir();
-        }
         File[] files = folder.listFiles();
         for (File file : files) {
             if (object.canBeContructed(file.getName())) {
