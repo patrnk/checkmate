@@ -20,7 +20,11 @@ import java.util.logging.Logger;
 
 public final class PersistenceManager {    
     
-    private static final PathManager PATHS = new PathManager();
+    private static final StoredData TESTS = new StoredData("tests", ".tst");
+    
+    private static final StoredData RESULTS = new StoredData("results", ".tst");
+    
+    private static final StoredData RESULT_ERRORS = new StoredData("results", ".err");
     
     /**
      * Persists test over time serializing it into a file.
@@ -31,7 +35,7 @@ public final class PersistenceManager {
     public static void writeDownTest(Test test) 
             throws BadTestIdException, IOException {
         String name = test.getInfo().getId().toString();
-        String path = PATHS.getTestFilePath(name);
+        String path = TESTS.getFilePath(name);
         if ((new File(path)).exists()) {
             throw new BadTestIdException("A test with id " + name + 
                 " already exists.");
@@ -52,7 +56,7 @@ public final class PersistenceManager {
     public static void writeDownTestResults(String studentName, String studentId, 
             ArrayList<TestAnswer> answers, Integer testId) 
             throws BadStudentNameException, BadStudentIdException, IOException {
-        String filepath = PATHS.getResultFilePath();
+        String filepath = RESULTS.getFilePath();
         writeDown(filepath, answers);
         Record newRecord = new Record(testId, studentName, studentId, filepath);
         try {
@@ -78,7 +82,7 @@ public final class PersistenceManager {
     public static void writeDownTestResults(String studentName, String studentId, 
             String error, Integer testId) 
             throws BadStudentNameException, BadStudentIdException, IOException {
-        String filepath = PATHS.getResultErrorFilePath();
+        String filepath = RESULT_ERRORS.getFilePath();
         writeDown(filepath, error);
         Record newRecord = new Record(testId, studentName, studentId, filepath);
         try {
@@ -115,7 +119,8 @@ public final class PersistenceManager {
                 Test t = (Test) potentialTest;
                 tests.add(t);
             } catch (ClassCastException ex) {
-                Logger.getLogger(PersistenceManager.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(PersistenceManager.class.getName())
+                    .log(Level.SEVERE, null, ex);
             }
         }
         return tests;
