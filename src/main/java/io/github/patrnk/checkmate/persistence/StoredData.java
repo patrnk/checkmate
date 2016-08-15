@@ -84,4 +84,20 @@ final class StoredData {
         Integer i = d.intValue();
         return i.toString();
     }
+    
+    /**
+     * Determines whether the filename could be constructed by the object.
+     * Useful if you want to know if the file belongs to that particular 
+     *      instance of StoredData.
+     * @param filename string to test
+     * @return True if the name could be constructed be that particular 
+     *      instance of StoredData and False otherwise.
+     */
+    public Boolean canBeContructed(String filename) {
+        if (filename.endsWith(SUFFIX_SEPARATOR + suffix)) {
+            return Boolean.TRUE;
+        } else {
+            return Boolean.FALSE;
+        }
+    }
 }
