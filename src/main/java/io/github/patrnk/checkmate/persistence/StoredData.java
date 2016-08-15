@@ -62,8 +62,9 @@ final class StoredData {
     }
     
     /**
-     * Returns path which can be used to create the result file.
-     * @return path which can be used to create the result file.
+     * Returns path which can be used to create the file.
+     * @param filename desired name of the file
+     * @return path which can be used to create the file.
      * @throws IOException if the folder of the file doesn't exist 
      *      and cannot be created.
      */
