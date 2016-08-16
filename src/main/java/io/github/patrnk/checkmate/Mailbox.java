@@ -34,12 +34,14 @@ import org.jsoup.Jsoup;
 public final class Mailbox {
     // A little convention: do not close inbox folder anywhere.
     
+    private static final String PROVIDER = "imap.yandex.ru";
+    
     private final Folder inbox;
     
     public Mailbox(String login, String password) 
             throws AuthenticationFailedException, MessagingException {
         Store store = this.getStore();
-        store.connect("imap.yandex.ru", 993, login, password);
+        store.connect(PROVIDER, 993, login, password);
         this.inbox = store.getFolder("INBOX");
         inbox.open(Folder.READ_WRITE);
     }
@@ -47,7 +49,7 @@ public final class Mailbox {
     private Store getStore() {
         Properties props = new Properties();
         props.setProperty("mail.store.protocol", "imaps");
-        props.setProperty("mail.imap.ssl.trust", "imap.yandex.ru");
+        props.setProperty("mail.imap.ssl.trust", PROVIDER);
         try {
             Session session = Session.getInstance(props, null);
             return session.getStore();
