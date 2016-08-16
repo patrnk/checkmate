@@ -11,13 +11,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javax.mail.AuthenticationFailedException;
-import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 
 public class EmailCheckSceneController implements Initializable {
 
@@ -28,12 +28,7 @@ public class EmailCheckSceneController implements Initializable {
     private PasswordField passField;
     
     @FXML
-    private Label statusLabel;
-    
-    @FXML
     private void checkButtonClicked() {
-        statusLabel.setVisible(true);
-        statusLabel.setText("Проверяем...");
         if (test == null) {
             throw new AssertionError("Test property for this scene must be "
                 + "non-null. Use setTest(). ");
@@ -48,16 +43,28 @@ public class EmailCheckSceneController implements Initializable {
                 mail.writeDownTestResults(result, test);
                 result = mail.getTestResult(testId);
             }
-            statusLabel.getScene().getWindow().hide();
         } catch (AuthenticationFailedException ex) {
-            statusLabel.setVisible(true);
-            statusLabel.setText("Неверный логин или пароль.");
-        } catch (MessagingException ex) {
-            statusLabel.setVisible(true);
-            statusLabel.setText("Не удалось подключиться.");
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Ошибка");
+            alert.setHeaderText("Неверный логин или пароль");
+            alert.setContentText("Обратите внимание, что войти можно "
+                + "только через Яндекс Почту.");
+            alert.showAndWait();
+        } catch (MessagingException | IOException ex) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Ошибка");
+            alert.setHeaderText("Не удалось подключиться");
+            alert.setContentText("Проверьте интернет-соединение.");
+            alert.showAndWait();
             Logger.getLogger(EmailCheckSceneController.class.getName())
                 .log(Level.SEVERE, null, ex);
-        } catch (IOException | BadStudentNameException | BadStudentIdException ex) {
+        } catch (BadStudentNameException | BadStudentIdException ex) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Ошибка");
+            alert.setHeaderText("У ученика слишком длинное имя или почта");
+            alert.setContentText("Зайдите на почту через сайт и обработайте "
+                + "сообщение вручную.");
+            alert.showAndWait();
             Logger.getLogger(EmailCheckSceneController.class.getName()).log(
                 Level.SEVERE, null, ex);
         }
