@@ -61,7 +61,7 @@ public class EmailCheckSceneController implements Initializable {
         } catch (BadStudentNameException | BadStudentIdException ex) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Ошибка");
-            alert.setHeaderText("У ученика слишком длинное имя или почта");
+            alert.setHeaderText("У учащегося слишком длинное имя или почта");
             alert.setContentText("Зайдите на почту через сайт и обработайте "
                 + "сообщение вручную.");
             alert.showAndWait();

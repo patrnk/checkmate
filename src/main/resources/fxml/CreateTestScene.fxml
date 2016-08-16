@@ -10,7 +10,7 @@
    <children>
       <Label layoutX="238.0" layoutY="25.0" text="Название листка" />
       <Label layoutX="262.0" layoutY="80.0" text="ID листка" />
-      <Label alignment="TOP_LEFT" disable="true" layoutX="104.0" layoutY="97.0" prefHeight="17.0" prefWidth="378.0" text="ID листка указывается учеником при сдаче на проверку" textOverrun="CLIP" wrapText="true" />
+      <Label alignment="TOP_LEFT" disable="true" layoutX="104.0" layoutY="97.0" prefHeight="17.0" prefWidth="378.0" text="ID листка указывается учащимся при сдаче на проверку" textOverrun="CLIP" wrapText="true" />
       <TextField fx:id="nameField" layoutX="184.0" layoutY="42.0" prefHeight="27.0" prefWidth="218.0" />
       <TextField fx:id="idField" layoutX="228.0" layoutY="114.0" prefHeight="27.0" prefWidth="130.0" />
       <ComboBox fx:id="factoryBox" layoutX="209.0" layoutY="158.0" onAction="#factoryBoxValueChanged" prefHeight="27.0" prefWidth="168.0" promptText="Способ проверки" />
