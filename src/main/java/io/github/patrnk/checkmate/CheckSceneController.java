@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -31,9 +32,6 @@ public class CheckSceneController implements Initializable {
     
     @FXML
     private TextArea answerArea;
-    
-    @FXML
-    private Label errorLabel;
     
     @FXML
     private void checkButtonClicked(ActionEvent event) {
@@ -58,21 +56,20 @@ public class CheckSceneController implements Initializable {
             nameField.getScene().getWindow().hide();
         } catch (BadTestInfoException ex) {
             String error = BadTestInfoException.getAppropriateErrorMessage(ex);
-            errorLabel.setText(error);
-            Logger.getLogger(CheckSceneController.class.getName()).log(Level.SEVERE, null, ex);
+            showErrorAlert(error);
+            Logger.getLogger(CheckSceneController.class.getName())
+                .log(Level.SEVERE, null, ex);
         } catch (BadStudentNameException ex) {
             String error = "Имя не может быть очень длинным или пустым.";
-            errorLabel.setText(error);
-            Logger.getLogger(CheckSceneController.class.getName()).log(Level.SEVERE, null, ex);
+            showErrorAlert(error);
         } catch (BadStudentIdException ex) {
             String error = "Идентификатор не может быть очень длинным или пустым.";
-            errorLabel.setText(error);
-            Logger.getLogger(CheckSceneController.class.getName()).log(Level.SEVERE, null, ex);
+            showErrorAlert(error);
         } catch (IOException ex) {
-            String error = "Не можем записать результаты. "
-                + "Напишите разработчику: patrnk@gmail.com";
-            errorLabel.setText(error);
-            Logger.getLogger(CheckSceneController.class.getName()).log(Level.SEVERE, null, ex);
+            String error = "Не можем записать результаты.";
+            showErrorAlert(error);
+            Logger.getLogger(CheckSceneController.class.getName())
+                .log(Level.SEVERE, null, ex);
         }
     }
     
@@ -84,6 +81,14 @@ public class CheckSceneController implements Initializable {
         if ("".equals(idField.getText())) {
             throw new BadStudentIdException();
         }
+    }
+    
+    private void showErrorAlert(String error) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Ошибка");
+            alert.setHeaderText(null);
+            alert.setContentText(error);
+            alert.showAndWait();
     }
     
     @Override
