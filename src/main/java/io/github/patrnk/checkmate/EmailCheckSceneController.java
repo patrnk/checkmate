@@ -13,7 +13,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javax.mail.AuthenticationFailedException;
@@ -43,6 +42,7 @@ public class EmailCheckSceneController implements Initializable {
                 mail.writeDownTestResults(result, test);
                 result = mail.getTestResult(testId);
             }
+            emailField.getScene().getWindow().hide();
         } catch (AuthenticationFailedException ex) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Ошибка");

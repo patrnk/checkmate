@@ -82,6 +82,8 @@ public class MainSceneController implements Initializable {
     
     @FXML
     private void openEmailCheckScene() {
+        Test selectedTest = testsTable.getSelectionModel().getSelectedItem();
+        Integer selectedRow = testsTable.getSelectionModel().getSelectedIndex();
         FXMLLoader loader;
         Parent root;
         try {
@@ -91,12 +93,11 @@ public class MainSceneController implements Initializable {
             final Stage stage = new Stage();
             stage.setResizable(false);
             stage.setScene(new Scene(root));
-            stage.onHiddenProperty().setValue(showMainEventHandler());
+            stage.onHiddenProperty().setValue(showMainEventHandler(selectedRow));
             hideMainWindow();
             
             EmailCheckSceneController controller = 
                 ((EmailCheckSceneController)loader.getController());
-            Test selectedTest = testsTable.getSelectionModel().getSelectedItem();
             controller.setTest(selectedTest);
             
             stage.show();
@@ -125,6 +126,8 @@ public class MainSceneController implements Initializable {
     
     @FXML
     private void openCheckScene(ActionEvent event) {
+        Test selectedTest = testsTable.getSelectionModel().getSelectedItem();
+        Integer selectedRow = testsTable.getSelectionModel().getSelectedIndex();
         FXMLLoader loader;
         Parent root;
         try {
@@ -133,12 +136,11 @@ public class MainSceneController implements Initializable {
             final Stage stage = new Stage();
             stage.setResizable(false);
             stage.setScene(new Scene(root));
-            stage.onHiddenProperty().setValue(showMainEventHandler());
+            stage.onHiddenProperty().setValue(showMainEventHandler(selectedRow));
             hideMainWindow();
             
             CheckSceneController controller = 
                 ((CheckSceneController)loader.getController());
-            Test selectedTest = testsTable.getSelectionModel().getSelectedItem();
             controller.setTest(selectedTest);
             
             stage.show();
@@ -176,6 +178,15 @@ public class MainSceneController implements Initializable {
                 }
             };
     }
+
+    private EventHandler<WindowEvent> showMainEventHandler(final Integer rowToSelect) {
+        return new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent event) {
+                    showMainWindowAndSelectTest(rowToSelect);
+                }
+            };
+    }
     
     private void hideMainWindow() {
         ((Stage)anchor.getScene().getWindow()).hide();
@@ -185,6 +196,13 @@ public class MainSceneController implements Initializable {
         ((Stage)anchor.getScene().getWindow()).show();
         setDisableTestButtons(true);
         setDisableResultButtons(true);
+    }
+    
+    private void showMainWindowAndSelectTest(int testRow) {
+        showMainWindow();
+        testsTable.getSelectionModel().clearAndSelect(testRow);
+        testsTableClicked();
+        testsTable.requestFocus();
     }
     
     @FXML
