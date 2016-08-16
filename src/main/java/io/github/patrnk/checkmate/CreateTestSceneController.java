@@ -17,6 +17,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -46,9 +48,6 @@ public class CreateTestSceneController implements Initializable {
 
     @FXML
     private Label testSummaryLabel;
-    
-    @FXML
-    private Label errorLabel;
 
     @FXML
     private void factoryBoxValueChanged(ActionEvent event) {
@@ -67,11 +66,19 @@ public class CreateTestSceneController implements Initializable {
             this.contentArea.getScene().getWindow().hide();
         } catch (BadTestInfoException ex) {
             String error = BadTestInfoException.getAppropriateErrorMessage(ex);
-            errorLabel.setText(error);
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Ошибка");
+            alert.setHeaderText(null);
+            alert.setContentText(error);
+            alert.showAndWait();
         } catch (IOException ex) {
-            errorLabel.setText("Мы не можем записать новый тест на диск. "
-                + "Напишите разработчику: patrnk@gmail.com.");
-            Logger.getLogger(CreateTestSceneController.class.getName()).log(Level.SEVERE, null, ex);
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Ошибка");
+            alert.setHeaderText("Не получилось записать новый тест на диск.");
+            alert.setContentText("Попробуйте переместить программу в другое место.");
+            alert.showAndWait();
+            Logger.getLogger(CreateTestSceneController.class.getName())
+                .log(Level.SEVERE, null, ex);
         }   
        
     }
