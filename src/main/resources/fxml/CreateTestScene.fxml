@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="642.0" prefWidth="585.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.patrnk.checkmate.CreateTestSceneController">
+<AnchorPane id="AnchorPane" prefHeight="642.0" prefWidth="585.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.patrnk.checkmate.controller.CreateTestSceneController">
    <children>
       <Label layoutX="238.0" layoutY="25.0" text="Название листка" />
       <Label layoutX="262.0" layoutY="80.0" text="ID листка" />

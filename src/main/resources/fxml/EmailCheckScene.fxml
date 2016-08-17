@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="166.0" prefWidth="328.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.patrnk.checkmate.EmailCheckSceneController">
+<AnchorPane id="AnchorPane" prefHeight="166.0" prefWidth="328.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.patrnk.checkmate.controller.EmailCheckSceneController">
    <children>
       <TextField fx:id="emailField" layoutX="77.0" layoutY="31.0" prefHeight="27.0" prefWidth="176.0" />
       <PasswordField fx:id="passField" layoutX="76.0" layoutY="87.0" prefHeight="27.0" prefWidth="176.0" />

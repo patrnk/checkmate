@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="318.0" prefWidth="249.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.patrnk.checkmate.ViewSceneController">
+<AnchorPane id="AnchorPane" prefHeight="318.0" prefWidth="249.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.patrnk.checkmate.controller.ViewSceneController">
    <children>
       <TextArea fx:id="bodyTextArea" editable="false" layoutX="25.0" layoutY="75.0" prefHeight="229.0" prefWidth="200.0" promptText="Описания нет." wrapText="true" />
       <Label fx:id="headTextLabel" layoutX="25.0" layoutY="14.0" prefHeight="45.0" prefWidth="200.0" text="Заголовка нет." textAlignment="CENTER" wrapText="true" />
