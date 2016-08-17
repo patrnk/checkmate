@@ -27,7 +27,7 @@ public class PermissiveTest implements Test {
     private final List<Pattern> answerKey;
     private final List<List<String>> normalAnswerKey;
         
-    public PermissiveTest(TestInfo info) throws BadTestInfoException {
+    PermissiveTest(TestInfo info) throws BadTestInfoException {
         if (info == null) {
             throw new IllegalArgumentException("Test info cannot be null");
         }
