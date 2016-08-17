@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -30,7 +31,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -59,6 +59,9 @@ public class MainSceneController implements Initializable {
     
     @FXML
     private TableColumn<Record, String> studentIdColumn; 
+    
+    @FXML
+    private TableColumn<Record, String> studentGradeColumn;
     
     @FXML
     private Button emailCheckButton;
@@ -395,6 +398,7 @@ public class MainSceneController implements Initializable {
     private void setValueFactoriesTestResultTable() {
         studentNameColumn.setCellValueFactory(getStudentNameColumnCellValueFactory());
         studentIdColumn.setCellValueFactory(getStudentIdColumnCellValueFactory());
+        studentGradeColumn.setCellValueFactory(getStudentGradeColumnCellValueFactory());
     }
     
     private ChangeListener<Scene> populateTablesOnShownSceneListener() {
@@ -487,8 +491,24 @@ public class MainSceneController implements Initializable {
         return new Callback<CellDataFeatures<Record, String>, ObservableValue<String>>() { 
             @Override
             public ObservableValue<String> call(CellDataFeatures<Record, String> param) {
-                String name = param.getValue().getStudentId();
-                return new SimpleStringProperty(name);
+                String id = param.getValue().getStudentId();
+                return new SimpleStringProperty(id);
+            }
+        };
+    }
+            
+    private Callback<CellDataFeatures<Record, String>, ObservableValue<String>> 
+            getStudentGradeColumnCellValueFactory() {
+        return new Callback<CellDataFeatures<Record, String>, ObservableValue<String>>() { 
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<Record, String> param) {
+                List<TestAnswer> result = 
+                    PersistenceManager.getResultsForRecord(param.getValue());
+                if (result == null) {
+                    return new SimpleStringProperty("!");
+                }
+                Integer grade = sumOfGrades(result);
+                return new SimpleStringProperty(grade.toString());
             }
         };
     }

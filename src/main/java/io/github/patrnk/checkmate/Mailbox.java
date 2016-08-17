@@ -95,7 +95,6 @@ public final class Mailbox {
             PersistenceManager.writeDownTestResults(studentName, studentId, 
                 studentAnswers, test.getInfo().getId());
         } catch (BadTestInfoException ex) {
-            studentName = "! " + studentName;
             String error = BadTestInfoException.getAppropriateErrorMessage(ex);
             error += "\nВот так выглядит письмо:\n" + messageText;
             PersistenceManager.writeDownTestResults(
