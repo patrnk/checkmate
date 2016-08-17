@@ -342,7 +342,7 @@ public class MainSceneController implements Initializable {
         setDisableResultButtons(true);
     }
     
-    Map<Integer, List<Record>> testResult;
+    private Map<Integer, List<Record>> testResult;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
