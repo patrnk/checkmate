@@ -11,10 +11,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -27,7 +27,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
@@ -256,6 +259,9 @@ public class MainSceneController implements Initializable {
     
     @FXML
     private void deleteTestButtonClicked() {
+        if (!getConfirmation()) {
+            return;
+        }
         Test selected = testsTable.getSelectionModel().getSelectedItem();
         try {
             deleteResultForSelectedTest();
@@ -316,6 +322,9 @@ public class MainSceneController implements Initializable {
     
     @FXML
     private void deleteTestResultButtonClicked() {
+        if (!getConfirmation()) {
+            return;
+        }
         Test selectedTest = testsTable.getSelectionModel().getSelectedItem();
         Record selectedRecord = testResultTable.getSelectionModel().getSelectedItem();
         try {
@@ -332,6 +341,9 @@ public class MainSceneController implements Initializable {
     
     @FXML
     private void deleteResultForSelectedTest() {
+        if (!getConfirmation()) {
+            return;
+        }
         Iterator<Record> iterator = testResultTable.getItems().iterator();
         while(iterator.hasNext()) {
             Record result = iterator.next();
@@ -511,5 +523,19 @@ public class MainSceneController implements Initializable {
                 return new SimpleStringProperty(grade.toString());
             }
         };
+    }
+            
+    private Boolean getConfirmation() {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Подтверждение");
+        alert.setHeaderText(null);
+        alert.setContentText("Вы действительно хотите это удалить?");
+        Optional<ButtonType> response = alert.showAndWait();
+        if (response.isPresent()) {
+            if (response.get().equals(ButtonType.OK)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
