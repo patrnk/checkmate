@@ -30,6 +30,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -349,6 +350,30 @@ public class MainSceneController implements Initializable {
         setValueFactoriesTestsTable();
         setValueFactoriesTestResultTable();
         anchor.sceneProperty().addListener(populateTablesOnShownSceneListener());
+        testsTable.getSelectionModel().selectedItemProperty()
+            .addListener(testSelectionChangedHandler());
+        testResultTable.getSelectionModel().selectedItemProperty()
+            .addListener(resultSelectionChangedHandler());
+    }
+    
+    private ChangeListener<Test> testSelectionChangedHandler() {
+        return new ChangeListener<Test>() {
+            @Override
+            public void changed(ObservableValue<? extends Test> observable, 
+                    Test oldValue, Test newValue) {
+                testsTableClicked();
+            }
+        };
+    }
+    
+    private ChangeListener<Record> resultSelectionChangedHandler() {
+        return new ChangeListener<Record>() {
+            @Override
+            public void changed(ObservableValue<? extends Record> observable, 
+                    Record oldValue, Record newValue) {
+                testResultTableClicked();
+            }
+        };
     }
     
     private Map<Integer, List<Record>> getRecordsByTestId(List<Record> resultList) {
