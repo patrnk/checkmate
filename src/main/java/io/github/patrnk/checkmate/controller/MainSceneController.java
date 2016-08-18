@@ -340,10 +340,14 @@ public class MainSceneController implements Initializable {
     }
     
     @FXML
-    private void deleteResultForSelectedTest() {
+    private void deleteAllResultsButtonClicked() {
         if (!getConfirmation()) {
             return;
         }
+        deleteResultForSelectedTest();
+    }
+    
+    private void deleteResultForSelectedTest() {
         Iterator<Record> iterator = testResultTable.getItems().iterator();
         while(iterator.hasNext()) {
             Record result = iterator.next();
@@ -352,7 +356,8 @@ public class MainSceneController implements Initializable {
                 testResult.get(result.getTestId()).remove(result);
                 iterator.remove();
             } catch (IOException ex) {
-                Logger.getLogger(MainSceneController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(
+                    MainSceneController.class.getName()).log(Level.SEVERE, null, ex);
             }   
         }
         setDisableResultButtons(true);
