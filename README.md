@@ -1,14 +1,16 @@
 # Check mate
 Cross-platform desktop application that allows automating test grading.
 
-Note: the interface is fully in Russian. If you want a localized version, contact maintainer.
+Note: the interface is fully in Russian. If you need a localized version, contact maintainer.
 
 ## The application can
   - grade provided answers based on test's answer key and grading algorithm
   - store the grades and provided answers
   - retrieve the answers from Yandex Mail
 
-You can extend the app by adding mail providers and grading algorithms.
+
+You can extend the app by adding mail providers (see Mailbox class) and grading algorithms (see below).
+
 
 ## In order to add a grading algorithm, you need to
   1. Create a class implementing Test interface. Don't forget about SerializationProxy! Use SimpleTest class as an example.
