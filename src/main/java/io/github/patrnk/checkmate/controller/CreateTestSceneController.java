@@ -7,6 +7,7 @@ import io.github.patrnk.checkmate.test.TestFactory;
 import io.github.patrnk.checkmate.test.PermissiveTestFactory;
 import io.github.patrnk.checkmate.persistence.PersistenceManager;
 import io.github.patrnk.checkmate.test.SimpleTestFactory;
+import io.github.patrnk.checkmate.test.StandardTestFactory;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -140,8 +141,9 @@ public class CreateTestSceneController implements Initializable {
     
     private ObservableList<TestFactory> getFactories() {
         ObservableList<TestFactory> factories = FXCollections.observableArrayList();
-        factories.add(new PermissiveTestFactory());
         factories.add(new SimpleTestFactory());
+        factories.add(new StandardTestFactory());
+        factories.add(new PermissiveTestFactory());
         // add new factories here
         return factories;
     }
