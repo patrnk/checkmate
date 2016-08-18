@@ -1,12 +1,12 @@
 package io.github.patrnk.checkmate.controller;
 
 import io.github.patrnk.checkmate.test.exception.BadTestInfoException;
-import io.github.patrnk.checkmate.test.PermissiveTest;
 import io.github.patrnk.checkmate.test.TestInfo;
 import io.github.patrnk.checkmate.test.Test;
 import io.github.patrnk.checkmate.test.TestFactory;
 import io.github.patrnk.checkmate.test.PermissiveTestFactory;
 import io.github.patrnk.checkmate.persistence.PersistenceManager;
+import io.github.patrnk.checkmate.test.SimpleTestFactory;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -141,6 +141,7 @@ public class CreateTestSceneController implements Initializable {
     private ObservableList<TestFactory> getFactories() {
         ObservableList<TestFactory> factories = FXCollections.observableArrayList();
         factories.add(new PermissiveTestFactory());
+        factories.add(new SimpleTestFactory());
         // add new factories here
         return factories;
     }
