@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 
-public class SimpleTest implements Test {
+class SimpleTest implements Test {
 
     private final TestInfo info;
     

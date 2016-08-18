@@ -13,7 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class PermissiveTest implements Test {
+class PermissiveTest implements Test {
 
     private final TestInfo info;
     
