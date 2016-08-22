@@ -1,6 +1,4 @@
 # Check mate
-Cross-platform desktop application that allows automating test grading.
-
 Note: the interface is fully in Russian. If you need a localized version, contact maintainer.
 
 ## The application can
