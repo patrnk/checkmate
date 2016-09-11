@@ -7,10 +7,9 @@ public class StandardTestFactory implements TestFactory {
 
     private static final String TITLE = "Стандартный";
     
-    private static final String SUMMARY = "За правильный ответ, состоящий из "
-        + "одного символа, учащемуся присуждается 1 балл. За правильный ответ, "
-        + "состоящий из нескольких, — 2 балла.";
-    
+    private static final String SUMMARY = "За правильные ответы, "
+        + "помеченные звездочкой в начале, присуждается 2 балла. "
+        + "За другие — 1 балл."; 
     
     @Override
     public String getTitle() {
