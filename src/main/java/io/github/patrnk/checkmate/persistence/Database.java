@@ -1,5 +1,6 @@
 package io.github.patrnk.checkmate.persistence;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,15 +15,18 @@ import java.util.logging.Logger;
 
 final class Database {
     
+    private static final StoredData DATABASE = new StoredData("Database", "db");
+    
     private static Connection connection = null;
     
     private static final Integer MAX_STRING_LENGTH = 255;
     
-    private static Connection getConnection() {
+    private static Connection getConnection() throws IOException {
         if (connection == null) {
             try {
                 Class.forName("org.sqlite.JDBC");
-                connection = DriverManager.getConnection("jdbc:sqlite:mockup.db");
+                String dir = DATABASE.getFilePath("records");
+                connection = DriverManager.getConnection("jdbc:sqlite:" + dir);
                 createTablesIfNeeded();
             } catch (ClassNotFoundException | SQLException ex) {
                 Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
@@ -52,9 +56,10 @@ final class Database {
     
     /**
      * Sets new record of the test results in the database.
-     * @throws SQLException in case the method is broken and needs to be rewritten
+     * @throws SQLException in case the method is broken and needs to be rewritten.
+     * @throws IOException if the db file couldn't be opened.
      */
-    public static void addRecord(Record record) throws SQLException {
+    public static void addRecord(Record record) throws SQLException, IOException {
         checkStringLength(record.getStudentName(), record.getStudentId(), 
             record.getResultFilepath());
         String insertSql = "INSERT INTO testResult " +
@@ -73,7 +78,7 @@ final class Database {
         }
     }
     
-    public static List<Record> fetchRecords() throws SQLException {
+    public static List<Record> fetchRecords() throws SQLException, IOException {
         List<Record> records = new ArrayList();
         String selectSql = "SELECT * FROM testResult;";
         Statement select = Database.getConnection().createStatement();
@@ -111,8 +116,9 @@ final class Database {
      * Deletes the row with the record.
      * @param resultFilePath used as an identifier of the record.
      * @throws SQLException if something went wrong with the SQL request.
+     * @throws IOException if the db file couldn't be opened.
      */
-    public static void deleteRecord(String resultFilePath) throws SQLException {
+    public static void deleteRecord(String resultFilePath) throws SQLException, IOException {
         String deleteSql = "DELETE FROM testResult WHERE answer_file= ? ;";
         try (PreparedStatement delete = 
             Database.getConnection().prepareStatement(deleteSql)) {

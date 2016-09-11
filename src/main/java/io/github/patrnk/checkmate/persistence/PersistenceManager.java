@@ -213,6 +213,9 @@ public final class PersistenceManager {
         } catch (SQLException ex) {
             Logger.getLogger(PersistenceManager.class.getName())
                 .log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(PersistenceManager.class.getName())
+                .log(Level.SEVERE, null, ex);
         }
         return records;
     }
