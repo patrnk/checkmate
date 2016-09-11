@@ -40,7 +40,7 @@ class SimpleTest implements Test {
     @Override
     public ArrayList<TestAnswer> check(ArrayList<TestAnswer> studentAnswers) {
         ArrayList<TestAnswer> answers = removeExtraneousAnswers(studentAnswers);
-        for (int i = 0; i < answerKey.size(); i++) {
+        for (int i = 0; i < answers.size(); i++) {
             String answer = answers.get(i).getAnswer();
             if (answerKey.get(i).matcher(answer).matches()) {
                 answers.get(i).setGrade(MAX_GRADE);
